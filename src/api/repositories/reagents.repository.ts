@@ -1,3 +1,5 @@
-import { IReagents, Reagents } from "../data/reagents";
+import { IReagent, reagents } from "../data/reagents";
 
-export const getAllReagents = (): IReagents => Reagents;
+export const getAllReagents = (): IReagent[] => reagents;
+
+export const addReagent = (reagent: IReagent): IReagent => reagent;
