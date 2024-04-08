@@ -9,8 +9,9 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(logger);
 
-app.get(REAGENTS_ENDPOINTS.GET_REAGENTS, getReagents)
+app.get(REAGENTS_ENDPOINTS.GET_REAGENTS, getReagents);
 
 app.listen(3000, () => {
+  /* eslint-disable no-console */
   console.log("Server is started");
 });

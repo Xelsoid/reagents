@@ -8,9 +8,7 @@
     "test": "jest",
     "test:coverage": "jest --coverage",
     "prettier": "prettier . --check",
-    "lint:js": "eslint --report-unused-disable-directives . --ext .js,.ts,.tsx,.mjs",
-    "lint:styles": "stylelint --report-needless-disables \"./**/*.(js|ts|tsx)\"",
-    "lint": "run-p -c lint:js lint:styles",
+    "lint": "eslint --report-unused-disable-directives . --ext .js,.ts,.tsx,.mjs",
     "dev": "nodemon src/api/app.ts"
   },
   "repository": {

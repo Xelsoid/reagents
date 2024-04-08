@@ -2,14 +2,14 @@ import { Response, Request, NextFunction } from "express";
 import { getReagentsData } from "../servises/ragents.service";
 
 export const getReagents = async (
-    req: Request,
-    res: Response,
-    next: NextFunction,
+  req: Request,
+  res: Response,
+  _next: NextFunction,
 ) => {
-    const reagents = getReagentsData();
+  const reagents = getReagentsData();
 
-    res.status(200).send({
-        data: reagents,
-        error: null,
-    });
+  res.status(200).send({
+    data: reagents,
+    error: null,
+  });
 };

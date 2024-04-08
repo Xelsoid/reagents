@@ -11,13 +11,13 @@ export interface IReagents {
 }
 
 export const Reagents: IReagents = {
-    id: '1/01/23',
-    name: 'Метанол',
-    amount: 500,
-    minAmount: 0,
-    unit: 'мл',
-    supplier: 'БелФарм',
-    producer: 'Беларусь',
-    storageConditions: 'Холодильник',
-    storagePlace: '1/1',
-}
+  id: "1/01/23",
+  name: "Метанол",
+  amount: 500,
+  minAmount: 0,
+  unit: "мл",
+  supplier: "БелФарм",
+  producer: "Беларусь",
+  storageConditions: "Холодильник",
+  storagePlace: "1/1",
+};
