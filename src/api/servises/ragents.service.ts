@@ -1,6 +1,7 @@
 import { randomUUID } from "crypto";
 import {
   addReagent,
+  deleteReagent,
   getAllReagents,
   updateReagent,
 } from "../repositories/reagents.repository";
@@ -37,4 +38,9 @@ export const addReagentData = (requestBody) => {
 export const updateReagentData = (requestBody) => {
   const { uuid, amount } = requestBody;
   return updateReagent(uuid, amount);
+};
+
+export const deleteReagentData = (requestBody) => {
+  const { uuid } = requestBody;
+  return deleteReagent(uuid);
 };

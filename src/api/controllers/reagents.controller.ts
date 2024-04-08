@@ -1,6 +1,7 @@
 import { Response, Request, NextFunction } from "express";
 import {
   addReagentData,
+  deleteReagentData,
   getReagentsData,
   updateReagentData,
 } from "../servises/ragents.service";
@@ -40,6 +41,19 @@ export const updateReagentAmount = async (
 
   res.status(200).send({
     data: { reagent },
+    error: null,
+  });
+};
+
+export const deleteReagent = async (
+  req: Request,
+  res: Response,
+  _next: NextFunction,
+) => {
+  const isReagentDeleted = deleteReagentData(req.body);
+
+  res.status(200).send({
+    success: isReagentDeleted,
     error: null,
   });
 };

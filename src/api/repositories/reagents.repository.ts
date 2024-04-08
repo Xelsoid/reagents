@@ -15,3 +15,9 @@ export const updateReagent = (uuid: string, amount: number) => {
   }
   return { ...reagent, amount };
 };
+
+export const deleteReagent = (uuid: string) => {
+  const reagent = getReagent(uuid);
+  // delete reagent
+  return !!reagent;
+};
