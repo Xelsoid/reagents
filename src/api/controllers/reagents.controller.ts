@@ -1,5 +1,9 @@
 import { Response, Request, NextFunction } from "express";
-import { addReagentData, getReagentsData } from "../servises/ragents.service";
+import {
+  addReagentData,
+  getReagentsData,
+  updateReagentData,
+} from "../servises/ragents.service";
 
 export const getReagents = async (
   req: Request,
@@ -20,6 +24,19 @@ export const addReagent = async (
   _next: NextFunction,
 ) => {
   const reagent = addReagentData(req.body);
+
+  res.status(200).send({
+    data: { reagent },
+    error: null,
+  });
+};
+
+export const updateReagentAmount = async (
+  req: Request,
+  res: Response,
+  _next: NextFunction,
+) => {
+  const reagent = updateReagentData(req.body);
 
   res.status(200).send({
     data: { reagent },

@@ -2,6 +2,7 @@ import { randomUUID } from "crypto";
 import {
   addReagent,
   getAllReagents,
+  updateReagent,
 } from "../repositories/reagents.repository";
 
 export const getReagentsData = () => getAllReagents();
@@ -31,4 +32,9 @@ export const addReagentData = (requestBody) => {
     storagePlace: storagePlace || "",
   };
   return addReagent(reagent);
+};
+
+export const updateReagentData = (requestBody) => {
+  const { uuid, amount } = requestBody;
+  return updateReagent(uuid, amount);
 };
