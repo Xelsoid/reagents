@@ -5,10 +5,9 @@
     },
     "extends": [
         "airbnb",
-        "airbnb-typescript/base",
         "eslint:recommended",
-        "plugin:@typescript-eslint/recommended",
-        "prettier"
+        "plugin:prettier/recommended",
+        "plugin:@typescript-eslint/recommended"
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
@@ -40,5 +39,16 @@
         ],
         "import/no-default-export": "error",
         "import/prefer-default-export": "off"
-    }
+    },
+    "overrides": [
+        {
+            "files": [
+                "*.ts"
+            ],
+            "rules": {
+                "import/extensions": "off",
+                "import/no-unresolved": "off"
+            }
+        }
+    ]
 }
