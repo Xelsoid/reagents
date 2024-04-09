@@ -9,7 +9,8 @@
     "test:coverage": "jest --coverage",
     "prettier": "prettier . --check",
     "lint": "eslint --fix --report-unused-disable-directives . --ext .js,.ts,.tsx,.mjs",
-    "dev": "nodemon src/api/app.ts"
+    "dev": "nodemon src/api/app.ts",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
