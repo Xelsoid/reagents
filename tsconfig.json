@@ -1,22 +1,12 @@
 {
+  "extends": "@tsconfig/node20/tsconfig.json",
   "compilerOptions": {
-    "module": "es6",
-    "target": "es5",
-    "noImplicitAny": false,
-    "sourceMap": true,
+    "removeComments": true,
     "outDir": "./dist",
-    "esModuleInterop": true,
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "lib": [
-      "es2015.promise"
-    ]
+    "rootDir": "./src",
+    "allowJs": true,
+    "maxNodeModuleJsDepth": 10
   },
-  "exclude": [
-    "node_modules"
-  ],
-    "ts-node": {
-        "esm": true,
-        "experimentalSpecifierResolution": "node"
-    }
+  "include": ["./src/**/*"],
+  "exclude": ["node_modules", "dist", "tests", "**/__test__", "**/__mocks__", "**/__tests__"]
 }
