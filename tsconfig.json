@@ -7,6 +7,6 @@
     "allowJs": true,
     "maxNodeModuleJsDepth": 10
   },
-  "include": ["./src/**/*"],
+  "include": ["./src/app/*", "./src/index.ts"],
   "exclude": ["node_modules", "dist", "tests", "**/__test__", "**/__mocks__", "**/__tests__"]
 }
