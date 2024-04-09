@@ -1,13 +1,13 @@
 import express from "express";
 import bodyParser from "body-parser";
-import { logger } from "./utils";
-import { REAGENTS_ENDPOINTS } from "./constants";
+import { logger } from "./api/utils";
+import { REAGENTS_ENDPOINTS } from "./api/constants";
 import {
   addReagent,
   deleteReagent,
   getReagents,
   updateReagentAmount,
-} from "./controllers/reagents.controller";
+} from "./api/controllers/reagents.controller";
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -20,6 +20,12 @@ app.post(REAGENTS_ENDPOINTS.ADD_REAGENT, addReagent);
 app.patch(REAGENTS_ENDPOINTS.UPDATE_REAGENT_AMOUNT, updateReagentAmount);
 
 app.delete(REAGENTS_ENDPOINTS.DELETE_REAGENT, deleteReagent);
+
+app.all("*", (req, res) => {
+  res.status(200).send({
+    API: "Welcome to Reagent API",
+  });
+});
 
 app.listen(3000, () => {
   /* eslint-disable no-console */
