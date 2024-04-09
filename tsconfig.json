@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "module": "es6",
+    "target": "es5",
+    "noImplicitAny": false,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "lib": [
+      "es2015.promise"
+    ]
+  },
+  "exclude": [
+    "node_modules"
+  ],
+    "ts-node": {
+        "esm": true,
+        "experimentalSpecifierResolution": "node"
+    }
+}

@@ -1,0 +1,54 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    "extends": [
+        "airbnb",
+        "eslint:recommended",
+        "plugin:prettier/recommended",
+        "plugin:@typescript-eslint/recommended"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaVersion": "latest",
+        "sourceType": "module",
+        "project": "./tsconfig.json"
+    },
+    "plugins": [
+        "@typescript-eslint",
+        "prettier",
+        "import"
+    ],
+    "rules": {
+        "semi": ["error", "always"],
+        "indent": ["error", 2],
+        "quotes": ["error", "double"],
+        "no-console": ["error", { "allow": ["warn", "error"] }],
+        "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+
+        // ES modules
+        "no-duplicate-imports": "error",
+        "import/no-unresolved": "error",
+        "import/no-self-import": "error",
+        "import/order": [
+            "error",
+            {
+                "groups": ["builtin", "external", "internal", "index", "parent", "sibling"]
+            }
+        ],
+        "import/no-default-export": "error",
+        "import/prefer-default-export": "off"
+    },
+    "overrides": [
+        {
+            "files": [
+                "*.ts"
+            ],
+            "rules": {
+                "import/extensions": "off",
+                "import/no-unresolved": "off"
+            }
+        }
+    ]
+}

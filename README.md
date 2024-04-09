@@ -1,2 +1,2 @@
-# reagents
+# Reagents API
 Reagents API
