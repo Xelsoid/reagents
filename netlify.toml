@@ -1,4 +1,2 @@
-[[redirects]]
-  from = "/*"
-  to = "/index.js"
-  status = 200
+[build]
+  functions = "functions"
