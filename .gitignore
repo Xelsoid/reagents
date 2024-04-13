@@ -7,6 +7,8 @@
 /node_modules
 /coverage
 /dist
+.env
+reagents-419912-2ae01760f621.json
 
 # Local Netlify folder
 .netlify

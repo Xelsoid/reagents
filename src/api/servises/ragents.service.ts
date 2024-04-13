@@ -32,6 +32,7 @@ export const addReagentData = (requestBody: IReagent) => {
     producer: producer || "",
     storageConditions: storageConditions || "",
     storagePlace: storagePlace || "",
+    isDeleted: false,
   };
   return addReagent(reagent);
 };

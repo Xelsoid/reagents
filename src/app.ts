@@ -1,5 +1,6 @@
 import express from "express";
 import bodyParser from "body-parser";
+import dotenv from "dotenv";
 import { logger } from "./api/utils";
 import { REAGENTS_ENDPOINTS } from "./api/constants";
 import {
@@ -9,6 +10,7 @@ import {
   updateReagentAmount,
 } from "./api/controllers/reagents.controller";
 
+dotenv.config();
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(logger);

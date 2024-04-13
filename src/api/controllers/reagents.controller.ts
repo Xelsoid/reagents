@@ -11,7 +11,7 @@ export const getReagents = async (
   res: Response,
   _next: NextFunction,
 ) => {
-  const reagents = getReagentsData();
+  const reagents = await getReagentsData();
 
   res.status(200).send({
     data: { reagents },
@@ -24,7 +24,7 @@ export const addReagent = async (
   res: Response,
   _next: NextFunction,
 ) => {
-  const reagent = addReagentData(req.body);
+  const reagent = await addReagentData(req.body);
 
   res.status(200).send({
     data: { reagent },
@@ -37,7 +37,7 @@ export const updateReagentAmount = async (
   res: Response,
   _next: NextFunction,
 ) => {
-  const reagent = updateReagentData(req.body);
+  const reagent = await updateReagentData(req.body);
 
   res.status(200).send({
     data: { reagent },
@@ -50,7 +50,7 @@ export const deleteReagent = async (
   res: Response,
   _next: NextFunction,
 ) => {
-  const isReagentDeleted = deleteReagentData(req.body);
+  const isReagentDeleted = await deleteReagentData(req.body);
 
   res.status(200).send({
     success: isReagentDeleted,

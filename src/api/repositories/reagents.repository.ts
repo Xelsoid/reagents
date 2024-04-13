@@ -1,23 +1,25 @@
-import { IReagent, reagents } from "../data/reagents";
+import { JWT } from "google-auth-library";
+import { GoogleSheet } from "../../googleSheets";
+import json from "../../../reagents-419912-2ae01760f621.json";
 
-export const getReagent = (uuid: string): IReagent | null => {
-  return reagents.find((reagent) => uuid === reagent.uuid) || null;
-};
+const {
+  GoogleSpreadsheet,
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+} = require("google-spreadsheet");
 
-export const getAllReagents = (): IReagent[] => reagents;
+const serviceAccountAuth = new JWT({
+  email: json.client_email,
+  key: json.private_key,
+  scopes: ["https://www.googleapis.com/auth/spreadsheets"],
+});
 
-export const addReagent = (reagent: IReagent): IReagent => reagent;
+const document = new GoogleSpreadsheet(
+  "1AeyWjy53du1-9wsctJEB82Bz5LbruT9p3ilEhOzpIcY",
+  serviceAccountAuth,
+);
 
-export const updateReagent = (uuid: string, amount: number) => {
-  const reagent = getReagent(uuid);
-  if (!reagent || !amount) {
-    return null;
-  }
-  return { ...reagent, amount };
-};
+const spreadSheets = new GoogleSheet(document);
+spreadSheets.initialize();
 
-export const deleteReagent = (uuid: string) => {
-  const reagent = getReagent(uuid);
-  // delete reagent
-  return !!reagent;
-};
+export const { getAllReagents, addReagent, deleteReagent, updateReagent } =
+  spreadSheets;
