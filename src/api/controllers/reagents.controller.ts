@@ -54,7 +54,7 @@ export const updateReagentAmount = async (
     }
 
     res.status(404).send({
-      error: "Reagent data was not found",
+      message: "The reagent was not found",
     });
   } catch (e) {
     next(e);
@@ -69,9 +69,15 @@ export const deleteReagent = async (
   try {
     const wasReagentDeleted = await deleteReagentData(req.body);
 
-    res.status(wasReagentDeleted ? 200 : 404).send({
-      success: wasReagentDeleted,
-    });
+    if (wasReagentDeleted) {
+      res.status(200).send({
+        success: wasReagentDeleted,
+      });
+    } else {
+      res.status(404).send({
+        message: "The reagent was not found",
+      });
+    }
   } catch (e) {
     next(e);
   }

@@ -25,8 +25,7 @@ app.delete(REAGENTS_ENDPOINTS.DELETE_REAGENT, deleteReagent);
 
 app.use((err: Error, req: Request, res: Response, _next: NextFunction) => {
   console.error(err);
-  res.status(500);
-  res.send({ message: err.message });
+  res.status(500).send({ message: err.message });
 });
 
 app.all("*", (req, res) => {
