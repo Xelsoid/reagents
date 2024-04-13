@@ -19,7 +19,6 @@ const document = new GoogleSpreadsheet(
 );
 
 const spreadSheets = new GoogleSheet(document);
-spreadSheets.initialize();
 
 export const { getAllReagents, addReagent, deleteReagent, updateReagent } =
   spreadSheets;

@@ -4,56 +4,75 @@ import {
   deleteReagentData,
   getReagentsData,
   updateReagentData,
-} from "../servises/ragents.service";
+} from "../servises/reagents.service";
 
 export const getReagents = async (
   req: Request,
   res: Response,
-  _next: NextFunction,
+  next: NextFunction,
 ) => {
-  const reagents = await getReagentsData();
+  try {
+    const reagents = await getReagentsData();
 
-  res.status(200).send({
-    data: { reagents },
-    error: null,
-  });
+    res.status(200).send({
+      data: { reagents },
+    });
+  } catch (e) {
+    next(e);
+  }
 };
 
 export const addReagent = async (
   req: Request,
   res: Response,
-  _next: NextFunction,
+  next: NextFunction,
 ) => {
-  const reagent = await addReagentData(req.body);
+  try {
+    const reagent = await addReagentData(req.body);
 
-  res.status(200).send({
-    data: { reagent },
-    error: null,
-  });
+    res.status(200).send({
+      data: { reagent },
+    });
+  } catch (e) {
+    next(e);
+  }
 };
 
 export const updateReagentAmount = async (
   req: Request,
   res: Response,
-  _next: NextFunction,
+  next: NextFunction,
 ) => {
-  const reagent = await updateReagentData(req.body);
+  try {
+    const reagent = await updateReagentData(req.body);
 
-  res.status(200).send({
-    data: { reagent },
-    error: null,
-  });
+    if (reagent) {
+      res.status(200).send({
+        data: { reagent },
+      });
+      return;
+    }
+
+    res.status(404).send({
+      error: "Reagent data was not found",
+    });
+  } catch (e) {
+    next(e);
+  }
 };
 
 export const deleteReagent = async (
   req: Request,
   res: Response,
-  _next: NextFunction,
+  next: NextFunction,
 ) => {
-  const isReagentDeleted = await deleteReagentData(req.body);
+  try {
+    const wasReagentDeleted = await deleteReagentData(req.body);
 
-  res.status(200).send({
-    success: isReagentDeleted,
-    error: null,
-  });
+    res.status(wasReagentDeleted ? 200 : 404).send({
+      success: wasReagentDeleted,
+    });
+  } catch (e) {
+    next(e);
+  }
 };

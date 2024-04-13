@@ -43,16 +43,20 @@ export class GoogleSheet {
 
   async addReagent(reagent: IReagent) {
     const sheet = await this.getSheet();
-    await sheet.addRow(reagent);
+    const newRow = await sheet.addRow(reagent);
+    return newRow.toObject();
   }
 
   async deleteReagent(uuid: string) {
     const sheet = await this.getSheet();
     const rows = await sheet.getRows();
     const row = this.findRow(rows, uuid);
-    await row.delete();
-    // eslint-disable-next-line no-underscore-dangle
-    return row._deleted;
+    if (row) {
+      await row.delete();
+      // eslint-disable-next-line no-underscore-dangle
+      return row._deleted;
+    }
+    return null;
   }
 
   async updateReagent(uuid: string, amount: number) {

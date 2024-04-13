@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Errback, NextFunction, Request, Response } from "express";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import { logger } from "./api/utils";
@@ -23,9 +23,16 @@ app.patch(REAGENTS_ENDPOINTS.UPDATE_REAGENT_AMOUNT, updateReagentAmount);
 
 app.delete(REAGENTS_ENDPOINTS.DELETE_REAGENT, deleteReagent);
 
+app.use((err: Error, req: Request, res: Response, _next: NextFunction) => {
+  console.error(err);
+  res.status(500);
+  res.send({ message: err.message });
+});
+
 app.all("*", (req, res) => {
   res.status(200).send({
-    API: "Welcome to Reagent API",
+    API: "Welcome to Reagent API, please find available endpoints below",
+    endpoints: Object.keys(REAGENTS_ENDPOINTS),
   });
 });
 
