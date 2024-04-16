@@ -5,6 +5,10 @@ export const REAGENTS_ENDPOINTS = {
   DELETE_REAGENT: "/api/deleteReagent",
 };
 
+export const AUTHENTICATION = {
+  LOGIN: "/api/login",
+};
+
 export const METHOD = {
   GET: "GET",
   PUT: "PUT",

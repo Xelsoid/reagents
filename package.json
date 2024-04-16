@@ -31,6 +31,7 @@
   "dependencies": {
     "@netlify/functions": "^2.6.0",
     "axios": "^1.5.0",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
     "csvtojson": "^2.0.10",
     "dotenv": "16.4.5",
@@ -38,6 +39,7 @@
     "express": "^4.19.2",
     "google-auth-library": "^9.7.0",
     "google-spreadsheet": "^4.1.1",
+    "jsonwebtoken": "^9.0.2",
     "netlify-cli": "^17.22.0",
     "netlify-lambda": "^2.0.16",
     "serverless-http": "^3.2.0"
