@@ -12,6 +12,7 @@ import {
 import {
   loginUser,
   createUser,
+  removeUser,
   verifyToken,
   isAdmin,
   isEditor,
@@ -25,12 +26,9 @@ app.use(logger);
 
 app.post(AUTHENTICATION.LOGIN, loginUser);
 
-app.post(
-  AUTHENTICATION.CREATE_USER,
-  verifyToken as any,
-  isAdmin as any,
-  createUser,
-);
+app.post(AUTHENTICATION.CREATE_USER, createUser);
+
+app.delete(AUTHENTICATION.DELETE_USER, removeUser);
 
 app.get(REAGENTS_ENDPOINTS.GET_REAGENTS, getReagents);
 

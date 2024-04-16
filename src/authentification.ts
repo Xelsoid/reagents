@@ -26,6 +26,10 @@ export class Authentification {
     return this.doc.sheetsByIndex[index];
   }
 
+  private findRow(rows: [typeof GoogleSpreadsheetRow], name: string) {
+    return rows.find((row) => row.get("name") === name);
+  }
+
   async getAllUsers() {
     const sheet = await this.getSheet();
     const rows = await sheet.getRows();
@@ -54,5 +58,15 @@ export class Authentification {
     return newRow.toObject();
   }
 
-  async deleteExistingUser(name: string) {}
+  async deleteExistingUser(name: string) {
+    const sheet = await this.getSheet();
+    const rows = await sheet.getRows();
+    const row = this.findRow(rows, name);
+    if (row) {
+      await row.delete();
+      // eslint-disable-next-line no-underscore-dangle
+      return row._deleted;
+    }
+    return null;
+  }
 }

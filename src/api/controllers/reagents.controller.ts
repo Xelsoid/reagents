@@ -71,7 +71,7 @@ export const deleteReagent = async (
 
     if (wasReagentDeleted) {
       res.status(200).send({
-        success: wasReagentDeleted,
+        message: "The reagent was deleted",
       });
     } else {
       res.status(404).send({

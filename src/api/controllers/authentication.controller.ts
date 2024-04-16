@@ -2,7 +2,11 @@ import { Response, Request, NextFunction } from "express";
 import * as jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import dotenv from "dotenv";
-import { addUser, getUser } from "../servises/authentication.service";
+import {
+  addUser,
+  getUser,
+  deleteUser,
+} from "../servises/authentication.service";
 
 dotenv.config();
 
@@ -57,6 +61,28 @@ export const createUser = async (
     const user = await addUser(req.body);
     return res.status(200).send({
       data: { user },
+    });
+  } catch (e) {
+    return next(e);
+  }
+};
+
+export const removeUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const wasUserDeleted = await deleteUser(req.body);
+
+    if (wasUserDeleted) {
+      return res.status(200).send({
+        message: "The user was deleted",
+      });
+    }
+
+    return res.status(404).send({
+      message: "The user was not found",
     });
   } catch (e) {
     return next(e);
