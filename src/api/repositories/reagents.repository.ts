@@ -20,5 +20,10 @@ const document = new GoogleSpreadsheet(
 
 const spreadSheets = new GoogleSheet(document);
 
-export const { getAllReagents, addReagent, deleteReagent, updateReagent } =
-  spreadSheets;
+export const {
+  getAllReagents,
+  addReagent,
+  deleteReagent,
+  updateReagent,
+  updateReagentAmount,
+} = spreadSheets;

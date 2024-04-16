@@ -4,6 +4,7 @@ import {
   deleteReagent,
   getAllReagents,
   updateReagent,
+  updateReagentAmount,
 } from "../repositories/reagents.repository";
 import { IReagent } from "../data/reagents";
 
@@ -38,8 +39,37 @@ export const addReagentData = (requestBody: IReagent) => {
 };
 
 export const updateReagentData = (requestBody: IReagent) => {
+  const {
+    uuid,
+    id,
+    name,
+    amount,
+    minAmount,
+    unit,
+    supplier,
+    producer,
+    storageConditions,
+    storagePlace,
+  } = requestBody;
+  const reagent = {
+    uuid,
+    id,
+    name,
+    amount,
+    minAmount,
+    unit,
+    supplier,
+    producer,
+    storageConditions,
+    storagePlace,
+    isDeleted: false,
+  };
+  return updateReagent(uuid, reagent);
+};
+
+export const updateReagentQuantity = (requestBody: IReagent) => {
   const { uuid, amount } = requestBody;
-  return updateReagent(uuid, amount);
+  return updateReagentAmount(uuid, amount);
 };
 
 export const deleteReagentData = (requestBody: IReagent) => {

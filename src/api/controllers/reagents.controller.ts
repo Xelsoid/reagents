@@ -4,6 +4,7 @@ import {
   deleteReagentData,
   getReagentsData,
   updateReagentData,
+  updateReagentQuantity,
 } from "../servises/reagents.service";
 
 export const getReagents = async (
@@ -14,11 +15,11 @@ export const getReagents = async (
   try {
     const reagents = await getReagentsData();
 
-    res.status(200).send({
+    return res.status(200).send({
       data: { reagents },
     });
   } catch (e) {
-    next(e);
+    return next(e);
   }
 };
 
@@ -30,11 +31,33 @@ export const addReagent = async (
   try {
     const reagent = await addReagentData(req.body);
 
-    res.status(200).send({
+    return res.status(200).send({
       data: { reagent },
     });
   } catch (e) {
-    next(e);
+    return next(e);
+  }
+};
+
+export const updateReagent = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const reagent = await updateReagentData(req.body);
+
+    if (reagent) {
+      return res.status(200).send({
+        data: { reagent },
+      });
+    }
+
+    return res.status(404).send({
+      message: "The reagent was not found",
+    });
+  } catch (e) {
+    return next(e);
   }
 };
 
@@ -44,20 +67,19 @@ export const updateReagentAmount = async (
   next: NextFunction,
 ) => {
   try {
-    const reagent = await updateReagentData(req.body);
+    const reagent = await updateReagentQuantity(req.body);
 
     if (reagent) {
-      res.status(200).send({
+      return res.status(200).send({
         data: { reagent },
       });
-      return;
     }
 
-    res.status(404).send({
+    return res.status(404).send({
       message: "The reagent was not found",
     });
   } catch (e) {
-    next(e);
+    return next(e);
   }
 };
 
@@ -70,15 +92,14 @@ export const deleteReagent = async (
     const wasReagentDeleted = await deleteReagentData(req.body);
 
     if (wasReagentDeleted) {
-      res.status(200).send({
+      return res.status(200).send({
         message: "The reagent was deleted",
       });
-    } else {
-      res.status(404).send({
-        message: "The reagent was not found",
-      });
     }
+    return res.status(404).send({
+      message: "The reagent was not found",
+    });
   } catch (e) {
-    next(e);
+    return next(e);
   }
 };

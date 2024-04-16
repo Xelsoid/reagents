@@ -20,6 +20,7 @@ export class GoogleSheet {
     this.addReagent = this.addReagent.bind(this);
     this.deleteReagent = this.deleteReagent.bind(this);
     this.updateReagent = this.updateReagent.bind(this);
+    this.updateReagentAmount = this.updateReagentAmount.bind(this);
   }
 
   async initialize() {
@@ -41,6 +42,18 @@ export class GoogleSheet {
     return rows.map((row: typeof GoogleSpreadsheetRow) => row.toObject());
   }
 
+  async updateReagent(uuid: string, reagent: IReagent) {
+    const sheet = await this.getSheet();
+    const rows = await sheet.getRows();
+    const row = this.findRow(rows, uuid);
+    if (row) {
+      row.assign(reagent);
+      await row.save();
+      return row.toObject();
+    }
+    return null;
+  }
+
   async addReagent(reagent: IReagent) {
     const sheet = await this.getSheet();
     const newRow = await sheet.addRow(reagent);
@@ -59,7 +72,7 @@ export class GoogleSheet {
     return null;
   }
 
-  async updateReagent(uuid: string, amount: number) {
+  async updateReagentAmount(uuid: string, amount: number) {
     const sheet = await this.getSheet();
     const rows = await sheet.getRows();
     const row = this.findRow(rows, uuid);

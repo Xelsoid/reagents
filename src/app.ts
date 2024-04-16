@@ -34,6 +34,8 @@ app.get(REAGENTS_ENDPOINTS.GET_REAGENTS, getReagents);
 
 app.post(REAGENTS_ENDPOINTS.ADD_REAGENT, addReagent);
 
+app.patch(REAGENTS_ENDPOINTS.UPDATE_REAGENT, updateReagentAmount);
+
 app.patch(REAGENTS_ENDPOINTS.UPDATE_REAGENT_AMOUNT, updateReagentAmount);
 
 app.delete(REAGENTS_ENDPOINTS.DELETE_REAGENT, deleteReagent);
