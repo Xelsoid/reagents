@@ -42,7 +42,17 @@ export class Authentification {
     email: string,
     password: string,
     role: string,
-  ) {}
+  ) {
+    const sheet = await this.getSheet();
+    const newRow = await sheet.addRow({
+      name,
+      email,
+      password,
+      role,
+      isActive: true,
+    });
+    return newRow.toObject();
+  }
 
   async deleteExistingUser(name: string) {}
 }

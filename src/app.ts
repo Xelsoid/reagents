@@ -11,6 +11,7 @@ import {
 } from "./api/controllers/reagents.controller";
 import {
   loginUser,
+  createUser,
   verifyToken,
   isAdmin,
   isEditor,
@@ -23,6 +24,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(logger);
 
 app.post(AUTHENTICATION.LOGIN, loginUser);
+
+app.post(
+  AUTHENTICATION.CREATE_USER,
+  verifyToken as any,
+  isAdmin as any,
+  createUser,
+);
 
 app.get(REAGENTS_ENDPOINTS.GET_REAGENTS, getReagents);
 

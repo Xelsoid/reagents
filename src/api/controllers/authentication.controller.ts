@@ -2,7 +2,7 @@ import { Response, Request, NextFunction } from "express";
 import * as jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import dotenv from "dotenv";
-import { getUser } from "../servises/authentication.service";
+import { addUser, getUser } from "../servises/authentication.service";
 
 dotenv.config();
 
@@ -33,14 +33,33 @@ export const loginUser = async (
         },
       );
 
-      res.status(200).json({
+      return res.status(200).json({
         token,
       });
-      return;
     }
-    res.status(400).send("Invalid Credentials");
+    return res.status(400).send("Invalid Credentials");
   } catch (e) {
-    next(e);
+    return next(e);
+  }
+};
+
+export const createUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const existingUser = await getUser(req.body);
+    if (existingUser) {
+      return res.status(409).send("User Already Exist. Please Login");
+    }
+
+    const user = await addUser(req.body);
+    return res.status(200).send({
+      data: { user },
+    });
+  } catch (e) {
+    return next(e);
   }
 };
 

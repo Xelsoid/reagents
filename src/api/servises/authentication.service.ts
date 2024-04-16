@@ -1,3 +1,4 @@
+import bcrypt from "bcryptjs";
 import {
   getCurrentUser,
   createUser,
@@ -7,20 +8,20 @@ import {
 export const getUser = async (requestBody: { name: string }) => {
   const { name } = requestBody;
   if (name) {
-    const user = await getCurrentUser(name);
-    return user;
+    return getCurrentUser(name);
   }
   return null;
 };
 
-export const addUser = (requestBody: {
+export const addUser = async (requestBody: {
   name: string;
   email: string;
   password: string;
   role: string;
 }) => {
   const { name, email, password, role } = requestBody;
-  return createUser(name, email, password, role);
+  const encryptedPassword = await bcrypt.hash(password, 10);
+  return createUser(name, email, encryptedPassword, role);
 };
 
 export const deleteUser = (requestBody: { name: string }) => {

@@ -7,6 +7,7 @@ export const REAGENTS_ENDPOINTS = {
 
 export const AUTHENTICATION = {
   LOGIN: "/api/login",
+  CREATE_USER: "/api/createUser",
 };
 
 export const METHOD = {
