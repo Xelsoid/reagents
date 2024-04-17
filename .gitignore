@@ -8,7 +8,8 @@
 /coverage
 /dist
 .env
-reagents-419912-2ae01760f621.json
+reagents.json
+reagents-ivan.json
 
 # Local Netlify folder
 .netlify

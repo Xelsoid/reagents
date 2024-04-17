@@ -1,6 +1,6 @@
 import { JWT } from "google-auth-library";
 import { GoogleSheet } from "../../googleSheets";
-import json from "../../../reagents-419912-2ae01760f621.json";
+import json from "../../../reagents-ivan.json";
 
 const {
   GoogleSpreadsheet,
@@ -13,10 +13,7 @@ const serviceAccountAuth = new JWT({
   scopes: ["https://www.googleapis.com/auth/spreadsheets"],
 });
 
-const document = new GoogleSpreadsheet(
-  "1AeyWjy53du1-9wsctJEB82Bz5LbruT9p3ilEhOzpIcY",
-  serviceAccountAuth,
-);
+const document = new GoogleSpreadsheet(json.spreadsheet_id, serviceAccountAuth);
 
 const spreadSheets = new GoogleSheet(document);
 
