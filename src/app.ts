@@ -26,19 +26,54 @@ app.use(logger);
 
 app.post(AUTHENTICATION.LOGIN, loginUser);
 
-app.post(AUTHENTICATION.CREATE_USER, createUser);
+app.post(
+  AUTHENTICATION.CREATE_USER,
+  verifyToken as any,
+  isAdmin as any,
+  createUser,
+);
 
-app.delete(AUTHENTICATION.DELETE_USER, removeUser);
+app.delete(
+  AUTHENTICATION.DELETE_USER,
+  verifyToken as any,
+  isAdmin as any,
+  removeUser,
+);
 
 app.get(REAGENTS_ENDPOINTS.GET_REAGENTS, getReagents);
 
-app.post(REAGENTS_ENDPOINTS.ADD_REAGENT, addReagent);
+app.post(
+  REAGENTS_ENDPOINTS.ADD_REAGENT,
+  verifyToken as any,
+  isAdmin as any,
+  isEditor as any,
+  addReagent,
+);
 
-app.patch(REAGENTS_ENDPOINTS.UPDATE_REAGENT, updateReagentAmount);
+app.patch(
+  REAGENTS_ENDPOINTS.UPDATE_REAGENT,
+  verifyToken as any,
+  isAdmin as any,
+  isEditor as any,
+  updateReagentAmount,
+);
 
-app.patch(REAGENTS_ENDPOINTS.UPDATE_REAGENT_AMOUNT, updateReagentAmount);
+app.patch(
+  REAGENTS_ENDPOINTS.UPDATE_REAGENT_AMOUNT,
+  verifyToken as any,
+  isAdmin as any,
+  isEditor as any,
+  isUser as any,
+  updateReagentAmount,
+);
 
-app.delete(REAGENTS_ENDPOINTS.DELETE_REAGENT, deleteReagent);
+app.delete(
+  REAGENTS_ENDPOINTS.DELETE_REAGENT,
+  verifyToken as any,
+  isAdmin as any,
+  isEditor as any,
+  deleteReagent,
+);
 
 app.use((err: Error, req: Request, res: Response, _next: NextFunction) => {
   console.error(err);
