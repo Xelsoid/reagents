@@ -9,6 +9,8 @@
     "resolveJsonModule": true,
     "esModuleInterop": true
   },
-  "include": ["./src/**/*"],
+  "include": [
+    "./api/**/*"
+  ],
   "exclude": ["node_modules", "dist", "tests", "**/__test__", "**/__mocks__", "**/__tests__"]
 }

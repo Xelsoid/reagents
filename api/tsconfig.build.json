@@ -2,13 +2,15 @@
   "extends": "@tsconfig/node20/tsconfig.json",
   "compilerOptions": {
     "removeComments": true,
-    "outDir": "./dist",
+    "outDir": "../dist",
     "rootDir": "./src",
     "allowJs": true,
     "maxNodeModuleJsDepth": 10,
     "resolveJsonModule": true,
     "esModuleInterop": true
   },
-  "include": ["./src/app/*", "./src/index.ts"],
+  "include": [
+    "./src/index.ts"
+  ],
   "exclude": ["node_modules", "dist", "tests", "**/__test__", "**/__mocks__", "**/__tests__"]
 }

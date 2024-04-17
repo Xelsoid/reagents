@@ -5,8 +5,11 @@
 /httpRequests/
 /.idea/
 /node_modules
+/coverage
 /dist
 .env
+reagents.json
+reagents-ivan.json
 
 # Local Netlify folder
 .netlify
