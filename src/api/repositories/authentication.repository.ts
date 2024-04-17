@@ -1,6 +1,6 @@
 import { JWT } from "google-auth-library";
-import { Authentification } from "../../authentification";
 import json from "../../../reagents-ivan.json";
+import { Authentification } from "./authentification";
 
 const {
   GoogleSpreadsheet,

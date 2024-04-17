@@ -84,8 +84,8 @@ app.all("*", (req, res) => {
   res.status(200).send({
     API: "Welcome to Reagent API, please find available endpoints below",
     endpoints: [
-      ...Object.keys(REAGENTS_ENDPOINTS),
-      ...Object.keys(AUTHENTICATION),
+      ...Object.values(REAGENTS_ENDPOINTS),
+      ...Object.values(AUTHENTICATION),
     ],
   });
 });

@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import { IReagent } from "./api/data/reagents";
+import { IReagent } from "../data/reagents";
 
 dotenv.config();
 

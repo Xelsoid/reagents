@@ -1,6 +1,6 @@
 import { JWT } from "google-auth-library";
-import { GoogleSheet } from "../../googleSheets";
 import json from "../../../reagents-ivan.json";
+import { GoogleSheet } from "./googleSheets";
 
 const {
   GoogleSpreadsheet,
