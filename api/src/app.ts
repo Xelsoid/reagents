@@ -1,14 +1,14 @@
 import express, { NextFunction, Request, Response } from "express";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
-import { logger } from "./api/utils";
-import { AUTHENTICATION, REAGENTS_ENDPOINTS } from "./api/constants";
+import { logger } from "./utils";
+import { AUTHENTICATION, REAGENTS_ENDPOINTS } from "./constants";
 import {
   addReagent,
   deleteReagent,
   getReagents,
   updateReagentAmount,
-} from "./api/controllers/reagents.controller";
+} from "./controllers/reagents.controller";
 import {
   loginUser,
   createUser,
@@ -17,7 +17,7 @@ import {
   isAdmin,
   isEditor,
   isUser,
-} from "./api/controllers/authentication.controller";
+} from "./controllers/authentication.controller";
 
 dotenv.config();
 const app = express();
