@@ -1,6 +1,6 @@
 import { app } from "./src/app";
 
-const port = 3000;
+const port = 3030;
 
 app.listen(port, () => {
   /* eslint-disable no-console */
