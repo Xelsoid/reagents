@@ -8,7 +8,8 @@
     "app"
   ],
   "scripts": {
-    "dev": "npm run dev -w api",
+    "start:nodejs": "npm run dev -w api",
+    "start:react": "npm run start -w app",
     "build": "npm run build -w app",
     "netlify:build": "netlify build",
     "netlify:dev": "netlify dev",
