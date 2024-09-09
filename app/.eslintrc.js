@@ -69,7 +69,7 @@ module.exports = {
     ],
     "import/no-default-export": "error",
     "import/prefer-default-export": "off",
-    "no-console": ["error", { allow: ["warn", "error"] }],
+    "no-console": ["warn", { allow: ["warn", "error"] }],
     "no-multiple-empty-lines": "warn",
     "no-shadow": "error",
     "react/prop-types": "error",
