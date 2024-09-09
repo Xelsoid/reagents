@@ -14,7 +14,8 @@
     "netlify:build": "netlify build",
     "netlify:dev": "netlify dev",
     "deploy:preview": "netlify deploy",
-    "deploy:production": "netlify deploy --prod"
+    "deploy:production": "netlify deploy --prod",
+    "clean": "rimraf ./node_modules"
   },
   "repository": {
     "type": "git",
