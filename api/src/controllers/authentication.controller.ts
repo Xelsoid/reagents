@@ -1,14 +1,14 @@
 import { Response, Request, NextFunction } from "express";
 import * as jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import dotenv from "dotenv";
+import { config } from "dotenv";
 import {
   addUser,
   getUser,
   deleteUser,
 } from "../servises/authentication.service";
 
-dotenv.config();
+config();
 
 interface RequestWithUser extends Request {
   user: {

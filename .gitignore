@@ -6,7 +6,7 @@
 /.idea/
 /node_modules
 /dist
-.env
+api/.env
 
 # Local Netlify folder
 .netlify
