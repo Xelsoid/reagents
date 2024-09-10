@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../index.css";
-import { reagentAmountChanger } from "../helpers/changeAmountReagent.ts";
+import { loginUser } from "../helpers/loginUser.ts";
+import { reagentAmountChanger } from "../helpers/changeAmountReagent.ts"
 
 const HomePage = () => {
   const [data, setData] = useState(null);
@@ -22,6 +23,11 @@ const HomePage = () => {
 
   return (
     <div>
+      <button 
+        type="button"
+        onClick={() => loginUser("Ivan", "test123")}>
+          Login
+      </button>
       <div className="reagent_row">
         <p className="id_col">
           <b>Id</b>
@@ -54,6 +60,7 @@ const HomePage = () => {
       {data?.map(
         ({
           amount,
+          uuid,
           unit,
           supplier,
           storagePlace,
@@ -75,7 +82,7 @@ const HomePage = () => {
               <p className="move_column">
                 <button
                   type="button"
-                  onClick={() => reagentAmountChanger(id, 866)}
+                  onClick={() => reagentAmountChanger(uuid, 900)}
                 >
                   Списать
                 </button>
