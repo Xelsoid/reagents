@@ -1,6 +1,6 @@
 import express, { NextFunction, Request, Response } from "express";
 import bodyParser from "body-parser";
-import dotenv from "dotenv";
+import { config } from "dotenv";
 import { logger } from "./utils";
 import { AUTHENTICATION, REAGENTS_ENDPOINTS } from "./constants";
 import {
@@ -19,7 +19,7 @@ import {
   isUser,
 } from "./controllers/authentication.controller";
 
-dotenv.config();
+config();
 const app = express();
 
 app.use(express.json());

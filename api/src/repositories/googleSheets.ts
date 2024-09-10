@@ -1,7 +1,7 @@
-import dotenv from "dotenv";
+import { config } from "dotenv";
 import { IReagent } from "../data/reagents";
 
-dotenv.config();
+config();
 
 const {
   GoogleSpreadsheet,

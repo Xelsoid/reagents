@@ -125,7 +125,9 @@ export const isAdmin = (
   if (currentUser.role === "admin") {
     return next();
   }
-  return res.status(401).send("You are not authorized do the action");
+  return res
+    .status(401)
+    .send("You are not authorized do the action (admin role)");
 };
 
 export const isEditor = (
@@ -135,10 +137,12 @@ export const isEditor = (
 ) => {
   const currentUser = req.user;
 
-  if (currentUser.role === "editor") {
+  if (currentUser.role === "editor" || currentUser.role === "admin") {
     return next();
   }
-  return res.status(401).send("You are not authorized do the action");
+  return res
+    .status(401)
+    .send("You are not authorized do the action (editor role)");
 };
 
 export const isUser = (
@@ -148,8 +152,14 @@ export const isUser = (
 ) => {
   const currentUser = req.user;
 
-  if (currentUser.role === "user") {
+  if (
+    currentUser.role === "user" ||
+    currentUser.role === "editor" ||
+    currentUser.role === "admin"
+  ) {
     return next();
   }
-  return res.status(401).send("You are not authorized do the action");
+  return res
+    .status(401)
+    .send("You are not authorized do the action (user role)");
 };
