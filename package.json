@@ -29,6 +29,7 @@
   "homepage": "https://github.com/Xelsoid/reagents#readme",
   "dependencies": {
     "@netlify/functions": "^2.6.0",
+    "axios": "^1.7.7",
     "netlify-cli": "^17.22.0",
     "netlify-lambda": "^2.0.16",
     "serverless-http": "^3.2.0"

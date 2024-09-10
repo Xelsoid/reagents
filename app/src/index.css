@@ -1,13 +1,49 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+.reagent_row > p{
+  border: 1px solid black;
+  margin: 0;
+  padding: 0;
+  word-wrap:break-word
+}
+.reagent_row{
+  display: flex;
+  margin: 0 20px;
+}
+.reagent_row:hover{
+  cursor: pointer;
+  color: rgb(41, 121, 232);
+}
+.id_col{
+  width: 150px;
+}
+.amount_col{
+  width: 100px;
+}
+.unit_col{
+  width: 100px;
+}
+.name_col{
+  width: 120px;
+}
+.producer_col{
+  width: 200px;
+}
+.supplier_col{
+  width: 200px;
+}
+.storage_column{
+  width: 100px;
+}
+.storagePlace_column{
+  width: 100px;
+}
+.move_column{
+  width: 100px;
 }
