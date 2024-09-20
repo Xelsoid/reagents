@@ -1,0 +1,22 @@
+.login_wraper{
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+p {
+  font-size: 32px;
+}
+input{
+  width: 400px;
+  height: 40px;
+  font-size: 24px;
+}
+button{
+  width: 100px;
+  height: 40px;
+  margin-top: 20px;
+  cursor: pointer;
+}

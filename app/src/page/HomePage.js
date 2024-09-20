@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import "../index.css";
-import { loginUser } from "../helpers/loginUser.ts";
+import "../style/home_page.css";
 import { reagentAmountChanger } from "../helpers/changeAmountReagent.ts"
+import { reagentSorter } from "../helpers/reagentSorter.ts"
 
 const HomePage = () => {
   const [data, setData] = useState(null);
+  const [curReagent, setCurReagent] = useState([])
 
   useEffect(() => {
     const fetchData = async (url) => {
@@ -23,10 +24,14 @@ const HomePage = () => {
 
   return (
     <div>
+      <p className="user_name">{localStorage.getItem("name")}</p>
       <button 
         type="button"
-        onClick={() => loginUser("Ivan", "test123")}>
-          Login
+        onClick={() => {
+          localStorage.clear();
+          window.location.href = "http://localhost:3000/"
+          }}>
+          Logout
       </button>
       <div className="reagent_row">
         <p className="id_col">
@@ -69,8 +74,9 @@ const HomePage = () => {
           producer,
           storageConditions,
         }) => {
+          console.log(id)
           return (
-            <div className="reagent_row" key={id}>
+            <div className={amount < 100 ? "low_reagent" : "reagent_row" } key={id}>
               <p className="id_col">{id}</p>
               <p className="name_col">{name}</p>
               <p className="amount_col">{amount}</p>
@@ -82,7 +88,10 @@ const HomePage = () => {
               <p className="move_column">
                 <button
                   type="button"
-                  onClick={() => reagentAmountChanger(uuid, 900)}
+                  onClick={() => {setCurReagent([name, id, unit, amount, uuid]);
+                    document.querySelector(".modal_window_wraper").style.display = "flex";
+                  } 
+                  }
                 >
                   Списать
                 </button>
@@ -91,6 +100,20 @@ const HomePage = () => {
           );
         },
       )}
+    <div className="modal_window_wraper">
+      <div className="overflow" onClick={() => document.querySelector(".modal_window_wraper").style.display = "none"}></div>
+      <div className="modal_window">
+        <p className="reagent_name">{curReagent[0]}</p>
+        <p className="reagent_ID">{curReagent[1]}</p>
+        <input className="input_volume"></input>
+        <p className="reagent_amount">{curReagent[2]}</p>
+        <button className="write_off_btn" onClick={() => {reagentAmountChanger(curReagent[4], curReagent[3] - (+document.querySelector(".input_volume").value));
+          document.querySelector(".modal_window_wraper").style.display = "none";
+          alert(`${curReagent[0]} списано ${document.querySelector(".input_volume").value} ${curReagent[2]}`);
+          window.location.href = window.location.href;
+        }}>Списать</button>
+      </div>
+    </div>
     </div>
   );
 };

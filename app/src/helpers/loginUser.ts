@@ -1,4 +1,10 @@
+import { Link } from "react-router-dom";
+
 export function loginUser(name, passwordUser) {
+  if(!name || !passwordUser) {
+    alert("Введите логин и пароль")
+    return
+  }
   fetch("/api/api/login", {
     method: "POST",
     headers: {
@@ -11,6 +17,9 @@ export function loginUser(name, passwordUser) {
     }),
   }).then(response => response.json()
 .then(resp => {
-  localStorage.setItem('token', resp.token)
-  console.log(resp)}));
+  localStorage.setItem('token', resp.token);
+  localStorage.setItem('name', name);
+  //window.location.href = window.location.href + "main"
+  console.log(resp)})
+  .catch(e => alert("Invalit login or password")));
 }
