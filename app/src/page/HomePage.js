@@ -12,7 +12,8 @@ var image = require('../assets/logo.png')
 const HomePage = () => {
   const [data, setData] = useState(null);
   const [curReagent, setCurReagent] = useState([]);
-  const UserRole = localStorage.getItem("role")
+  const UserRole = localStorage.getItem("role");
+  //data?.sort((a,b) => +a.amount - +b.amount)
 
   useEffect(() => {
     const fetchData = async (url) => {
@@ -52,6 +53,18 @@ const HomePage = () => {
         }>Добавить сотрудника</button> 
         : 
         ""}
+      </div>
+      <div>
+
+        <p>Выберите вариант сортировки</p>
+        <select name="select" className="select_sort" onChange={() => {setData(reagentSorter(data, document.querySelector('.select_sort').value));
+          console.log(data)
+        }}>
+          <option value={'Up_ID'} className="sort_item"> По возрастанию ID</option>
+          <option value={'Down_ID'} className="sort_item"> По убыванию ID</option>
+          <option value={'A-Z'} className="sort_item"> По алфавиту А-Я </option>
+          <option value={'Z-A'} className="sort_item"> По алфавиту Я-А </option>
+        </select>
       </div>
       
       <div className="reagent_row">
@@ -101,7 +114,6 @@ const HomePage = () => {
           producer,
           storageConditions,
         }) => {
-          console.log(id)
           return (
             <div className={amount < 100 ? "low_reagent" : "reagent_row" } key={id}>
               <p className="id_col">{id}</p>
