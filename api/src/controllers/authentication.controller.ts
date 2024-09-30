@@ -39,6 +39,8 @@ export const loginUser = async (
 
       return res.status(200).json({
         token,
+        role: user.role,
+        name: user.name,
       });
     }
     return res.status(400).send("Invalid Credentials");

@@ -2,10 +2,17 @@ import React, { useEffect, useState } from "react";
 import "../style/home_page.css";
 import { reagentAmountChanger } from "../helpers/changeAmountReagent.ts"
 import { reagentSorter } from "../helpers/reagentSorter.ts"
+import { changeAmountWindow } from "../modal_window/changeAmountWindow.js"
+import { addReagent } from "../helpers/addReagent.ts"
+import { valueReturner } from "../helpers/valueReturner.ts"
+import { addUser } from "../helpers/addUser.ts"
+import { deleteReagent } from "../helpers/deleteReagent.ts"
+var image = require('../assets/logo.png')
 
 const HomePage = () => {
   const [data, setData] = useState(null);
-  const [curReagent, setCurReagent] = useState([])
+  const [curReagent, setCurReagent] = useState([]);
+  const UserRole = localStorage.getItem("role")
 
   useEffect(() => {
     const fetchData = async (url) => {
@@ -24,15 +31,29 @@ const HomePage = () => {
 
   return (
     <div>
+      <div className="main_header">
+      <img className="logo_img" src = {image}></img>
       <p className="user_name">{localStorage.getItem("name")}</p>
-      <button 
-        type="button"
-        onClick={() => {
-          localStorage.clear();
-          window.location.href = "http://localhost:3000/"
-          }}>
-          Logout
-      </button>
+        <button 
+          type="button"
+          onClick={() => {
+            localStorage.clear();
+            window.location.href = "http://localhost:3000/"
+            }}>
+            Logout
+        </button>
+        {UserRole === "admin" || UserRole === "editor" ? 
+        <button onClick={ () => {document.querySelector(".add_reagent_window").style.display = "flex"}
+        }>Добавить реактив</button> 
+        : 
+        ""}
+        {UserRole === "admin" ? 
+        <button onClick={ () => {document.querySelector(".add_user_window").style.display = "flex"}
+        }>Добавить сотрудника</button> 
+        : 
+        ""}
+      </div>
+      
       <div className="reagent_row">
         <p className="id_col">
           <b>Id</b>
@@ -59,8 +80,14 @@ const HomePage = () => {
           <b>Полка хранения реактива</b>
         </p>
         <p className="move_column">
-          <b>Действие</b>
+          <b>Списание</b>
         </p>
+        {UserRole === "admin" ? 
+        <p className="move_column">
+           <b>Удаление</b>
+        </p> 
+        : 
+        ""}
       </div>
       {data?.map(
         ({
@@ -96,6 +123,20 @@ const HomePage = () => {
                   Списать
                 </button>
               </p>
+              {UserRole === "admin" ? 
+                <p className="move_column">
+                <button
+                  type="button"
+                  onClick={() => {deleteReagent(uuid);
+                  window.location.href = window.location.href;
+                  } 
+                  }
+                >
+                  Удалить
+                </button>
+              </p> 
+                : 
+              ""}
             </div>
           );
         },
@@ -112,6 +153,86 @@ const HomePage = () => {
           alert(`${curReagent[0]} списано ${document.querySelector(".input_volume").value} ${curReagent[2]}`);
           window.location.href = window.location.href;
         }}>Списать</button>
+      </div>
+    </div>
+    <div className="add_reagent_window">
+      <div className="overflow" onClick={() => document.querySelector(".add_reagent_window").style.display = "none"}></div>
+      <div className="add_modal_window">
+        <div>
+          <p className="reagent_name">Наименование реактива</p>
+          <input className="input_reagent_name" placeholder="name"></input>
+        </div>
+        <div>
+          <p className="reagent_ID">ID реактива</p>
+          <input className="input_reagent_ID" placeholder="ID"></input>
+        </div>
+        <div>
+          <p className="reagent_amount">Объем/масса реактива</p>
+          <input className="input_reagent_amount" placeholder="amount"></input>
+        </div>
+        <div>
+          <p className="reagent_unit">Единицы измерения</p>
+          <input className="input_reagent_unit" placeholder="unit"></input>
+        </div>
+        <div>
+          <p className="reagent_min_amount">Минимальное количество реактива</p>
+          <input className="input_reagent_min_amount" placeholder="min amount"></input>
+        </div>
+        <div> 
+          <p className="reagent_producer">Производитель</p>
+          <input className="input_reagent_producer" placeholder="producer"></input>
+        </div>
+        <div>
+          <p className="reagent_supplier">Поставщик</p>
+          <input className="input_reagent_supplier" placeholder="supplier"></input>
+        </div>
+        <div>
+          <p className="reagent_storageConditions">Условия хранения</p>
+          <input className="input_reagent_storageConditions" placeholder="storageConditions"></input>
+        </div>
+        <div>
+          <p className="reagent_storagePlace">Место хранеия</p>
+          <input className="input_reagent_storagePlace" placeholder="storagePlace"></input>
+        </div>
+        <button onClick={() => {
+          addReagent(
+            valueReturner("input_reagent_ID"),
+            valueReturner("input_reagent_name"),
+            valueReturner("input_reagent_amount"),
+            valueReturner("input_reagent_min_amount"),
+            valueReturner("input_reagent_unit"),
+            valueReturner("input_reagent_supplier"),
+            valueReturner("input_reagent_producer"),
+            valueReturner("input_reagent_storageConditions"),
+            valueReturner("input_reagent_storagePlace"),
+          );
+          window.location.href = window.location.href;
+        }}>Добавить реактив</button>
+      </div>
+    </div>
+    <div className="add_user_window">
+      <div className="overflow" onClick={() => document.querySelector(".add_user_window").style.display = "none"}></div>
+      <div className="modal_window">
+        <div>
+          <p className="new_user_name">Имя пользователя</p>
+          <input className="input_new_user_name" placeholder="user name"></input>
+        </div>
+        <div>
+          <p className="new_user_pass">Пароль</p>
+          <input className="input_new_user_pass" placeholder="password"></input>
+        </div>
+        <div>
+          <p className="new_user_role">Роль</p>
+          <input className="input_new_user_role" placeholder="admin, user, editor"></input>
+        </div>
+        <button className="add_user_btn" onClick={() => {
+        addUser(
+          valueReturner("input_new_user_name"),
+          valueReturner("input_new_user_pass"),
+          valueReturner("input_new_user_role")
+        )
+          document.querySelector(".add_user_window").style.display = "none";
+        }}>Добавить пользователя</button>
       </div>
     </div>
     </div>

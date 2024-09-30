@@ -18,8 +18,9 @@ export function loginUser(name, passwordUser) {
   }).then(response => response.json()
 .then(resp => {
   localStorage.setItem('token', resp.token);
-  localStorage.setItem('name', name);
-  //window.location.href = window.location.href + "main"
+  localStorage.setItem('name', resp.name);
+  localStorage.setItem('role', resp.role);
+  window.location.href = window.location.href + "main"
   console.log(resp)})
   .catch(e => alert("Invalit login or password")));
 }
