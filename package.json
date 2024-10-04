@@ -28,6 +28,10 @@
   },
   "homepage": "https://github.com/Xelsoid/reagents#readme",
   "dependencies": {
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
+    "@mui/material": "^6.1.2",
+    "@mui/x-data-grid": "^7.18.0",
     "@netlify/functions": "^2.6.0",
     "axios": "^1.7.7",
     "netlify-cli": "^17.22.0",
