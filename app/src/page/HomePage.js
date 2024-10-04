@@ -11,11 +11,13 @@ var image = require('../assets/logo.png')
 
 const HomePage = () => {
   const [data, setData] = useState(null);
+  const [selectedFilter, setSelectedFilter] = useState(null);
   const [curReagent, setCurReagent] = useState([]);
   const UserRole = localStorage.getItem("role");
   //data?.sort((a,b) => +a.amount - +b.amount)
-
+console.log(data);
   useEffect(() => {
+    console.log('useEffect');
     const fetchData = async (url) => {
       const response = await fetch(url);
       if (response.ok) {
@@ -27,8 +29,7 @@ const HomePage = () => {
     };
 
     fetchData("/api/api/getReagents");
-  }, [setData]);
-  console.log(data);
+  }, []);
 
   return (
     <div>
@@ -55,10 +56,11 @@ const HomePage = () => {
         ""}
       </div>
       <div>
-
         <p>Выберите вариант сортировки</p>
-        <select name="select" className="select_sort" onChange={() => {setData(reagentSorter(data, document.querySelector('.select_sort').value));
-          console.log(data)
+        <select name="select" value={selectedFilter} className="select_sort" onChange={(event) => {
+          const sortedData = reagentSorter(data, event.target.value)
+          setData(sortedData);
+          setSelectedFilter(event.target.value)
         }}>
           <option value={'Up_ID'} className="sort_item"> По возрастанию ID</option>
           <option value={'Down_ID'} className="sort_item"> По убыванию ID</option>

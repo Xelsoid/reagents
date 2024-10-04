@@ -1,6 +1,6 @@
 export function reagentSorter(data, method){
   if(method === 'Up_ID' || method === 'Down_ID'){
-    return data = data.sort((a, b) => {
+    return data.sort((a, b) => {
         let aID = +a.id.split('-')[0];
         let bID = +b.id.split('-')[0];
         if (method === 'Up_ID') {
@@ -10,7 +10,7 @@ export function reagentSorter(data, method){
         }
     })
 } else if (method === 'A-Z' || method === 'Z-A'){
-    return data = data.sort((a, b) => {
+    return data.sort((a, b) => {
         if(method === 'A-Z'){
             return a.name < b.name? -1 : 1
         } else {
