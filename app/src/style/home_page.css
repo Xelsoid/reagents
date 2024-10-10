@@ -1,5 +1,6 @@
 body {
   margin: 0;
+  margin-bottom: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -36,11 +37,12 @@ code {
 }
 .reagent_row{
   display: flex;
-  margin: 0 20px;
+  justify-content: center;
+  
 }
 .low_reagent{
   display: flex;
-  margin: 0 20px;
+  justify-content: center;
   background-color: red;
 }
 
@@ -66,9 +68,11 @@ code {
 }
 .producer_col{
   width: 200px;
+  display: none;
 }
 .supplier_col{
   width: 200px;
+  display: none;
 }
 .storage_column{
   width: 100px;
@@ -131,4 +135,20 @@ code {
 .user_name{
   text-align: center;
 }
-
+.select_sort{
+  margin-bottom: 20px;
+  font-size: 20px;
+}
+.checkbox{
+  display: flex;
+  width: 90vw;
+  justify-content: space-between;
+}
+.checkbox div{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+input[type='checkbox']{
+  width: calc(20px);
+}

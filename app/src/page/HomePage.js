@@ -13,16 +13,25 @@ const HomePage = () => {
   const [data, setData] = useState(null);
   const [selectedFilter, setSelectedFilter] = useState(null);
   const [curReagent, setCurReagent] = useState([]);
+  const [checkedid, setcheckedid] = useState(true);
+  const [checkedname, setcheckedname] = useState(true);
+  const [checkedamount, setcheckedamount] = useState(true);
+  const [checkedunit, setcheckedunit] = useState(true);
+  const [checkedproducer, setcheckedproducer] = useState(false);
+  const [checkedsupplier, setcheckedsupplier] = useState(false);
+  const [checkedstorage, setcheckedstorage] = useState(true);
+  const [checkedstoragePlace, setcheckedstoragePlace] = useState(true);
   const UserRole = localStorage.getItem("role");
-  //data?.sort((a,b) => +a.amount - +b.amount)
-console.log(data);
+
   useEffect(() => {
     console.log('useEffect');
     const fetchData = async (url) => {
       const response = await fetch(url);
       if (response.ok) {
-        const json = await response.json();
-        setData(json?.data?.reagents);
+        let json = await response.json();
+        if(json && json.data){
+          setData(reagentSorter(json.data.reagents, 'Up_ID'))
+        }
         return;
       }
       alert(`Ошибка HTTP: ${response.status}`);
@@ -30,7 +39,6 @@ console.log(data);
 
     fetchData("/api/api/getReagents");
   }, []);
-
   return (
     <div>
       <div className="main_header">
@@ -42,7 +50,7 @@ console.log(data);
             localStorage.clear();
             window.location.href = "http://localhost:3000/"
             }}>
-            Logout
+            Выход
         </button>
         {UserRole === "admin" || UserRole === "editor" ? 
         <button onClick={ () => {document.querySelector(".add_reagent_window").style.display = "flex"}
@@ -68,6 +76,77 @@ console.log(data);
           <option value={'Z-A'} className="sort_item"> По алфавиту Я-А </option>
         </select>
       </div>
+      <div className="checkbox_wraper">
+        <p>Выберите отображаемые столбцы</p>
+        <div className="checkbox">
+          <div>
+            <input type="checkbox" name="ID" checked = {checkedid} onChange={(event) => {
+              document.querySelectorAll('.id_col').forEach(item => {
+                event.target.checked ? item.style.display = "block" : item.style.display = "none"
+              });
+              setcheckedid(!checkedid)}}/>
+            <label for="ID">ID</label>
+          </div>
+          <div>
+            <input type="checkbox" name="name" checked = {checkedname} onChange={(event) => {
+              document.querySelectorAll('.name_col').forEach(item => {
+                event.target.checked ? item.style.display = "block" : item.style.display = "none"
+              });
+              setcheckedname(!checkedname)}}/>
+            <label for="name">Наимеонвание</label>
+          </div>
+          <div>
+            <input type="checkbox" name="amount" checked = {checkedamount} onChange={(event) => {
+              document.querySelectorAll('.amount_col').forEach(item => {
+                event.target.checked ? item.style.display = "block" : item.style.display = "none"
+              });
+              setcheckedamount(!checkedamount)}}/>
+            <label for="amount">Количество</label>
+          </div>
+          <div>
+            <input type="checkbox"  name="unit" checked = {checkedunit} onChange={(event) => {
+              document.querySelectorAll('.unit_col').forEach(item => {
+                event.target.checked ? item.style.display = "block" : item.style.display = "none"
+              });
+              setcheckedunit(!checkedunit)}}/>
+            <label for="unit">Единицы измерения</label>
+          </div>
+          <div>
+            <input type="checkbox"  name="producer" checked = {checkedproducer} onChange={(event) => {
+              document.querySelectorAll('.producer_col').forEach(item => {
+                event.target.checked ? item.style.display = "block" : item.style.display = "none"
+              });
+              setcheckedproducer(!checkedproducer)}}/>
+            <label for="producer">Производитель</label>
+          </div>
+          <div>
+            <input type="checkbox"  name="supplier" checked = {checkedsupplier} onChange={(event) => {
+              document.querySelectorAll('.supplier_col').forEach(item => {
+                event.target.checked ? item.style.display = "block" : item.style.display = "none"
+              });
+              setcheckedsupplier(!checkedsupplier)}}/>
+            <label for="supplier">Поставщик</label>
+          </div>
+          <div>
+            <input type="checkbox"  name="storage" checked = {checkedstorage} onChange={(event) => {
+              document.querySelectorAll('.storage_column').forEach(item => {
+                event.target.checked ? item.style.display = "block" : item.style.display = "none"
+              });
+              setcheckedstorage(!checkedstorage)}}/>
+            <label for="storage">Условия хранения</label>
+          </div>
+          <div>
+            <input type="checkbox"  name="storagePlace" checked = {checkedstoragePlace} onChange={(event) => {
+              document.querySelectorAll('.storagePlace_column').forEach(item => {
+                event.target.checked ? item.style.display = "block" : item.style.display = "none"
+              });
+              setcheckedstoragePlace(!checkedstoragePlace)}}/>
+            <label for="storagePlace">Полка хранения реактива</label>
+          </div>
+        </div>
+      </div>
+
+        
       
       <div className="reagent_row">
         <p className="id_col">
