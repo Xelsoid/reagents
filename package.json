@@ -1,8 +1,7 @@
 {
   "name": "reagents",
   "version": "1.0.0",
-  "description": "Reagents API",
-  "main": "api/index.js",
+  "description": "Reagents",
   "workspaces": [
     "api",
     "app"
@@ -30,7 +29,7 @@
   "dependencies": {
     "@netlify/functions": "^2.6.0",
     "axios": "^1.7.7",
-    "netlify-cli": "^17.22.0",
+    "netlify-cli": "^15.0.2",
     "netlify-lambda": "^2.0.16",
     "serverless-http": "^3.2.0"
   }
