@@ -2,6 +2,7 @@
   "name": "reagents",
   "version": "1.0.0",
   "description": "Reagents",
+  "esModuleInterop": true,
   "workspaces": [
     "api",
     "app"
