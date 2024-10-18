@@ -7,6 +7,7 @@ import {
   addReagent,
   deleteReagent,
   getReagents,
+  updateReagent,
   updateReagentAmount,
 } from "./controllers/reagents.controller";
 import {
@@ -28,7 +29,7 @@ app.use(logger);
 
 app.post(AUTHENTICATION.LOGIN, loginUser);
 
-app.post(AUTHENTICATION.CREATE_USER, verifyToken, isAdmin, createUser);
+app.post(AUTHENTICATION.CREATE_USER, createUser);
 
 app.delete(AUTHENTICATION.DELETE_USER, verifyToken, isAdmin, removeUser);
 
@@ -47,7 +48,7 @@ app.patch(
   verifyToken,
   isAdmin,
   isEditor,
-  updateReagentAmount,
+  updateReagent,
 );
 
 app.patch(

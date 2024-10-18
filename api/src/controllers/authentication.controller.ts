@@ -27,11 +27,12 @@ export const loginUser = async (
   next: NextFunction,
 ) => {
   try {
-    const user = await getUser(req.body);
-    if (user && (await bcrypt.compare(req.body.password, user.password))) {
+    const { name, email, role, password } = await getUser(req.body);
+
+    if (await bcrypt.compare(req.body.password, password)) {
       // Create token
       const token = jwt.sign(
-        { user_id: user.name, email: user.email, role: user.role },
+        { user_id: name, email, role },
         process.env.TOKEN_KEY!,
         {
           expiresIn: "2h",
@@ -40,7 +41,7 @@ export const loginUser = async (
 
       return res.status(200).json({
         token,
-        role: user.role,
+        role,
       });
     }
     return res.status(400).send("Invalid Credentials");
@@ -56,6 +57,7 @@ export const createUser = async (
 ) => {
   try {
     const existingUser = await getUser(req.body);
+
     if (existingUser) {
       return res.status(409).send("User Already Exist. Please Login");
     }

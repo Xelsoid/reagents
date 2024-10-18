@@ -6,6 +6,7 @@ import {
   updateReagentData,
   updateReagentQuantity,
 } from "../servises/reagents.service";
+import { addNewEntryToLogs } from "../servises/logger.service";
 
 export const getReagents = async (
   req: Request,
@@ -48,6 +49,8 @@ export const updateReagent = async (
     const reagent = await updateReagentData(req.body);
 
     if (reagent) {
+      addNewEntryToLogs(reagent);
+
       return res.status(200).send({
         data: { reagent },
       });
@@ -70,6 +73,8 @@ export const updateReagentAmount = async (
     const reagent = await updateReagentQuantity(req.body);
 
     if (reagent) {
+      addNewEntryToLogs(reagent);
+
       return res.status(200).send({
         data: { reagent },
       });

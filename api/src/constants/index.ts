@@ -8,7 +8,7 @@ export const REAGENTS_ENDPOINTS = {
 
 export const AUTHENTICATION = {
   LOGIN: "/api/login",
-  CREATE_USER: "/api/register",
+  CREATE_USER: "/api/create-account",
   DELETE_USER: "/api/deleteUser",
 };
 

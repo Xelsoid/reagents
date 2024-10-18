@@ -1,6 +1,6 @@
 import { JWT } from "google-auth-library";
 import json from "../../reagents-ivan.json";
-import { Reagents } from "./reagents";
+import { Logger } from "./logger";
 
 const {
   GoogleSpreadsheet,
@@ -15,12 +15,6 @@ const serviceAccountAuth = new JWT({
 
 const document = new GoogleSpreadsheet(json.spreadsheet_id, serviceAccountAuth);
 
-const spreadSheets = new Reagents(document);
+const spreadSheets = new Logger(document);
 
-export const {
-  getAllReagents,
-  addReagent,
-  deleteReagent,
-  updateReagent,
-  updateReagentAmount,
-} = spreadSheets;
+export const { addEntryToLogs } = spreadSheets;
