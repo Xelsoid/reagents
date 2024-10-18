@@ -19,3 +19,9 @@ export const METHOD = {
   DELETE: "DELETE",
   POST: "POST",
 };
+
+export enum ROLES {
+  ADMIN = "admin",
+  EDITOR = "editor",
+  USER = "user",
+}

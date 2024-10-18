@@ -1,17 +1,18 @@
-import { Response, Request, NextFunction } from "express";
+import { NextFunction, Request, Response } from "express";
 import * as jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { config } from "dotenv";
 import {
   addUser,
-  getUser,
   deleteUser,
+  getUser,
 } from "../servises/authentication.service";
+import { ROLES } from "../constants";
 
 config();
 
 interface RequestWithUser extends Request {
-  user: {
+  user?: {
     user_id: string;
     email: string;
     role: string;
@@ -108,8 +109,7 @@ export const verifyToken = async (
   }
 
   try {
-    const user = jwt.verify(token, process.env.TOKEN_KEY!);
-    req.user = user;
+    req.user = jwt.verify(token, process.env.TOKEN_KEY!);
   } catch (err) {
     return res.status(401).send("Invalid Token");
   }
@@ -123,7 +123,7 @@ export const isAdmin = (
 ) => {
   const currentUser = req.user;
 
-  if (currentUser.role === "admin") {
+  if (currentUser?.role === ROLES.ADMIN) {
     return next();
   }
   return res
@@ -138,7 +138,7 @@ export const isEditor = (
 ) => {
   const currentUser = req.user;
 
-  if (currentUser.role === "editor" || currentUser.role === "admin") {
+  if (currentUser?.role === ROLES.EDITOR || currentUser?.role === ROLES.ADMIN) {
     return next();
   }
   return res
@@ -154,9 +154,9 @@ export const isUser = (
   const currentUser = req.user;
 
   if (
-    currentUser.role === "user" ||
-    currentUser.role === "editor" ||
-    currentUser.role === "admin"
+    currentUser?.role === ROLES.USER ||
+    currentUser?.role === ROLES.EDITOR ||
+    currentUser?.role === ROLES.ADMIN
   ) {
     return next();
   }

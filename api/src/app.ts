@@ -28,52 +28,42 @@ app.use(logger);
 
 app.post(AUTHENTICATION.LOGIN, loginUser);
 
-app.post(
-  AUTHENTICATION.CREATE_USER,
-  verifyToken as any,
-  isAdmin as any,
-  createUser,
-);
+app.post(AUTHENTICATION.CREATE_USER, verifyToken, isAdmin, createUser);
 
-app.delete(
-  AUTHENTICATION.DELETE_USER,
-  verifyToken as any,
-  isAdmin as any,
-  removeUser,
-);
+app.delete(AUTHENTICATION.DELETE_USER, verifyToken, isAdmin, removeUser);
 
 app.get(REAGENTS_ENDPOINTS.GET_REAGENTS, getReagents);
 
 app.post(
   REAGENTS_ENDPOINTS.ADD_REAGENT,
-  verifyToken as any,
-  isAdmin as any,
-  isEditor as any,
+  verifyToken,
+  isAdmin,
+  isEditor,
   addReagent,
 );
 
 app.patch(
   REAGENTS_ENDPOINTS.UPDATE_REAGENT,
-  verifyToken as any,
-  isAdmin as any,
-  isEditor as any,
+  verifyToken,
+  isAdmin,
+  isEditor,
   updateReagentAmount,
 );
 
 app.patch(
   REAGENTS_ENDPOINTS.UPDATE_REAGENT_AMOUNT,
-  verifyToken as any,
-  isAdmin as any,
-  isEditor as any,
-  isUser as any,
+  verifyToken,
+  isAdmin,
+  isEditor,
+  isUser,
   updateReagentAmount,
 );
 
 app.delete(
   REAGENTS_ENDPOINTS.DELETE_REAGENT,
-  verifyToken as any,
-  isAdmin as any,
-  isEditor as any,
+  verifyToken,
+  isAdmin,
+  isEditor,
   deleteReagent,
 );
 
