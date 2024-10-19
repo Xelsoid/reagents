@@ -16,7 +16,7 @@ const HomePage = () => {
       alert(`Ошибка HTTP: ${response.status}`);
     };
 
-    fetchData("/api/api/getReagents");
+    fetchData("/api/getReagents");
   }, [setData]);
   console.log(data);
 
