@@ -6,7 +6,7 @@ import {
   updateReagent,
   updateReagentAmount,
 } from "../repositories/reagents.repository";
-import { IReagent } from "../data/reagents";
+import { IReagent } from "../interface/reagents";
 
 export const getReagentsData = () => getAllReagents();
 
