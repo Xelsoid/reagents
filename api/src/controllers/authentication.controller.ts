@@ -30,6 +30,12 @@ export const loginUser = async (
         },
       );
 
+      res.cookie("token", token, {
+        httpOnly: true, // Запретить доступ к куки через JavaScript
+        secure: process.env.NODE_ENV === "production", // Использовать только по HTTPS в продакшене
+        maxAge: 7200000, // Время жизни куки в миллисекундах (2 час)
+      });
+
       return res.status(200).json({
         token,
         role,
@@ -89,20 +95,12 @@ export const verifyToken = async (
   res: Response,
   next: NextFunction,
 ) => {
-  const authHeader = req.headers.authorization;
-
-  if (!authHeader) {
+  const authCookie = req.cookies.token;
+  if (!authCookie) {
     return res.status(401).send("Token is required");
   }
-
-  const [tokenType, token] = authHeader.split(" ");
-
-  if (tokenType !== "Bearer") {
-    return res.status(403).send("Invalid Token");
-  }
-
   try {
-    req.user = jwt.verify(token, process.env.TOKEN_KEY!);
+    req.user = jwt.verify(authCookie, process.env.TOKEN_KEY!);
   } catch (err) {
     return res.status(401).send("Invalid Token");
   }

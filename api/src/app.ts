@@ -1,5 +1,6 @@
 import express, { NextFunction, Request, Response } from "express";
 import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
 import { config } from "dotenv";
 import { logger } from "./utils";
 import { AUTHENTICATION, REAGENTS_ENDPOINTS } from "./constants";
@@ -24,6 +25,7 @@ config();
 const app = express();
 
 app.use(express.json());
+app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(logger);
 
