@@ -8,18 +8,9 @@ import {
   getUser,
 } from "../servises/authentication.service";
 import { ROLES } from "../constants";
+import { RequestWithUser } from "../interface/auth";
 
 config();
-
-interface RequestWithUser extends Request {
-  user?: {
-    user_id: string;
-    email: string;
-    role: string;
-    iat: number;
-    exp: number;
-  };
-}
 
 export const loginUser = async (
   req: Request,

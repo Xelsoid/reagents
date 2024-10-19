@@ -7,6 +7,7 @@ import {
   updateReagentQuantity,
 } from "../servises/reagents.service";
 import { addNewEntryToLogs } from "../servises/logger.service";
+import { RequestWithUser } from "../interface/auth";
 
 export const getReagents = async (
   req: Request,
@@ -25,31 +26,36 @@ export const getReagents = async (
 };
 
 export const addReagent = async (
-  req: Request,
+  req: RequestWithUser,
   res: Response,
   next: NextFunction,
 ) => {
   try {
-    const reagent = await addReagentData(req.body);
+    const { user, body } = req;
+    const reagent = await addReagentData(body);
+    if (reagent && user) {
+      addNewEntryToLogs(reagent, user, "Receipt");
 
-    return res.status(200).send({
-      data: { reagent },
-    });
+      return res.status(200).send({
+        data: { reagent },
+      });
+    }
   } catch (e) {
     return next(e);
   }
 };
 
 export const updateReagent = async (
-  req: Request,
+  req: RequestWithUser,
   res: Response,
   next: NextFunction,
 ) => {
   try {
-    const reagent = await updateReagentData(req.body);
+    const { user, body } = req;
+    const reagent = await updateReagentData(body);
 
-    if (reagent) {
-      addNewEntryToLogs(reagent);
+    if (reagent && user) {
+      addNewEntryToLogs(reagent, user);
 
       return res.status(200).send({
         data: { reagent },
@@ -65,15 +71,16 @@ export const updateReagent = async (
 };
 
 export const updateReagentAmount = async (
-  req: Request,
+  req: RequestWithUser,
   res: Response,
   next: NextFunction,
 ) => {
   try {
-    const reagent = await updateReagentQuantity(req.body);
+    const { user, body } = req;
+    const reagent = await updateReagentQuantity(body);
 
-    if (reagent) {
-      addNewEntryToLogs(reagent);
+    if (reagent && user) {
+      addNewEntryToLogs(reagent, user);
 
       return res.status(200).send({
         data: { reagent },
