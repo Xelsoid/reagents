@@ -117,7 +117,7 @@ const HomePage = () => {
                 event.target.checked ? item.style.display = "block" : item.style.display = "none"
               });
               setcheckedproducer(!checkedproducer)}}/>
-            <label for="producer">Производитель</label>
+            <label for="producer">Номер серии</label>
           </div>
           <div>
             <input type="checkbox"  name="supplier" checked = {checkedsupplier} onChange={(event) => {
