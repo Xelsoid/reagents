@@ -1,17 +1,37 @@
-{"name":"reagents",
-"version":"1.0.0",
-"description":"Reagents API",
-"main":"api/index.js",
-"workspaces":["api","app"],
-"scripts":{
-  "start:nodejs":"npm run dev -w api",
-  "start:react":"npm run start -w app",
-  "build":"npm run build -w app",
-  "netlify:build":"netlify build",
-  "netlify:dev":"netlify dev",
-  "deploy:preview":"netlify deploy",
-  "deploy:production":"netlify deploy --prod",
-  "clean":"rimraf ./node_modules"
-},
-  "repository":{"type":"git","url":"git+https://github.com/Xelsoid/reagents.git"},
-  "author":"Artsiom Reutovich","license":"ISC","bugs":{"url":"https://github.com/Xelsoid/reagents/issues"},"homepage":"https://github.com/Xelsoid/reagents#readme","dependencies":{"@emotion/react":"^11.13.3","@emotion/styled":"^11.13.0","@mui/material":"^6.1.2","@mui/x-data-grid":"^7.18.0","@netlify/functions":"^2.6.0","axios":"^1.7.7","netlify-cli":"^17.22.0","netlify-lambda":"^2.0.16","serverless-http":"^3.2.0"},"devDependencies":{"@eslint/eslintrc":"^3.1.0","@eslint/js":"^9.10.0","@typescript-eslint/eslint-plugin":"^6.21.0","eslint":"^8.57.0","eslint-config-standard-with-typescript":"^43.0.1","eslint-plugin-import":"^2.30.0","eslint-plugin-n":"^16.6.2","eslint-plugin-promise":"^6.6.0","eslint-plugin-react":"^7.36.1","eslint-plugin-react-hooks":"^4.6.2","globals":"^15.9.0","typescript":"^5.6.2","typescript-eslint":"^8.5.0"}}
+{
+  "name": "reagents",
+  "version": "1.0.0",
+  "description": "Reagents",
+  "esModuleInterop": true,
+  "workspaces": [
+    "api",
+    "app"
+  ],
+  "scripts": {
+    "start:nodejs": "npm run dev -w api",
+    "start:react": "npm run start -w app",
+    "build": "npm run build -w app",
+    "netlify:build": "netlify build",
+    "netlify:dev": "netlify dev",
+    "deploy:preview": "netlify deploy",
+    "deploy:production": "netlify deploy --prod",
+    "clean": "rimraf ./node_modules"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Xelsoid/reagents.git"
+  },
+  "author": "Artsiom Reutovich",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Xelsoid/reagents/issues"
+  },
+  "homepage": "https://github.com/Xelsoid/reagents#readme",
+  "dependencies": {
+    "@netlify/functions": "^2.6.0",
+    "axios": "^1.7.7",
+    "netlify-cli": "^15.0.2",
+    "netlify-lambda": "^2.0.16",
+    "serverless-http": "^3.2.0"
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "name": "reagents",
+  "name": "reagents-api",
   "version": "1.0.0",
   "description": "Reagents API",
   "main": "api/index.js",
@@ -11,29 +11,21 @@
     "dev": "nodemon server.ts",
     "build": "tsc --project ./tsconfig.build.json"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Xelsoid/reagents.git"
-  },
+  "esModuleInterop": true,
   "engines": {
     "node": ">=20.8.0"
   },
-  "author": "Artsiom Reutovich",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Xelsoid/reagents/issues"
-  },
-  "homepage": "https://github.com/Xelsoid/reagents#readme",
   "dependencies": {
     "axios": "^1.5.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
+    "cookie-parser": "^1.4.7",
     "csvtojson": "^2.0.10",
     "dotenv": "16.4.5",
     "esm": "3.2.25",
     "express": "^4.19.2",
     "google-auth-library": "^9.7.0",
-    "google-spreadsheet": "^4.1.1",
+    "google-spreadsheet": "^4.1.4",
     "jsonwebtoken": "^9.0.2"
   },
   "devDependencies": {

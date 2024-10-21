@@ -1,6 +1,7 @@
 {
-  "name": "app",
+  "name": "reagents-app",
   "version": "0.1.0",
+  "description": "Reagents APP",
   "private": true,
   "dependencies": {
     "@babel/eslint-parser": "^7.24.1",

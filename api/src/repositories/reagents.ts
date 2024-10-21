@@ -1,7 +1,5 @@
 import { config } from "dotenv";
-import { IReagent } from "../data/reagents";
-
-config();
+import { IReagent } from "../interface/reagents";
 
 const {
   GoogleSpreadsheet,
@@ -9,9 +7,10 @@ const {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
 } = require("google-spreadsheet");
 
+config();
 const SHEET_INDEX = 0;
 
-export class GoogleSheet {
+export class Reagents {
   private doc: typeof GoogleSpreadsheet;
 
   constructor(sheetDocument: typeof GoogleSpreadsheet) {
@@ -28,11 +27,11 @@ export class GoogleSheet {
   }
 
   private async getSheet(index = SHEET_INDEX) {
-    await this.doc.loadInfo();
+    await this.initialize();
     return this.doc.sheetsByIndex[index];
   }
 
-  private findRow(rows: [typeof GoogleSpreadsheetRow], uuid: string) {
+  private static findRow(rows: [typeof GoogleSpreadsheetRow], uuid: string) {
     return rows.find((row) => row.get("uuid") === uuid);
   }
 
@@ -45,7 +44,7 @@ export class GoogleSheet {
   async updateReagent(uuid: string, reagent: IReagent) {
     const sheet = await this.getSheet();
     const rows = await sheet.getRows();
-    const row = this.findRow(rows, uuid);
+    const row = Reagents.findRow(rows, uuid);
     if (row) {
       row.assign(reagent);
       await row.save();
@@ -63,7 +62,7 @@ export class GoogleSheet {
   async deleteReagent(uuid: string) {
     const sheet = await this.getSheet();
     const rows = await sheet.getRows();
-    const row = this.findRow(rows, uuid);
+    const row = Reagents.findRow(rows, uuid);
     if (row) {
       await row.delete();
       // eslint-disable-next-line no-underscore-dangle
@@ -75,11 +74,12 @@ export class GoogleSheet {
   async updateReagentAmount(uuid: string, amount: number) {
     const sheet = await this.getSheet();
     const rows = await sheet.getRows();
-    const row = this.findRow(rows, uuid);
+    const row = Reagents.findRow(rows, uuid);
+    const prevAmount = row.get("amount");
     if (row) {
       row.set("amount", amount);
       await row.save();
-      return row.toObject();
+      return { ...row.toObject(), prevAmount };
     }
     return null;
   }

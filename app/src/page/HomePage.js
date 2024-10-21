@@ -37,14 +37,14 @@ const HomePage = () => {
       alert(`Ошибка HTTP: ${response.status}`);
     };
 
-    fetchData("/api/api/getReagents");
+    fetchData("/api/getReagents");
   }, []);
   return (
     <div>
       <div className="main_header">
       <img className="logo_img" src = {image}></img>
       <p className="user_name">{localStorage.getItem("name")}</p>
-        <button 
+        <button
           type="button"
           onClick={() => {
             localStorage.clear();
@@ -52,15 +52,15 @@ const HomePage = () => {
             }}>
             Выход
         </button>
-        {UserRole === "admin" || UserRole === "editor" ? 
+        {UserRole === "admin" || UserRole === "editor" ?
         <button onClick={ () => {document.querySelector(".add_reagent_window").style.display = "flex"}
-        }>Добавить реактив</button> 
-        : 
+        }>Добавить реактив</button>
+        :
         ""}
-        {UserRole === "admin" ? 
+        {UserRole === "admin" ?
         <button onClick={ () => {document.querySelector(".add_user_window").style.display = "flex"}
-        }>Добавить сотрудника</button> 
-        : 
+        }>Добавить сотрудника</button>
+        :
         ""}
       </div>
       <div>
@@ -146,8 +146,8 @@ const HomePage = () => {
         </div>
       </div>
 
-        
-      
+
+
       <div className="reagent_row">
         <p className="id_col">
           <b>Id</b>
@@ -176,11 +176,11 @@ const HomePage = () => {
         <p className="move_column">
           <b>Списание</b>
         </p>
-        {UserRole === "admin" ? 
+        {UserRole === "admin" ?
         <p className="move_column">
            <b>Удаление</b>
-        </p> 
-        : 
+        </p>
+        :
         ""}
       </div>
       {data?.map(
@@ -210,25 +210,25 @@ const HomePage = () => {
                   type="button"
                   onClick={() => {setCurReagent([name, id, unit, amount, uuid]);
                     document.querySelector(".modal_window_wraper").style.display = "flex";
-                  } 
+                  }
                   }
                 >
                   Списать
                 </button>
               </p>
-              {UserRole === "admin" ? 
+              {UserRole === "admin" ?
                 <p className="move_column">
                 <button
                   type="button"
                   onClick={() => {deleteReagent(uuid);
                   window.location.href = window.location.href;
-                  } 
+                  }
                   }
                 >
                   Удалить
                 </button>
-              </p> 
-                : 
+              </p>
+                :
               ""}
             </div>
           );
@@ -271,7 +271,7 @@ const HomePage = () => {
           <p className="reagent_min_amount">Минимальное количество реактива</p>
           <input className="input_reagent_min_amount" placeholder="min amount"></input>
         </div>
-        <div> 
+        <div>
           <p className="reagent_producer">Производитель</p>
           <input className="input_reagent_producer" placeholder="producer"></input>
         </div>

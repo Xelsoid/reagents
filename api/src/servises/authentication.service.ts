@@ -19,9 +19,9 @@ export const addUser = async (requestBody: {
   password: string;
   role: string;
 }) => {
-  const { name, email, password, role } = requestBody;
+  const { name, email, password } = requestBody;
   const encryptedPassword = await bcrypt.hash(password, 10);
-  return createUser(name, email, encryptedPassword, role);
+  return createUser(name, email, encryptedPassword, "user");
 };
 
 export const deleteUser = (requestBody: { name: string }) => {

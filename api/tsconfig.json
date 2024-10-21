@@ -3,14 +3,14 @@
   "compilerOptions": {
     "removeComments": true,
     "outDir": "./dist",
-    "rootDir": "./src",
+    "rootDir": "./",
     "allowJs": true,
     "maxNodeModuleJsDepth": 10,
     "resolveJsonModule": true,
     "esModuleInterop": true
   },
   "include": [
-    "./api/**/*"
+    "src/**/*"
   ],
   "exclude": ["node_modules", "dist", "tests", "**/__test__", "**/__mocks__", "**/__tests__"]
 }

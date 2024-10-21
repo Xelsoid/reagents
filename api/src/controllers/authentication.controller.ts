@@ -1,24 +1,16 @@
-import { Response, Request, NextFunction } from "express";
+import { NextFunction, Request, Response } from "express";
 import * as jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { config } from "dotenv";
 import {
   addUser,
-  getUser,
   deleteUser,
+  getUser,
 } from "../servises/authentication.service";
+import { ROLES } from "../constants";
+import { RequestWithUser } from "../interface/auth";
 
 config();
-
-interface RequestWithUser extends Request {
-  user: {
-    user_id: string;
-    email: string;
-    role: string;
-    iat: number;
-    exp: number;
-  };
-}
 
 export const loginUser = async (
   req: Request,
@@ -26,21 +18,28 @@ export const loginUser = async (
   next: NextFunction,
 ) => {
   try {
-    const user = await getUser(req.body);
-    if (user && (await bcrypt.compare(req.body.password, user.password))) {
+    const { name, email, role, password } = await getUser(req.body);
+
+    if (await bcrypt.compare(req.body.password, password)) {
       // Create token
       const token = jwt.sign(
-        { user_id: user.name, email: user.email, role: user.role },
+        { user_id: name, email, role },
         process.env.TOKEN_KEY!,
         {
           expiresIn: "2h",
         },
       );
 
+      res.cookie("token", token, {
+        httpOnly: true, // Запретить доступ к куки через JavaScript
+        secure: process.env.NODE_ENV === "production", // Использовать только по HTTPS в продакшене
+        maxAge: 7200000, // Время жизни куки в миллисекундах (2 час)
+      });
+
       return res.status(200).json({
         token,
-        role: user.role,
-        name: user.name,
+        name,
+        role,
       });
     }
     return res.status(400).send("Invalid Credentials");
@@ -56,6 +55,7 @@ export const createUser = async (
 ) => {
   try {
     const existingUser = await getUser(req.body);
+
     if (existingUser) {
       return res.status(409).send("User Already Exist. Please Login");
     }
@@ -96,21 +96,13 @@ export const verifyToken = async (
   res: Response,
   next: NextFunction,
 ) => {
-  const authHeader = req.headers.authorization;
+  const authCookie = req.cookies.token;
 
-  if (!authHeader) {
+  if (!authCookie) {
     return res.status(401).send("Token is required");
   }
-
-  const [tokenType, token] = authHeader.split(" ");
-
-  if (tokenType !== "Bearer") {
-    return res.status(403).send("Invalid Token");
-  }
-
   try {
-    const user = jwt.verify(token, process.env.TOKEN_KEY!);
-    req.user = user;
+    req.user = jwt.verify(authCookie, process.env.TOKEN_KEY!);
   } catch (err) {
     return res.status(401).send("Invalid Token");
   }
@@ -124,7 +116,7 @@ export const isAdmin = (
 ) => {
   const currentUser = req.user;
 
-  if (currentUser.role === "admin") {
+  if (currentUser?.role === ROLES.ADMIN) {
     return next();
   }
   return res
@@ -139,7 +131,7 @@ export const isEditor = (
 ) => {
   const currentUser = req.user;
 
-  if (currentUser.role === "editor" || currentUser.role === "admin") {
+  if (currentUser?.role === ROLES.EDITOR || currentUser?.role === ROLES.ADMIN) {
     return next();
   }
   return res
@@ -155,9 +147,9 @@ export const isUser = (
   const currentUser = req.user;
 
   if (
-    currentUser.role === "user" ||
-    currentUser.role === "editor" ||
-    currentUser.role === "admin"
+    currentUser?.role === ROLES.USER ||
+    currentUser?.role === ROLES.EDITOR ||
+    currentUser?.role === ROLES.ADMIN
   ) {
     return next();
   }

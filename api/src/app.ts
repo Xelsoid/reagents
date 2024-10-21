@@ -1,5 +1,6 @@
 import express, { NextFunction, Request, Response } from "express";
 import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
 import { config } from "dotenv";
 import { logger } from "./utils";
 import { AUTHENTICATION, REAGENTS_ENDPOINTS } from "./constants";
@@ -7,6 +8,7 @@ import {
   addReagent,
   deleteReagent,
   getReagents,
+  updateReagent,
   updateReagentAmount,
 } from "./controllers/reagents.controller";
 import {
@@ -23,57 +25,48 @@ config();
 const app = express();
 
 app.use(express.json());
+app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(logger);
 
 app.post(AUTHENTICATION.LOGIN, loginUser);
 
-app.post(
-  AUTHENTICATION.CREATE_USER,
-  verifyToken as any,
-  isAdmin as any,
-  createUser,
-);
+app.post(AUTHENTICATION.CREATE_USER, createUser);
 
-app.delete(
-  AUTHENTICATION.DELETE_USER,
-  verifyToken as any,
-  isAdmin as any,
-  removeUser,
-);
+app.delete(AUTHENTICATION.DELETE_USER, verifyToken, isAdmin, removeUser);
 
 app.get(REAGENTS_ENDPOINTS.GET_REAGENTS, getReagents);
 
 app.post(
   REAGENTS_ENDPOINTS.ADD_REAGENT,
-  verifyToken as any,
-  isAdmin as any,
-  isEditor as any,
+  verifyToken,
+  isAdmin,
+  isEditor,
   addReagent,
 );
 
 app.patch(
   REAGENTS_ENDPOINTS.UPDATE_REAGENT,
-  verifyToken as any,
-  isAdmin as any,
-  isEditor as any,
-  updateReagentAmount,
+  verifyToken,
+  isAdmin,
+  isEditor,
+  updateReagent,
 );
 
 app.patch(
   REAGENTS_ENDPOINTS.UPDATE_REAGENT_AMOUNT,
-  verifyToken as any,
-  isAdmin as any,
-  isEditor as any,
-  isUser as any,
+  verifyToken,
+  isAdmin,
+  isEditor,
+  isUser,
   updateReagentAmount,
 );
 
 app.delete(
   REAGENTS_ENDPOINTS.DELETE_REAGENT,
-  verifyToken as any,
-  isAdmin as any,
-  isEditor as any,
+  verifyToken,
+  isAdmin,
+  isEditor,
   deleteReagent,
 );
 
