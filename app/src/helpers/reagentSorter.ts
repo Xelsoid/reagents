@@ -17,6 +17,7 @@ export function reagentSorter(data, method) {
       return a.name > b.name ? -1 : 1;
     });
   }
+  return data;
 }
 
 /* <div>

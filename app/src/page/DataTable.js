@@ -22,7 +22,7 @@ const columns = [
 
 // const paginationModel = { page: 0, pageSize: 15 };
 
-export default function DataTable() {
+export function DataTable() {
   const [data, setData] = useState([]);
 
   useEffect(() => {

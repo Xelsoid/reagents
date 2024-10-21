@@ -2,30 +2,28 @@ import React, { useEffect, useState } from "react";
 import "../style/home_page.css";
 import { reagentAmountChanger } from "../helpers/changeAmountReagent.ts";
 import { reagentSorter } from "../helpers/reagentSorter.ts";
-import { changeAmountWindow } from "../modal_window/changeAmountWindow.js";
+// import { ChangeAmountWindow } from "../modal_window/changeAmountWindow.js";
 import { addReagent } from "../helpers/addReagent.ts";
 import { valueReturner } from "../helpers/valueReturner.ts";
 import { addUser } from "../helpers/addUser.ts";
 import { deleteReagent } from "../helpers/deleteReagent.ts";
-
-const image = require("../assets/logo.png");
+import image from "../assets/logo.png";
 
 const HomePage = () => {
   const [data, setData] = useState(null);
   const [selectedFilter, setSelectedFilter] = useState(null);
   const [curReagent, setCurReagent] = useState([]);
-  const [checkedid, setcheckedid] = useState(true);
-  const [checkedname, setcheckedname] = useState(true);
-  const [checkedamount, setcheckedamount] = useState(true);
-  const [checkedunit, setcheckedunit] = useState(true);
-  const [checkedproducer, setcheckedproducer] = useState(false);
-  const [checkedsupplier, setcheckedsupplier] = useState(false);
-  const [checkedstorage, setcheckedstorage] = useState(true);
-  const [checkedstoragePlace, setcheckedstoragePlace] = useState(true);
-  const UserRole = localStorage.getItem("role");
+  const [checkedId, setCheckedId] = useState(true);
+  const [checkedName, setCheckedName] = useState(true);
+  const [checkedAmount, setCheckedAmount] = useState(true);
+  const [checkedUnit, setCheckedUnit] = useState(true);
+  const [checkedProducer, setCheckedProducer] = useState(false);
+  const [checkedSupplier, setCheckedSupplier] = useState(false);
+  const [checkedStorage, setCheckedStorage] = useState(true);
+  const [checkedStoragePlace, setCheckedStoragePlace] = useState(true);
+  const userRole = localStorage.getItem("role");
 
   useEffect(() => {
-    console.log("useEffect");
     const fetchData = async (url) => {
       const response = await fetch(url);
       if (response.ok) {
@@ -54,8 +52,9 @@ const HomePage = () => {
         >
           Выход
         </button>
-        {UserRole === "admin" || UserRole === "editor" ? (
+        {userRole === "admin" || userRole === "editor" ? (
           <button
+            type="button"
             onClick={() => {
               document.querySelector(".add_reagent_window").style.display =
                 "flex";
@@ -66,8 +65,9 @@ const HomePage = () => {
         ) : (
           ""
         )}
-        {UserRole === "admin" ? (
+        {userRole === "admin" ? (
           <button
+            type="button"
             onClick={() => {
               document.querySelector(".add_user_window").style.display = "flex";
             }}
@@ -91,20 +91,16 @@ const HomePage = () => {
           }}
         >
           <option value="Up_ID" className="sort_item">
-            {" "}
             По возрастанию ID
           </option>
           <option value="Down_ID" className="sort_item">
-            {" "}
             По убыванию ID
           </option>
           <option value="A-Z" className="sort_item">
-            {" "}
-            По алфавиту А-Я{" "}
+            По алфавиту А-Я
           </option>
           <option value="Z-A" className="sort_item">
-            {" "}
-            По алфавиту Я-А{" "}
+            По алфавиту Я-А
           </option>
         </select>
       </div>
@@ -112,167 +108,157 @@ const HomePage = () => {
         <p>Выберите отображаемые столбцы</p>
         <div className="checkbox">
           <div>
-            <input
-              type="checkbox"
-              name="ID"
-              checked={checkedid}
-              onChange={(event) => {
-                document.querySelectorAll(".id_col").forEach((item) => {
-                  event.target.checked
-                    ? (item.style.display = "block")
-                    : (item.style.display = "none");
-                });
-                setcheckedid(!checkedid);
-              }}
-            />
-            <label htmlFor="ID">ID</label>
+            <label htmlFor="ID">
+              ID
+              <input
+                type="checkbox"
+                name="ID"
+                checked={checkedId}
+                onChange={() => {
+                  setCheckedId((prevValue) => !prevValue);
+                }}
+              />
+            </label>
           </div>
           <div>
-            <input
-              type="checkbox"
-              name="name"
-              checked={checkedname}
-              onChange={(event) => {
-                document.querySelectorAll(".name_col").forEach((item) => {
-                  event.target.checked
-                    ? (item.style.display = "block")
-                    : (item.style.display = "none");
-                });
-                setcheckedname(!checkedname);
-              }}
-            />
-            <label htmlFor="name">Наимеонвание</label>
+            <label htmlFor="name">
+              Наимеонвание
+              <input
+                type="checkbox"
+                name="name"
+                checked={checkedName}
+                onChange={() => {
+                  setCheckedName((prevValue) => !prevValue);
+                }}
+              />
+            </label>
           </div>
           <div>
-            <input
-              type="checkbox"
-              name="amount"
-              checked={checkedamount}
-              onChange={(event) => {
-                document.querySelectorAll(".amount_col").forEach((item) => {
-                  event.target.checked
-                    ? (item.style.display = "block")
-                    : (item.style.display = "none");
-                });
-                setcheckedamount(!checkedamount);
-              }}
-            />
-            <label htmlFor="amount">Количество</label>
+            <label htmlFor="amount">
+              Количество
+              <input
+                type="checkbox"
+                name="amount"
+                checked={checkedAmount}
+                onChange={() => {
+                  setCheckedAmount((preValue) => !preValue);
+                }}
+              />
+            </label>
           </div>
           <div>
-            <input
-              type="checkbox"
-              name="unit"
-              checked={checkedunit}
-              onChange={(event) => {
-                document.querySelectorAll(".unit_col").forEach((item) => {
-                  event.target.checked
-                    ? (item.style.display = "block")
-                    : (item.style.display = "none");
-                });
-                setcheckedunit(!checkedunit);
-              }}
-            />
-            <label htmlFor="unit">Единицы измерения</label>
+            <label htmlFor="unit">
+              Единицы измерения
+              <input
+                type="checkbox"
+                name="unit"
+                checked={checkedUnit}
+                onChange={() => {
+                  setCheckedUnit((preValue) => !preValue);
+                }}
+              />
+            </label>
           </div>
           <div>
-            <input
-              type="checkbox"
-              name="producer"
-              checked={checkedproducer}
-              onChange={(event) => {
-                document.querySelectorAll(".producer_col").forEach((item) => {
-                  event.target.checked
-                    ? (item.style.display = "block")
-                    : (item.style.display = "none");
-                });
-                setcheckedproducer(!checkedproducer);
-              }}
-            />
-            <label htmlFor="producer">Номер серии</label>
+            <label htmlFor="producer">
+              Номер серии
+              <input
+                type="checkbox"
+                name="producer"
+                checked={checkedProducer}
+                onChange={() => {
+                  setCheckedProducer((prevValue) => !prevValue);
+                }}
+              />
+            </label>
           </div>
           <div>
-            <input
-              type="checkbox"
-              name="supplier"
-              checked={checkedsupplier}
-              onChange={(event) => {
-                document.querySelectorAll(".supplier_col").forEach((item) => {
-                  event.target.checked
-                    ? (item.style.display = "block")
-                    : (item.style.display = "none");
-                });
-                setcheckedsupplier(!checkedsupplier);
-              }}
-            />
-            <label htmlFor="supplier">Поставщик</label>
+            <label htmlFor="supplier">
+              Поставщик
+              <input
+                type="checkbox"
+                name="supplier"
+                checked={checkedSupplier}
+                onChange={() => {
+                  setCheckedSupplier((prevValue) => !prevValue);
+                }}
+              />
+            </label>
           </div>
           <div>
-            <input
-              type="checkbox"
-              name="storage"
-              checked={checkedstorage}
-              onChange={(event) => {
-                document.querySelectorAll(".storage_column").forEach((item) => {
-                  event.target.checked
-                    ? (item.style.display = "block")
-                    : (item.style.display = "none");
-                });
-                setcheckedstorage(!checkedstorage);
-              }}
-            />
-            <label htmlFor="storage">Условия хранения</label>
+            <label htmlFor="storage">
+              Условия хранения
+              <input
+                type="checkbox"
+                name="storage"
+                checked={checkedStorage}
+                onChange={() => {
+                  setCheckedStorage((prevValue) => !prevValue);
+                }}
+              />
+            </label>
           </div>
           <div>
-            <input
-              type="checkbox"
-              name="storagePlace"
-              checked={checkedstoragePlace}
-              onChange={(event) => {
-                document
-                  .querySelectorAll(".storagePlace_column")
-                  .forEach((item) => {
-                    event.target.checked
-                      ? (item.style.display = "block")
-                      : (item.style.display = "none");
-                  });
-                setcheckedstoragePlace(!checkedstoragePlace);
-              }}
-            />
-            <label htmlFor="storagePlace">Полка хранения реактива</label>
+            <label htmlFor="storagePlace">
+              Полка хранения реактива
+              <input
+                type="checkbox"
+                name="storagePlace"
+                checked={checkedStoragePlace}
+                onChange={() => {
+                  setCheckedStoragePlace((prevValue) => !prevValue);
+                }}
+              />
+            </label>
           </div>
         </div>
       </div>
 
       <div className="reagent_row">
-        <p className="id_col">
-          <b>Id</b>
-        </p>
-        <p className="name_col">
-          <b>Наименование</b>
-        </p>
-        <p className="amount_col">
-          <b>Количество</b>
-        </p>
-        <p className="unit_col">
-          <b>Единицы измерения</b>
-        </p>
-        <p className="producer_col">
-          <b>Производитель</b>
-        </p>
-        <p className="supplier_col">
-          <b>Поставщик</b>
-        </p>
-        <p className="storage_column">
-          <b>Условия хранения</b>
-        </p>
-        <p className="storagePlace_column">
-          <b>Полка хранения реактива</b>
-        </p>
+        {checkedId && (
+          <p className="id_col">
+            <b>Id</b>
+          </p>
+        )}
+        {checkedName && (
+          <p className="name_col">
+            <b>Наименование</b>
+          </p>
+        )}
+        {checkedAmount && (
+          <p className="amount_col">
+            <b>Количество</b>
+          </p>
+        )}
+        {checkedUnit && (
+          <p className="unit_col">
+            <b>Единицы измерения</b>
+          </p>
+        )}
+        {checkedProducer && (
+          <p className="producer_col">
+            <b>Производитель</b>
+          </p>
+        )}
+        {checkedSupplier && (
+          <p className="supplier_col">
+            <b>Поставщик</b>
+          </p>
+        )}
+        {checkedStorage && (
+          <p className="storage_column">
+            <b>Условия хранения</b>
+          </p>
+        )}
+        {checkedStoragePlace && (
+          <p className="storagePlace_column">
+            <b>Полка хранения реактива</b>
+          </p>
+        )}
         <p className="move_column">
           <b>Списание</b>
         </p>
-        {UserRole === "admin" ? (
+        {userRole === "admin" ? (
           <p className="move_column">
             <b>Удаление</b>
           </p>
@@ -297,14 +283,18 @@ const HomePage = () => {
               className={amount < 100 ? "low_reagent" : "reagent_row"}
               key={id}
             >
-              <p className="id_col">{id}</p>
-              <p className="name_col">{name}</p>
-              <p className="amount_col">{amount}</p>
-              <p className="unit_col">{unit}</p>
-              <p className="producer_col">{producer}</p>
-              <p className="supplier_col">{supplier}</p>
-              <p className="storage_column">{storageConditions}</p>
-              <p className="storagePlace_column">{storagePlace}</p>
+              {checkedId && <p className="id_col">{id}</p>}
+              {checkedName && <p className="name_col">{name}</p>}
+              {checkedAmount && <p className="amount_col">{amount}</p>}
+              {checkedUnit && <p className="unit_col">{unit}</p>}
+              {checkedProducer && <p className="producer_col">{producer}</p>}
+              {checkedSupplier && <p className="supplier_col">{supplier}</p>}
+              {checkedStorage && (
+                <p className="storage_column">{storageConditions}</p>
+              )}
+              {checkedStoragePlace && (
+                <p className="storagePlace_column">{storagePlace}</p>
+              )}
               <p className="move_column">
                 <button
                   type="button"
@@ -318,13 +308,13 @@ const HomePage = () => {
                   Списать
                 </button>
               </p>
-              {UserRole === "admin" ? (
+              {userRole === "admin" ? (
                 <p className="move_column">
                   <button
                     type="button"
                     onClick={() => {
                       deleteReagent(uuid);
-                      window.location.href = window.location.href;
+                      window.location.reload();
                     }}
                   >
                     Удалить
@@ -338,12 +328,13 @@ const HomePage = () => {
         },
       )}
       <div className="modal_window_wraper">
-        <div
+        <button
+          type="button"
           className="overflow"
-          onClick={() =>
-            (document.querySelector(".modal_window_wraper").style.display =
-              "none")
-          }
+          onClick={() => {
+            document.querySelector(".modal_window_wraper").style.display =
+              "none";
+          }}
         />
         <div className="modal_window">
           <p className="reagent_name">{curReagent[0]}</p>
@@ -352,6 +343,7 @@ const HomePage = () => {
           <p className="reagent_amount">{curReagent[2]}</p>
           <button
             className="write_off_btn"
+            type="button"
             onClick={() => {
               reagentAmountChanger(
                 curReagent[4],
@@ -363,7 +355,7 @@ const HomePage = () => {
               alert(
                 `${curReagent[0]} списано ${document.querySelector(".input_volume").value} ${curReagent[2]}`,
               );
-              window.location.href = window.location.href;
+              window.location.reload();
             }}
           >
             Списать
@@ -371,12 +363,13 @@ const HomePage = () => {
         </div>
       </div>
       <div className="add_reagent_window">
-        <div
+        <button
+          type="button"
           className="overflow"
-          onClick={() =>
-            (document.querySelector(".add_reagent_window").style.display =
-              "none")
-          }
+          onClick={() => {
+            document.querySelector(".add_reagent_window").style.display =
+              "none";
+          }}
         />
         <div className="add_modal_window">
           <div>
@@ -427,6 +420,7 @@ const HomePage = () => {
             />
           </div>
           <button
+            type="button"
             onClick={() => {
               addReagent(
                 valueReturner("input_reagent_ID"),
@@ -439,7 +433,7 @@ const HomePage = () => {
                 valueReturner("input_reagent_storageConditions"),
                 valueReturner("input_reagent_storagePlace"),
               );
-              window.location.href = window.location.href;
+              window.location.reload();
             }}
           >
             Добавить реактив
@@ -447,11 +441,12 @@ const HomePage = () => {
         </div>
       </div>
       <div className="add_user_window">
-        <div
+        <button
+          type="button"
           className="overflow"
-          onClick={() =>
-            (document.querySelector(".add_user_window").style.display = "none")
-          }
+          onClick={() => {
+            document.querySelector(".add_user_window").style.display = "none";
+          }}
         />
         <div className="modal_window">
           <div>
@@ -470,6 +465,7 @@ const HomePage = () => {
             />
           </div>
           <button
+            type="button"
             className="add_user_btn"
             onClick={() => {
               addUser(

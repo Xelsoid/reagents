@@ -1,11 +1,12 @@
 import React from "react";
 import { reagentAmountChanger } from "../helpers/changeAmountReagent.ts";
 
-export default function changeAmountWindow(curReagent) {
+export function ChangeAmountWindow(curReagent) {
   return (
     <div className="modal_window_wraper">
-      <div
+      <button
         className="overflow"
+        type="button"
         onClick={() => {
           document.querySelector(".modal_window_wraper").style.display = "none";
         }}
@@ -29,7 +30,7 @@ export default function changeAmountWindow(curReagent) {
             alert(
               `${curReagent[0]} списано ${document.querySelector(".input_volume").value} ${curReagent[2]}`,
             );
-            window.location.href = window.location.href;
+            window.location.reload();
           }}
         >
           Списать

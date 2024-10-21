@@ -38,7 +38,7 @@ code {
 .reagent_row{
   display: flex;
   justify-content: center;
-  
+
 }
 .low_reagent{
   display: flex;
@@ -68,11 +68,9 @@ code {
 }
 .producer_col{
   width: 200px;
-  display: none;
 }
 .supplier_col{
   width: 200px;
-  display: none;
 }
 .storage_column{
   width: 100px;
