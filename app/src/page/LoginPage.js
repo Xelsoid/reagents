@@ -8,16 +8,25 @@ export const LoginPage = () => {
   return (
     <div className="login_wraper">
       <p>Введите Имя</p>
-      <input placeholder="Введите имя" id="user_name" onChange={(e) => setUserName(e.target.value)}>
-      </input>
+      <input
+        placeholder="Введите имя"
+        id="user_name"
+        onChange={(e) => setUserName(e.target.value)}
+      />
       <p>Введите Пароль</p>
-      <input 
-      placeholder="Введите пароль" 
-      id="user_pass" 
-      type="password" 
-      onChange={(e) => setUserPass(e.target.value)}>
-      </input>
-      <button className="enter_btn" onClick={() => loginUser(userName, userPass)}>Ввод</button>
+      <input
+        placeholder="Введите пароль"
+        id="user_pass"
+        type="password"
+        onChange={(e) => setUserPass(e.target.value)}
+      />
+      <button
+        className="enter_btn"
+        type="button"
+        onClick={() => loginUser(userName, userPass)}
+      >
+        Ввод
+      </button>
     </div>
   );
 };

@@ -37,6 +37,7 @@
     "@types/supertest": "^2.0.12",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
+    "@types/cookie-parser": "^1.4.7",
     "csvtojson": "2.0.10",
     "eslint": "^8.50.0",
     "eslint-config-airbnb": "^19.0.4",

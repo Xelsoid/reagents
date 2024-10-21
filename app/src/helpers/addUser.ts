@@ -1,17 +1,16 @@
 export function addUser(name, password, role) {
-  fetch("/api/api/register", {
+  fetch("/api/register", {
     method: "POST",
     headers: {
-      "Authorization": `Bearer ${localStorage.getItem('token') || 'token'}`,
+      Authorization: `Bearer ${localStorage.getItem("token") || "token"}`,
       Accept: "application/json",
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      name: name,
-      password: password,
-      email: 'string',
-      role: role,
+      name,
+      password,
+      email: "string",
+      role,
     }),
-  }).then(response => response.json()
-.then(resp => console.log(resp)));
+  }).then((response) => response.json().then((resp) => console.log(resp)));
 }

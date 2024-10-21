@@ -1,10 +1,8 @@
-
-
 export async function reagentAmountChanger(uuidReagent, newAmount = 866) {
-  fetch("/api/api/updateReagentAmount", {
+  fetch("/api/updateReagentAmount", {
     method: "PATCH",
     headers: {
-      "Authorization": `Bearer ${localStorage.getItem('token') || 'token'}`,
+      Authorization: `Bearer ${localStorage.getItem("token") || "token"}`,
       Accept: "application/json",
       "Content-Type": "application/json",
     },
@@ -12,7 +10,5 @@ export async function reagentAmountChanger(uuidReagent, newAmount = 866) {
       uuid: uuidReagent,
       amount: newAmount,
     }),
-  }).then(response => response.json()
-.then(resp => console.log(resp)));
+  }).then((response) => response.json().then((resp) => console.log(resp)));
 }
-
