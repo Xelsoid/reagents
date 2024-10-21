@@ -1,10 +1,20 @@
 import React, { useState } from "react";
 import "../style/login_page.css";
-import { loginUser } from "../helpers/loginUser.ts";
+import { useUserLogin } from "../hooks/useLoginUser.ts";
 
 export const LoginPage = () => {
   const [userName, setUserName] = useState("");
   const [userPass, setUserPass] = useState("");
+  const loginUser = useUserLogin();
+
+  const handleUserLogin = () => {
+    if (!userName || !userPass) {
+      alert("Введите логин и пароль");
+      return;
+    }
+    loginUser(userName, userPass);
+  };
+
   return (
     <div className="login_wraper">
       <p>Введите Имя</p>
@@ -20,11 +30,7 @@ export const LoginPage = () => {
         type="password"
         onChange={(e) => setUserPass(e.target.value)}
       />
-      <button
-        className="enter_btn"
-        type="button"
-        onClick={() => loginUser(userName, userPass)}
-      >
+      <button className="enter_btn" type="button" onClick={handleUserLogin}>
         Ввод
       </button>
     </div>
