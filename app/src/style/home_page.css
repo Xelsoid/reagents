@@ -1,0 +1,152 @@
+body {
+  margin: 0;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+.main_header{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.logo_img{
+  width: 140px;
+  height: 100px;
+}
+.reagent_row > p{
+  border: 1px solid black;
+  margin: 0;
+  padding: 0;
+  word-wrap:break-word;
+  font-size: 20px;
+  text-align: center;
+}
+.low_reagent > p{
+  border: 1px solid black;
+  margin: 0;
+  padding: 0;
+  word-wrap:break-word;
+  font-size: 20px;
+  text-align: center;
+}
+.reagent_row{
+  display: flex;
+  justify-content: center;
+
+}
+.low_reagent{
+  display: flex;
+  justify-content: center;
+  background-color: red;
+}
+
+.reagent_row:hover{
+  cursor: pointer;
+  color: rgb(41, 121, 232);
+}
+.low_reagent:hover{
+  cursor: pointer;
+  color: rgb(41, 121, 232);
+}
+.id_col{
+  width: 100px;
+}
+.amount_col{
+  width: 120px;
+}
+.unit_col{
+  width: 100px;
+}
+.name_col{
+  width: 200px;
+}
+.producer_col{
+  width: 200px;
+}
+.supplier_col{
+  width: 200px;
+}
+.storage_column{
+  width: 100px;
+}
+.storagePlace_column{
+  width: 100px;
+}
+.move_column{
+  width: 100px;
+}
+.modal_window_wraper, .add_reagent_window, .add_user_window{
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: none;
+}
+.overflow{
+  width: 100vw;
+  height: 100vh;
+  background-color: black;
+  opacity: 0.1;
+}
+.modal_window{
+  position: absolute;
+  top: 30px;
+  left: 30%;
+  width: 500px;
+  height: 600px;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.add_modal_window{
+  position: absolute;
+  top: 30px;
+  left: 10%;
+  width: 800px;
+  height: 700px;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+.add_modal_window > div{
+  display: flex;
+  justify-content: space-around;
+}
+.add_modal_window > div > p{
+  width: 250px;
+  font-size: 16px;
+}
+.input_volume{
+  width: 300px;
+}
+.user_name{
+  text-align: center;
+}
+.select_sort{
+  margin-bottom: 20px;
+  font-size: 20px;
+}
+.checkbox{
+  display: flex;
+  width: 90vw;
+  justify-content: space-between;
+}
+.checkbox div{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+input[type='checkbox']{
+  width: calc(20px);
+}

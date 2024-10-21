@@ -38,6 +38,7 @@ export const loginUser = async (
 
       return res.status(200).json({
         token,
+        name,
         role,
       });
     }
@@ -96,6 +97,7 @@ export const verifyToken = async (
   next: NextFunction,
 ) => {
   const authCookie = req.cookies.token;
+
   if (!authCookie) {
     return res.status(401).send("Token is required");
   }
