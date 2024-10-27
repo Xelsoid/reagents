@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "../style/home_page.css";
-import { reagentAmountChanger } from "../helpers/changeAmountReagent.ts";
-import { reagentSorter } from "../helpers/reagentSorter.ts";
+import { reagentAmountChanger } from "../helpers/changeAmountReagent";
+import { reagentSorter } from "../helpers/reagentSorter";
 // import { ChangeAmountWindow } from "../modal_window/changeAmountWindow.js";
-import { addReagent } from "../helpers/addReagent.ts";
-import { valueReturner } from "../helpers/valueReturner.ts";
-import { addUser } from "../helpers/addUser.ts";
-import { deleteReagent } from "../helpers/deleteReagent.ts";
+import { addReagent } from "../helpers/addReagent";
+import { valueReturner } from "../helpers/valueReturner";
+import { addUser } from "../helpers/addUser";
+import { deleteReagent } from "../helpers/deleteReagent";
 import image from "../assets/logo.png";
 
 const HomePage = () => {
@@ -24,7 +24,7 @@ const HomePage = () => {
   const userRole = localStorage.getItem("role");
 
   useEffect(() => {
-    const fetchData = async (url) => {
+    const fetchData = async (url: string) => {
       const response = await fetch(url);
       if (response.ok) {
         const json = await response.json();

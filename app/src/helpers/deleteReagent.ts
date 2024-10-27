@@ -1,4 +1,4 @@
-export function deleteReagent(uuid) {
+export function deleteReagent(uuid: string) {
   fetch("/api/deleteReagent", {
     method: "DELETE",
     headers: {

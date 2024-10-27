@@ -1,4 +1,7 @@
-export async function reagentAmountChanger(uuidReagent, newAmount = 866) {
+export async function reagentAmountChanger(
+  uuidReagent: string,
+  newAmount: number = 866,
+) {
   fetch("/api/updateReagentAmount", {
     method: "PATCH",
     headers: {

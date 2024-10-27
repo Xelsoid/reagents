@@ -1,4 +1,4 @@
-export function addUser(name, password, role) {
+export function addUser(name: string, password: string, role: string) {
   fetch("/api/register", {
     method: "POST",
     headers: {

@@ -1,13 +1,13 @@
 export function addReagent(
-  id,
-  name,
-  amount,
-  minAmount,
-  unit,
-  supplier,
-  producer,
-  storageConditions,
-  storagePlace,
+  id: string,
+  name: string,
+  amount: number,
+  minAmount: number,
+  unit: string,
+  supplier: string,
+  producer: string,
+  storageConditions: string,
+  storagePlace: string,
 ) {
   fetch("/api/addReagent", {
     method: "POST",

@@ -26,7 +26,7 @@ export function DataTable() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    const fetchData = async (url) => {
+    const fetchData = async (url: string) => {
       const response = await fetch(url);
       if (response.ok) {
         const json = await response.json();
