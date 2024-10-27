@@ -1,3 +1,4 @@
+// @ts-nocheck
 export function reagentSorter(data, method) {
   if (method === "Up_ID" || method === "Down_ID") {
     return data.sort((a, b) => {

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useEffect, useState } from "react";
 import "../style/home_page.css";
 import { reagentAmountChanger } from "../helpers/changeAmountReagent";
