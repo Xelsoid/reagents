@@ -9,7 +9,5 @@ export async function reagentAmountChanger(uuidReagent, newAmount = 866) {
       uuid: uuidReagent,
       amount: newAmount,
     }),
-  }).then(response => response.json()
-.then(resp => console.log(resp)));
+  }).then((response) => response.json().then((resp) => console.log(resp)));
 }
-
