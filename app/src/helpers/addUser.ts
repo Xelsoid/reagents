@@ -1,5 +1,5 @@
 export function addUser(name: string, password: string, role: string) {
-  fetch("/api/register", {
+  fetch("/api/create-account", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token") || "token"}`,
