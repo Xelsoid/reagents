@@ -109,51 +109,21 @@ export const verifyToken = async (
   return next();
 };
 
-export const isAdmin = (
-  req: RequestWithUser,
-  res: Response,
-  next: NextFunction,
-) => {
-  const currentUser = req.user;
+export const hasRole = (roles: ROLES[]) => {
+  return (req: RequestWithUser, res: Response, next: NextFunction) => {
+    const currentUser = req.user;
+    console.log(currentUser);
+    if (currentUser && roles.includes(currentUser.role)) {
+      return next();
+    }
 
-  if (currentUser?.role === ROLES.ADMIN) {
-    return next();
-  }
-  return res
-    .status(401)
-    .send("You are not authorized do the action (admin role)");
-};
-
-export const isEditor = (
-  req: RequestWithUser,
-  res: Response,
-  next: NextFunction,
-) => {
-  const currentUser = req.user;
-
-  if (currentUser?.role === ROLES.EDITOR || currentUser?.role === ROLES.ADMIN) {
-    return next();
-  }
-  return res
-    .status(401)
-    .send("You are not authorized do the action (editor role)");
-};
-
-export const isUser = (
-  req: RequestWithUser,
-  res: Response,
-  next: NextFunction,
-) => {
-  const currentUser = req.user;
-
-  if (
-    currentUser?.role === ROLES.USER ||
-    currentUser?.role === ROLES.EDITOR ||
-    currentUser?.role === ROLES.ADMIN
-  ) {
-    return next();
-  }
-  return res
-    .status(401)
-    .send("You are not authorized do the action (user role)");
+    // console.warn(
+    //   `Unauthorized access attempt by user: ${currentUser?.id || "unknown"}`,
+    // );
+    return res
+      .status(403)
+      .send(
+        `You are not authorized to perform this action. Required roles: ${roles.join(", ")}`,
+      );
+  };
 };

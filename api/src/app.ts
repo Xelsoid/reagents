@@ -3,7 +3,7 @@ import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import { config } from "dotenv";
 import { logger } from "./utils";
-import { AUTHENTICATION, REAGENTS_ENDPOINTS } from "./constants";
+import { AUTHENTICATION, REAGENTS_ENDPOINTS, ROLES } from "./constants";
 import {
   addReagent,
   deleteReagent,
@@ -16,9 +16,7 @@ import {
   createUser,
   removeUser,
   verifyToken,
-  isAdmin,
-  isEditor,
-  isUser,
+  hasRole,
 } from "./controllers/authentication.controller";
 
 config();
@@ -33,40 +31,40 @@ app.post(AUTHENTICATION.LOGIN, loginUser);
 
 app.post(AUTHENTICATION.CREATE_USER, createUser);
 
-app.delete(AUTHENTICATION.DELETE_USER, verifyToken, isAdmin, removeUser);
+app.delete(
+  AUTHENTICATION.DELETE_USER,
+  verifyToken,
+  hasRole([ROLES.ADMIN]),
+  removeUser,
+);
 
 app.get(REAGENTS_ENDPOINTS.GET_REAGENTS, getReagents);
 
 app.post(
   REAGENTS_ENDPOINTS.ADD_REAGENT,
   verifyToken,
-  isAdmin,
-  isEditor,
+  hasRole([ROLES.ADMIN, ROLES.EDITOR]),
   addReagent,
 );
 
 app.patch(
   REAGENTS_ENDPOINTS.UPDATE_REAGENT,
   verifyToken,
-  isAdmin,
-  isEditor,
+  hasRole([ROLES.ADMIN, ROLES.EDITOR]),
   updateReagent,
 );
 
 app.patch(
   REAGENTS_ENDPOINTS.UPDATE_REAGENT_AMOUNT,
   verifyToken,
-  isAdmin,
-  isEditor,
-  isUser,
+  hasRole([ROLES.ADMIN, ROLES.EDITOR]),
   updateReagentAmount,
 );
 
 app.delete(
   REAGENTS_ENDPOINTS.DELETE_REAGENT,
   verifyToken,
-  isAdmin,
-  isEditor,
+  hasRole([ROLES.ADMIN, ROLES.EDITOR]),
   deleteReagent,
 );
 
