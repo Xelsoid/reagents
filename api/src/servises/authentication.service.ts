@@ -5,8 +5,7 @@ import {
   deleteExistingUser,
 } from "../repositories/authentication.repository";
 
-export const getUser = async (requestBody: { name: string }) => {
-  const { name } = requestBody;
+export const getUser = async (name: string) => {
   if (name) {
     return getCurrentUser(name);
   }

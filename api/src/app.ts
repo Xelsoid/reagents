@@ -29,7 +29,12 @@ app.use(logger);
 
 app.post(AUTHENTICATION.LOGIN, loginUser);
 
-app.post(AUTHENTICATION.CREATE_USER, createUser);
+app.post(
+  AUTHENTICATION.CREATE_USER,
+  verifyToken,
+  hasRole([ROLES.ADMIN]),
+  createUser,
+);
 
 app.delete(
   AUTHENTICATION.DELETE_USER,
