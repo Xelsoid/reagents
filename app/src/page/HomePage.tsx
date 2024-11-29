@@ -9,15 +9,13 @@ import {
 } from "@mui/material";
 import "../style/home_page.css";
 import { reagentSorter } from "../helpers/reagentSorter";
-import { addReagent } from "../helpers/addReagent";
-import { valueReturner } from "../helpers/valueReturner";
-import { addUser } from "../helpers/addUser";
 import { deleteReagent } from "../helpers/deleteReagent";
 import image from "../assets/logo.png";
 import { useTableFilter } from "../components/ReagentsTableFilter/hooks/useTableFilter";
 import { ReagentWriteOffModal } from "../components/ReagentWriteOffModal";
 import { ReagentAddModal } from "../components/ReagentAddModal";
 import { logout } from "../helpers/logout";
+import { ColleagueAddModal } from "../components/ColleagueAddModal";
 
 const HomePage = () => {
   const [data, setData] = useState(null);
@@ -46,6 +44,7 @@ const HomePage = () => {
 
   const [openModal, setOpenModal] = useState(false);
   const [openReagentAddModal, setOpenReagentAddModal] = useState(false);
+  const [openColleagueAddModal, setOpenColleagueAddModal] = useState(false);
 
   const handleCloseModal = () => {
     setOpenModal(false);
@@ -53,6 +52,10 @@ const HomePage = () => {
 
   const handleCloseReagentAddModal = () => {
     setOpenReagentAddModal(false);
+  };
+
+  const handleCloseColleagueAddModal = () => {
+    setOpenColleagueAddModal(false);
   };
 
   useEffect(() => {
@@ -88,6 +91,7 @@ const HomePage = () => {
             </Button>
           </Typography>
         )}
+
         {(userRole === "admin" || userRole === "editor") && (
           <Typography variant="body2">
             <Button
@@ -100,15 +104,18 @@ const HomePage = () => {
             </Button>
           </Typography>
         )}
+
         {userRole === "admin" && (
-          <button
-            type="button"
-            onClick={() => {
-              document.querySelector(".add_user_window").style.display = "flex";
-            }}
-          >
-            Добавить сотрудника
-          </button>
+          <Typography variant="body2">
+            <Button
+              variant="outlined"
+              onClick={() => {
+                setOpenColleagueAddModal(true);
+              }}
+            >
+              Добавить сотрудника
+            </Button>
+          </Typography>
         )}
       </div>
       <div>
@@ -355,46 +362,10 @@ const HomePage = () => {
         curReagent={curReagent}
       />
 
-      <div className="add_user_window">
-        <button
-          type="button"
-          className="overflow"
-          onClick={() => {
-            document.querySelector(".add_user_window").style.display = "none";
-          }}
-        />
-        <div className="modal_window">
-          <div>
-            <p className="new_user_name">Имя пользователя</p>
-            <input className="input_new_user_name" placeholder="user name" />
-          </div>
-          <div>
-            <p className="new_user_pass">Пароль</p>
-            <input className="input_new_user_pass" placeholder="password" />
-          </div>
-          <div>
-            <p className="new_user_role">Роль</p>
-            <input
-              className="input_new_user_role"
-              placeholder="admin, user, editor"
-            />
-          </div>
-          <button
-            type="button"
-            className="add_user_btn"
-            onClick={() => {
-              addUser(
-                valueReturner("input_new_user_name"),
-                valueReturner("input_new_user_pass"),
-                valueReturner("input_new_user_role"),
-              );
-              document.querySelector(".add_user_window").style.display = "none";
-            }}
-          >
-            Добавить пользователя
-          </button>
-        </div>
-      </div>
+      <ColleagueAddModal
+        openAddColleague={openColleagueAddModal}
+        handleCloseAddColleague={handleCloseColleagueAddModal}
+      />
     </div>
   );
 };
