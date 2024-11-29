@@ -2,7 +2,6 @@ export function deleteReagent(uuid: string) {
   fetch("/api/deleteReagent", {
     method: "DELETE",
     headers: {
-      Authorization: `Bearer ${localStorage.getItem("token") || "token"}`,
       Accept: "application/json",
       "Content-Type": "application/json",
     },

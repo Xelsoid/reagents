@@ -16,6 +16,7 @@ import { deleteReagent } from "../helpers/deleteReagent";
 import image from "../assets/logo.png";
 import { useTableFilter } from "../components/ReagentsTableFilter/hooks/useTableFilter";
 import { ReagentWriteOffModal } from "../components/ReagentWriteOffModal";
+import { ReagentAddModal } from "../components/ReagentAddModal";
 import { logout } from "../helpers/logout";
 
 const HomePage = () => {
@@ -44,9 +45,14 @@ const HomePage = () => {
   } = useTableFilter();
 
   const [openModal, setOpenModal] = useState(false);
+  const [openReagentAddModal, setOpenReagentAddModal] = useState(false);
 
   const handleCloseModal = () => {
     setOpenModal(false);
+  };
+
+  const handleCloseReagentAddModal = () => {
+    setOpenReagentAddModal(false);
   };
 
   useEffect(() => {
@@ -83,15 +89,16 @@ const HomePage = () => {
           </Typography>
         )}
         {(userRole === "admin" || userRole === "editor") && (
-          <button
-            type="button"
-            onClick={() => {
-              document.querySelector(".add_reagent_window").style.display =
-                "flex";
-            }}
-          >
-            Добавить реактив
-          </button>
+          <Typography variant="body2">
+            <Button
+              variant="outlined"
+              onClick={() => {
+                setOpenReagentAddModal(true);
+              }}
+            >
+              Добавить реактив
+            </Button>
+          </Typography>
         )}
         {userRole === "admin" && (
           <button
@@ -269,12 +276,10 @@ const HomePage = () => {
         <p className="move_column">
           <b>Списание</b>
         </p>
-        {userRole === "admin" ? (
+        {userRole === "admin" && (
           <p className="move_column">
             <b>Удаление</b>
           </p>
-        ) : (
-          ""
         )}
       </div>
       {data?.map(
@@ -319,108 +324,37 @@ const HomePage = () => {
                   </Button>
                 </Typography>
               </p>
-              {userRole === "admin" ? (
+              {userRole === "admin" && (
                 <p className="move_column">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      deleteReagent(uuid);
-                      window.location.reload();
-                    }}
-                  >
-                    Удалить
-                  </button>
+                  <Typography variant="body2">
+                    <Button
+                      variant="outlined"
+                      onClick={() => {
+                        deleteReagent(uuid);
+                        window.location.reload();
+                      }}
+                    >
+                      Удалить
+                    </Button>
+                  </Typography>
                 </p>
-              ) : (
-                ""
               )}
             </div>
           );
         },
       )}
-      <div className="add_reagent_window">
-        <button
-          type="button"
-          className="overflow"
-          onClick={() => {
-            document.querySelector(".add_reagent_window").style.display =
-              "none";
-          }}
-        />
-        <div className="add_modal_window">
-          <div>
-            <p className="reagent_name">Наименование реактива</p>
-            <input className="input_reagent_name" placeholder="name" />
-          </div>
-          <div>
-            <p className="reagent_ID">ID реактива</p>
-            <input className="input_reagent_ID" placeholder="ID" />
-          </div>
-          <div>
-            <p className="reagent_amount">Объем/масса реактива</p>
-            <input className="input_reagent_amount" placeholder="amount" />
-          </div>
-          <div>
-            <p className="reagent_unit">Единицы измерения</p>
-            <input className="input_reagent_unit" placeholder="unit" />
-          </div>
-          <div>
-            <p className="reagent_min_amount">
-              Минимальное количество реактива
-            </p>
-            <input
-              className="input_reagent_min_amount"
-              placeholder="min amount"
-            />
-          </div>
-          <div>
-            <p className="reagent_producer">Производитель</p>
-            <input className="input_reagent_producer" placeholder="producer" />
-          </div>
-          <div>
-            <p className="reagent_supplier">Поставщик</p>
-            <input className="input_reagent_supplier" placeholder="supplier" />
-          </div>
-          <div>
-            <p className="reagent_storageConditions">Условия хранения</p>
-            <input
-              className="input_reagent_storageConditions"
-              placeholder="storageConditions"
-            />
-          </div>
-          <div>
-            <p className="reagent_storagePlace">Место хранеия</p>
-            <input
-              className="input_reagent_storagePlace"
-              placeholder="storagePlace"
-            />
-          </div>
-          <button
-            type="button"
-            onClick={() => {
-              addReagent(
-                valueReturner("input_reagent_ID"),
-                valueReturner("input_reagent_name"),
-                valueReturner("input_reagent_amount"),
-                valueReturner("input_reagent_min_amount"),
-                valueReturner("input_reagent_unit"),
-                valueReturner("input_reagent_supplier"),
-                valueReturner("input_reagent_producer"),
-                valueReturner("input_reagent_storageConditions"),
-                valueReturner("input_reagent_storagePlace"),
-              );
-              window.location.reload();
-            }}
-          >
-            Добавить реактив
-          </button>
-        </div>
-      </div>
+
+      <ReagentAddModal
+        openAddReagent={openReagentAddModal}
+        handleCloseAddReagent={handleCloseReagentAddModal}
+      />
+
       <ReagentWriteOffModal
         openModal={openModal}
         handleCloseModal={handleCloseModal}
         curReagent={curReagent}
       />
+
       <div className="add_user_window">
         <button
           type="button"

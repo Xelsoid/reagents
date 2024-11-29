@@ -1,18 +1,18 @@
-export function addReagent(
-  id: string,
-  name: string,
-  amount: number,
-  minAmount: number,
-  unit: string,
-  supplier: string,
-  producer: string,
-  storageConditions: string,
-  storagePlace: string,
-) {
+// @ts-nocheck
+export function addReagent({
+  id,
+  name,
+  amount,
+  minAmount,
+  unit,
+  supplier,
+  producer,
+  storageConditions,
+  storagePlace,
+}) {
   fetch("/api/addReagent", {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${localStorage.getItem("token") || "token"}`,
       Accept: "application/json",
       "Content-Type": "application/json",
     },
