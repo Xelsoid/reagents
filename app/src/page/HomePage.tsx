@@ -1,28 +1,53 @@
 // @ts-nocheck
 import React, { useEffect, useState } from "react";
+import {
+  FormGroup,
+  FormControlLabel,
+  Checkbox,
+  Button,
+  Typography,
+} from "@mui/material";
 import "../style/home_page.css";
-import { reagentAmountChanger } from "../helpers/changeAmountReagent";
 import { reagentSorter } from "../helpers/reagentSorter";
-// import { ChangeAmountWindow } from "../modal_window/changeAmountWindow.js";
 import { addReagent } from "../helpers/addReagent";
 import { valueReturner } from "../helpers/valueReturner";
 import { addUser } from "../helpers/addUser";
 import { deleteReagent } from "../helpers/deleteReagent";
 import image from "../assets/logo.png";
+import { useTableFilter } from "../components/ReagentsTableFilter/hooks/useTableFilter";
+import { ReagentWriteOffModal } from "../components/ReagentWriteOffModal";
+import { logout } from "../helpers/logout";
 
 const HomePage = () => {
   const [data, setData] = useState(null);
   const [selectedFilter, setSelectedFilter] = useState(null);
   const [curReagent, setCurReagent] = useState([]);
-  const [checkedId, setCheckedId] = useState(true);
-  const [checkedName, setCheckedName] = useState(true);
-  const [checkedAmount, setCheckedAmount] = useState(true);
-  const [checkedUnit, setCheckedUnit] = useState(true);
-  const [checkedProducer, setCheckedProducer] = useState(false);
-  const [checkedSupplier, setCheckedSupplier] = useState(false);
-  const [checkedStorage, setCheckedStorage] = useState(true);
-  const [checkedStoragePlace, setCheckedStoragePlace] = useState(true);
   const userRole = localStorage.getItem("role");
+  const userName = localStorage.getItem("name");
+  const {
+    checkedId,
+    setCheckedId,
+    checkedName,
+    setCheckedName,
+    checkedAmount,
+    setCheckedAmount,
+    checkedUnit,
+    setCheckedUnit,
+    checkedProducer,
+    setCheckedProducer,
+    checkedSupplier,
+    setCheckedSupplier,
+    checkedStorage,
+    setCheckedStorage,
+    checkedStoragePlace,
+    setCheckedStoragePlace,
+  } = useTableFilter();
+
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
 
   useEffect(() => {
     const fetchData = async (url: string) => {
@@ -43,17 +68,21 @@ const HomePage = () => {
     <div>
       <div className="main_header">
         <img className="logo_img" src={image} alt="logo" />
-        <p className="user_name">{localStorage.getItem("name")}</p>
-        <button
-          type="button"
-          onClick={() => {
-            localStorage.clear();
-            window.location.href = "http://localhost:3000/";
-          }}
-        >
-          Выход
-        </button>
-        {userRole === "admin" || userRole === "editor" ? (
+        {userName && <p className="user_name">{userName}</p>}
+        {userName && (
+          <Typography variant="body2">
+            <Button
+              variant="outlined"
+              onClick={() => {
+                logout();
+                window.location.href = "/";
+              }}
+            >
+              Выход
+            </Button>
+          </Typography>
+        )}
+        {(userRole === "admin" || userRole === "editor") && (
           <button
             type="button"
             onClick={() => {
@@ -63,10 +92,8 @@ const HomePage = () => {
           >
             Добавить реактив
           </button>
-        ) : (
-          ""
         )}
-        {userRole === "admin" ? (
+        {userRole === "admin" && (
           <button
             type="button"
             onClick={() => {
@@ -75,8 +102,6 @@ const HomePage = () => {
           >
             Добавить сотрудника
           </button>
-        ) : (
-          ""
         )}
       </div>
       <div>
@@ -105,114 +130,99 @@ const HomePage = () => {
           </option>
         </select>
       </div>
+
       <div className="checkbox_wraper">
         <p>Выберите отображаемые столбцы</p>
-        <div className="checkbox">
-          <div>
-            <label htmlFor="ID">
-              ID
-              <input
-                type="checkbox"
-                name="ID"
+        <FormGroup row>
+          <FormControlLabel
+            control={
+              <Checkbox
                 checked={checkedId}
                 onChange={() => {
                   setCheckedId((prevValue) => !prevValue);
                 }}
               />
-            </label>
-          </div>
-          <div>
-            <label htmlFor="name">
-              Наимеонвание
-              <input
-                type="checkbox"
-                name="name"
+            }
+            label="ID"
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
                 checked={checkedName}
                 onChange={() => {
                   setCheckedName((prevValue) => !prevValue);
                 }}
               />
-            </label>
-          </div>
-          <div>
-            <label htmlFor="amount">
-              Количество
-              <input
-                type="checkbox"
-                name="amount"
+            }
+            label="Наименование"
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
                 checked={checkedAmount}
                 onChange={() => {
-                  setCheckedAmount((preValue) => !preValue);
+                  setCheckedAmount((prevValue) => !prevValue);
                 }}
               />
-            </label>
-          </div>
-          <div>
-            <label htmlFor="unit">
-              Единицы измерения
-              <input
-                type="checkbox"
-                name="unit"
+            }
+            label="Количество"
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
                 checked={checkedUnit}
                 onChange={() => {
-                  setCheckedUnit((preValue) => !preValue);
+                  setCheckedUnit((prevValue) => !prevValue);
                 }}
               />
-            </label>
-          </div>
-          <div>
-            <label htmlFor="producer">
-              Номер серии
-              <input
-                type="checkbox"
-                name="producer"
+            }
+            label="Единицы измерения"
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
                 checked={checkedProducer}
                 onChange={() => {
                   setCheckedProducer((prevValue) => !prevValue);
                 }}
               />
-            </label>
-          </div>
-          <div>
-            <label htmlFor="supplier">
-              Поставщик
-              <input
-                type="checkbox"
-                name="supplier"
+            }
+            label="Номер серии"
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
                 checked={checkedSupplier}
                 onChange={() => {
                   setCheckedSupplier((prevValue) => !prevValue);
                 }}
               />
-            </label>
-          </div>
-          <div>
-            <label htmlFor="storage">
-              Условия хранения
-              <input
-                type="checkbox"
-                name="storage"
+            }
+            label="Поставщик"
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
                 checked={checkedStorage}
                 onChange={() => {
                   setCheckedStorage((prevValue) => !prevValue);
                 }}
               />
-            </label>
-          </div>
-          <div>
-            <label htmlFor="storagePlace">
-              Полка хранения реактива
-              <input
-                type="checkbox"
-                name="storagePlace"
+            }
+            label="Условия хранения"
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
                 checked={checkedStoragePlace}
                 onChange={() => {
                   setCheckedStoragePlace((prevValue) => !prevValue);
                 }}
               />
-            </label>
-          </div>
-        </div>
+            }
+            label="Полка хранения реактива"
+          />
+        </FormGroup>
       </div>
 
       <div className="reagent_row">
@@ -297,17 +307,17 @@ const HomePage = () => {
                 <p className="storagePlace_column">{storagePlace}</p>
               )}
               <p className="move_column">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setCurReagent([name, id, unit, amount, uuid]);
-                    document.querySelector(
-                      ".modal_window_wraper",
-                    ).style.display = "flex";
-                  }}
-                >
-                  Списать
-                </button>
+                <Typography variant="body2">
+                  <Button
+                    variant="outlined"
+                    onClick={() => {
+                      setCurReagent([name, id, unit, amount, uuid]);
+                      setOpenModal(true);
+                    }}
+                  >
+                    Списать
+                  </Button>
+                </Typography>
               </p>
               {userRole === "admin" ? (
                 <p className="move_column">
@@ -328,41 +338,6 @@ const HomePage = () => {
           );
         },
       )}
-      <div className="modal_window_wraper">
-        <button
-          type="button"
-          className="overflow"
-          onClick={() => {
-            document.querySelector(".modal_window_wraper").style.display =
-              "none";
-          }}
-        />
-        <div className="modal_window">
-          <p className="reagent_name">{curReagent[0]}</p>
-          <p className="reagent_ID">{curReagent[1]}</p>
-          <input className="input_volume" />
-          <p className="reagent_amount">{curReagent[2]}</p>
-          <button
-            className="write_off_btn"
-            type="button"
-            onClick={() => {
-              reagentAmountChanger(
-                curReagent[4],
-                curReagent[3] -
-                  Number(document.querySelector(".input_volume").value),
-              );
-              document.querySelector(".modal_window_wraper").style.display =
-                "none";
-              alert(
-                `${curReagent[0]} списано ${document.querySelector(".input_volume").value} ${curReagent[2]}`,
-              );
-              window.location.reload();
-            }}
-          >
-            Списать
-          </button>
-        </div>
-      </div>
       <div className="add_reagent_window">
         <button
           type="button"
@@ -441,6 +416,11 @@ const HomePage = () => {
           </button>
         </div>
       </div>
+      <ReagentWriteOffModal
+        openModal={openModal}
+        handleCloseModal={handleCloseModal}
+        curReagent={curReagent}
+      />
       <div className="add_user_window">
         <button
           type="button"

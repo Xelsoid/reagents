@@ -23,7 +23,6 @@ export const useUserLogin = () => {
             localStorage.setItem("token", resp.token);
             localStorage.setItem("name", resp.name);
             localStorage.setItem("role", resp.role);
-            console.log(11);
             navigate("main");
           })
           .catch(() => alert("Invalid login or password")),

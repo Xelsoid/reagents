@@ -28,6 +28,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(logger);
 
 app.post(AUTHENTICATION.LOGIN, loginUser);
+// TODO: implement logout call
 
 app.post(
   AUTHENTICATION.CREATE_USER,
