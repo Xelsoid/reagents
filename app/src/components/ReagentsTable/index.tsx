@@ -42,6 +42,8 @@ const ReagentsTable = ({
   data,
   columnsSequence,
   tableConfiguration,
+  handleReagentDelete,
+  handleChangeAmount,
   showWriteOffBtn = false,
   showDeleteBtn = false,
 }: any) => {
@@ -67,36 +69,56 @@ const ReagentsTable = ({
         </TableHead>
 
         <TableBody>
-          {data.map((reagent) => (
-            <StyledTableRow
-              key={reagent.uuid}
-              alertRow={reagent.amount < REAGENT_MIN_ALERT_AMOUNT}
-            >
-              {columnsSequence.map((key) => {
-                return (
-                  tableConfiguration[key].checked && (
-                    <StyledTableCell key={key} align="center">
-                      {reagent[key]}
-                    </StyledTableCell>
-                  )
-                );
-              })}
-              {showWriteOffBtn && (
-                <StyledTableCell align="center">
-                  <IconButton aria-label="write-off" size="large">
-                    <RemoveCircleOutlineIcon />
-                  </IconButton>
-                </StyledTableCell>
-              )}
-              {showDeleteBtn && (
-                <StyledTableCell align="center">
-                  <IconButton aria-label="delete" size="large">
-                    <DeleteIcon />
-                  </IconButton>
-                </StyledTableCell>
-              )}
-            </StyledTableRow>
-          ))}
+          {data.map((reagent) => {
+            const handleDelete = () => {
+              handleReagentDelete(reagent);
+            };
+
+            const handleAmount = () => {
+              handleChangeAmount(reagent);
+            };
+
+            return (
+              <StyledTableRow
+                key={reagent.uuid}
+                alertRow={reagent.amount < REAGENT_MIN_ALERT_AMOUNT}
+              >
+                {columnsSequence.map((key) => {
+                  return (
+                    tableConfiguration[key].checked && (
+                      <StyledTableCell key={key} align="center">
+                        {reagent[key]}
+                      </StyledTableCell>
+                    )
+                  );
+                })}
+                {showWriteOffBtn && (
+                  <StyledTableCell align="center">
+                    <IconButton
+                      aria-label="write-off"
+                      size="large"
+                      title="Списать"
+                      onClick={handleAmount}
+                    >
+                      <RemoveCircleOutlineIcon />
+                    </IconButton>
+                  </StyledTableCell>
+                )}
+                {showDeleteBtn && (
+                  <StyledTableCell align="center">
+                    <IconButton
+                      aria-label="delete"
+                      size="large"
+                      title="Удалить"
+                      onClick={handleDelete}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </StyledTableCell>
+                )}
+              </StyledTableRow>
+            );
+          })}
         </TableBody>
       </Table>
     </TableContainer>

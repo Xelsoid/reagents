@@ -3,31 +3,30 @@ import React from "react";
 import { FormGroup, FormControlLabel, Checkbox } from "@mui/material";
 import "../../style/home_page.css";
 
-const filterFields = [
-  { id: 0, label: "Id", defaultChecked: true },
-  { id: 1, label: "Наименование", defaultChecked: true },
-  { id: 2, label: "Количество", defaultChecked: true },
-  { id: 3, label: "Единицы измерения", defaultChecked: true },
-  { id: 4, label: "Номер серии", defaultChecked: false },
-  { id: 5, label: "Поставщик", defaultChecked: false },
-  { id: 6, label: "Условия хранения", defaultChecked: true },
-  { id: 7, label: "Полка хранения реактива", defaultChecked: true },
-];
-
-const ReagentsTableFilter = () => {
+const ReagentsTableFilter = ({
+  filterSequence,
+  tableConfiguration,
+  setTableConfiguration,
+}: any) => {
   return (
-    <div className="checkbox_wraper">
-      <p>Выберите отображаемые столбцы</p>
-      <FormGroup>
-        {filterFields.map(({ defaultChecked, label, id }) => (
+    <FormGroup row>
+      {filterSequence.map((key) => {
+        const { label, checked } = tableConfiguration[key];
+        const handleOnChange = () => {
+          setTableConfiguration({
+            ...tableConfiguration,
+            [key]: { ...tableConfiguration[key], checked: !checked },
+          });
+        };
+        return (
           <FormControlLabel
-            key={id}
-            control={<Checkbox defaultChecked={defaultChecked} />}
+            control={<Checkbox checked={checked} onChange={handleOnChange} />}
             label={label}
+            key={key}
           />
-        ))}
-      </FormGroup>
-    </div>
+        );
+      })}
+    </FormGroup>
   );
 };
 
