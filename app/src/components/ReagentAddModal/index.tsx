@@ -49,7 +49,7 @@ const REAGENT_FIELDS: { label: string; fieldsName: string }[] = [
   },
 ];
 
-const ReagentAddModal = ({ openAddReagent, handleCloseAddReagent }: any) => {
+const ReagentAddModal = ({ isModalShown, closeModal }: any) => {
   const [reagentFieldsState, setReagentFieldsState] = useState(
     REAGENT_FIELDS.reduce((acc, reagent) => {
       acc[reagent.fieldName] = "";
@@ -65,7 +65,7 @@ const ReagentAddModal = ({ openAddReagent, handleCloseAddReagent }: any) => {
   };
 
   return (
-    <Dialog open={openAddReagent} onClose={handleCloseAddReagent}>
+    <Dialog open={isModalShown} onClose={closeModal}>
       <DialogTitle>Добавить реактив</DialogTitle>
 
       <DialogContent>
@@ -83,10 +83,10 @@ const ReagentAddModal = ({ openAddReagent, handleCloseAddReagent }: any) => {
         })}
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleCloseAddReagent}>Отмена</Button>
+        <Button onClick={closeModal}>Отмена</Button>
         <Button
           onClick={() => {
-            handleCloseAddReagent();
+            closeModal();
             addReagent(reagentFieldsState);
             window.location.reload();
           }}

@@ -14,7 +14,6 @@ import image from "../assets/logo.png";
 import { reagentSorter } from "../helpers/reagentSorter";
 import { ReagentWriteOffModal } from "../components/ReagentWriteOffModal";
 import { ReagentAddModal } from "../components/ReagentAddModal";
-import { logout } from "../helpers/logout";
 import { ColleagueAddModal } from "../components/ColleagueAddModal";
 import { ReagentsTable } from "../components/ReagentsTable";
 import { ReagentsTableFilter } from "../components/ReagentsTableFilter";
@@ -81,9 +80,8 @@ const HomePage = () => {
   };
 
   const handleChangeAmount = (reagent) => {
-    const { name, id, unit, amount, uuid } = reagent;
     openReagentWriteOffModal();
-    setCurReagent([name, id, unit, amount, uuid]);
+    setCurReagent(reagent);
   };
 
   useEffect(() => {
@@ -201,25 +199,25 @@ const HomePage = () => {
         />
 
         <ReagentWriteOffModal
-          openModal={isReagentWriteOffModalShown}
-          handleCloseModal={closeReagentWriteOffModal}
-          curReagent={curReagent}
+          isModalShown={isReagentWriteOffModalShown}
+          closeModal={closeReagentWriteOffModal}
+          reagent={curReagent}
         />
 
         <ReagentAddModal
-          openAddReagent={isAddReagentModalShown}
-          handleCloseAddReagent={closeAddReagentModal}
+          isModalShown={isAddReagentModalShown}
+          closeModal={closeAddReagentModal}
         />
 
         <ReagentDeleteModal
-          openModal={isDeleteReagentModalShown}
+          isModalShown={isDeleteReagentModalShown}
           closeModal={closeDeleteReagentModal}
           reagent={deleteReagent}
         />
 
         <ColleagueAddModal
-          openAddColleague={isAddColleagueModalShown}
-          handleCloseAddColleague={closeAddColleagueModal}
+          isModalShown={isAddColleagueModalShown}
+          closeModal={closeAddColleagueModal}
         />
       </div>
     </div>

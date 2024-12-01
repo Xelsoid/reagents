@@ -14,10 +14,7 @@ import {
 } from "@mui/material";
 import { addUser } from "../../helpers/addUser";
 
-const ColleagueAddModal = ({
-  openAddColleague,
-  handleCloseAddColleague,
-}: any) => {
+const ColleagueAddModal = ({ isModalShown, closeModal }: any) => {
   const [colleagueFields, setColleagueFields] = useState({
     name: "",
     password: "",
@@ -32,7 +29,7 @@ const ColleagueAddModal = ({
   };
 
   return (
-    <Dialog open={openAddColleague} onClose={handleCloseAddColleague}>
+    <Dialog open={isModalShown} onClose={closeModal}>
       <DialogTitle>Добавить пользователя</DialogTitle>
       <DialogContent>
         <TextField
@@ -69,11 +66,11 @@ const ColleagueAddModal = ({
         </FormControl>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleCloseAddColleague}>Отмена</Button>
+        <Button onClick={closeModal}>Отмена</Button>
         <Button
           onClick={() => {
             addUser(colleagueFields);
-            handleCloseAddColleague();
+            closeModal();
           }}
         >
           Добавить

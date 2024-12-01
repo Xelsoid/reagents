@@ -11,20 +11,18 @@ import {
 } from "@mui/material";
 import { updateReagentAmount } from "../../helpers/changeAmountReagent";
 
-const ReagentWriteOffModal = ({
-  openModal,
-  handleCloseModal,
-  curReagent,
-}: any) => {
+const ReagentWriteOffModal = ({ isModalShown, closeModal, reagent }: any) => {
+  const { name, id, unit, amount, uuid } = reagent;
   const [amountValue, setAmountValue] = useState(0);
   return (
-    <Dialog open={openModal} onClose={handleCloseModal}>
+    <Dialog open={isModalShown} onClose={closeModal}>
       <DialogTitle>Списание реактива</DialogTitle>
       <DialogContent>
-        <Typography variant="h6">{curReagent[0]}</Typography>
-        <Typography variant="body1">ID: {curReagent[1]}</Typography>
+        <Typography variant="h6" marginBottom={2}>
+          {name} (ID: {id})
+        </Typography>
         <TextField
-          label="Объем списания"
+          label={`Объем списания (${unit})`}
           type="number"
           fullWidth
           className="input_volume"
@@ -33,14 +31,13 @@ const ReagentWriteOffModal = ({
             setAmountValue(Number(e.target.value));
           }}
         />
-        <Typography variant="body1">Единицы: {curReagent[2]}</Typography>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleCloseModal}>Отмена</Button>
+        <Button onClick={closeModal}>Отмена</Button>
         <Button
           onClick={() => {
-            updateReagentAmount(curReagent[4], curReagent[3] - amountValue);
-            handleCloseModal();
+            updateReagentAmount(uuid, amount - amountValue);
+            closeModal();
           }}
         >
           Списать
