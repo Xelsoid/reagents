@@ -31,7 +31,6 @@ const ColleagueAddModal = ({
     });
   };
 
-  console.log(colleagueFields);
   return (
     <Dialog open={openAddColleague} onClose={handleCloseAddColleague}>
       <DialogTitle>Добавить пользователя</DialogTitle>

@@ -1,9 +1,17 @@
 // @ts-nocheck
 import React, { useEffect, useState } from "react";
-import { Button } from "@mui/material";
 import "../style/home_page.css";
-import { reagentSorter } from "../helpers/reagentSorter";
+import LoginIcon from "@mui/icons-material/Login";
+import LogoutIcon from "@mui/icons-material/Logout";
+import FaceIcon from "@mui/icons-material/Face";
+import ScienceOutlinedIcon from "@mui/icons-material/ScienceOutlined";
+import Stack from "@mui/material/Stack";
+import { Button } from "@mui/material";
+import Grid from "@mui/material/Grid2";
+import { Typography } from "@mui/material";
+import { LogInModal } from "../components/LogInModal";
 import image from "../assets/logo.png";
+import { reagentSorter } from "../helpers/reagentSorter";
 import { ReagentWriteOffModal } from "../components/ReagentWriteOffModal";
 import { ReagentAddModal } from "../components/ReagentAddModal";
 import { logout } from "../helpers/logout";
@@ -12,6 +20,8 @@ import { ReagentsTable } from "../components/ReagentsTable";
 import { ReagentsTableFilter } from "../components/ReagentsTableFilter";
 import { ReagentsTableSorter } from "../components/ReagentsTableSorter";
 import { ReagentDeleteModal } from "../components/ReagentDeleteModal";
+import { useModal } from "../hooks/useModal";
+import { LogOutModal } from "../components/LogOutModal";
 
 const TABLE_KEYS_SEQUENCE = [
   "id",
@@ -43,41 +53,39 @@ const HomePage = () => {
   const isEditor = userRole === "editor";
   const isAdmin = userRole === "admin";
 
-  const [openReagentWriteOffModal, setOpenReagentWriteOffModal] =
-    useState(false);
-  const [openReagentAddModal, setOpenReagentAddModal] = useState(false);
-  const [openReagentDeleteModal, setOpenReagentDeleteModal] = useState(false);
-  const [openColleagueAddModal, setOpenColleagueAddModal] = useState(false);
+  const [isLoginModalShown, openLoginModal, closeLoginModal] = useModal();
+  const [isLogoutModalShown, openLogoutModal, closeLogoutModal] = useModal();
+  const [
+    isReagentWriteOffModalShown,
+    openReagentWriteOffModal,
+    closeReagentWriteOffModal,
+  ] = useModal();
+  const [isAddReagentModalShown, openAddReagentModal, closeAddReagentModal] =
+    useModal();
+  const [
+    isDeleteReagentModalShown,
+    openDeleteReagentModal,
+    closeDeleteReagentModal,
+  ] = useModal();
+  const [
+    isAddColleagueModalShown,
+    openAddColleagueModal,
+    closeAddColleagueModal,
+  ] = useModal();
+
   const [deleteReagent, setDeleteReagent] = useState("");
 
-  const handleCloseReagentWriteOffModal = () => {
-    setOpenReagentWriteOffModal(false);
-  };
-
-  const handleCloseReagentAddModal = () => {
-    setOpenReagentAddModal(false);
-  };
-
-  const handleCloseReagentDeleteModal = () => {
-    setOpenReagentDeleteModal(false);
-  };
-
-  const handleCloseColleagueAddModal = () => {
-    setOpenColleagueAddModal(false);
-  };
-
   const handleReagentDelete = (reagent) => {
-    setOpenReagentDeleteModal(true);
+    openDeleteReagentModal();
     setDeleteReagent(reagent);
   };
 
   const handleChangeAmount = (reagent) => {
     const { name, id, unit, amount, uuid } = reagent;
-    setOpenReagentWriteOffModal(true);
+    openReagentWriteOffModal();
     setCurReagent([name, id, unit, amount, uuid]);
   };
 
-  console.log(data);
   useEffect(() => {
     const fetchData = async (url: string) => {
       const response = await fetch(url);
@@ -99,42 +107,65 @@ const HomePage = () => {
 
   return (
     <div>
-      <header className="main_header">
-        <img className="logo_img" src={image} alt="logo" />
-        {userName && <p className="user_name">{userName}</p>}
-        {userName && (
-          <Button
-            variant="outlined"
-            onClick={() => {
-              logout();
-              window.location.href = "/";
-            }}
-          >
-            Выход
-          </Button>
-        )}
-
-        {(isAdmin || isEditor) && (
-          <Button
-            variant="outlined"
-            onClick={() => {
-              setOpenReagentAddModal(true);
-            }}
-          >
-            Добавить реактив
-          </Button>
-        )}
-
-        {isAdmin && (
-          <Button
-            variant="outlined"
-            onClick={() => {
-              setOpenColleagueAddModal(true);
-            }}
-          >
-            Добавить сотрудника
-          </Button>
-        )}
+      <header>
+        <Grid
+          container
+          justifyContent="space-between" // Центрирование по горизонтали
+          alignItems="center" // Центрирование по вертикали
+        >
+          <Grid item>
+            <img width={140} height={100} src={image} alt="Company logo" />
+          </Grid>
+          <Grid item>
+            {userName && (
+              <Typography color="textPrimary">
+                Добро пожаловать {userName}
+              </Typography>
+            )}
+          </Grid>
+          <Grid item>
+            {(isAdmin || isEditor) && (
+              <Button
+                variant="contained"
+                endIcon={<ScienceOutlinedIcon />}
+                onClick={openAddReagentModal}
+              >
+                Добавить реактив
+              </Button>
+            )}
+          </Grid>
+          <Grid item>
+            {isAdmin && (
+              <Button
+                variant="contained"
+                endIcon={<FaceIcon />}
+                onClick={openAddColleagueModal}
+              >
+                Добавить сотрудника
+              </Button>
+            )}
+          </Grid>
+          <Grid item>
+            {userName && (
+              <Button
+                variant="contained"
+                endIcon={<LogoutIcon />}
+                onClick={openLogoutModal}
+              >
+                Выйти
+              </Button>
+            )}
+            {!userName && (
+              <Button
+                variant="contained"
+                endIcon={<LoginIcon />}
+                onClick={openLoginModal}
+              >
+                Войти
+              </Button>
+            )}
+          </Grid>
+        </Grid>
       </header>
 
       <main>
@@ -159,25 +190,36 @@ const HomePage = () => {
         )}
       </main>
       <div>
+        <LogInModal
+          isModalShown={isLoginModalShown}
+          closeModal={closeLoginModal}
+        />
+
+        <LogOutModal
+          isModalShown={isLogoutModalShown}
+          closeModal={closeLogoutModal}
+        />
+
         <ReagentWriteOffModal
-          openModal={openReagentWriteOffModal}
-          handleCloseModal={handleCloseReagentWriteOffModal}
+          openModal={isReagentWriteOffModalShown}
+          handleCloseModal={closeReagentWriteOffModal}
           curReagent={curReagent}
         />
+
         <ReagentAddModal
-          openAddReagent={openReagentAddModal}
-          handleCloseAddReagent={handleCloseReagentAddModal}
+          openAddReagent={isAddReagentModalShown}
+          handleCloseAddReagent={closeAddReagentModal}
         />
 
         <ReagentDeleteModal
-          openModal={openReagentDeleteModal}
-          closeModal={handleCloseReagentDeleteModal}
+          openModal={isDeleteReagentModalShown}
+          closeModal={closeDeleteReagentModal}
           reagent={deleteReagent}
         />
 
         <ColleagueAddModal
-          openAddColleague={openColleagueAddModal}
-          handleCloseAddColleague={handleCloseColleagueAddModal}
+          openAddColleague={isAddColleagueModalShown}
+          handleCloseAddColleague={closeAddColleagueModal}
         />
       </div>
     </div>

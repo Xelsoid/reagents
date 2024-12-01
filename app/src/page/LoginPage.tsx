@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "../style/login_page.css";
 import { useUserLogin } from "../hooks/useLoginUser";
 
 export const LoginPage = () => {
