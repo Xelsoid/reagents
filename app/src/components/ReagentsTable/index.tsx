@@ -1,9 +1,7 @@
 // @ts-nocheck
 import * as React from "react";
-import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
@@ -11,30 +9,8 @@ import Paper from "@mui/material/Paper";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
-
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-  },
-  padding: "8px",
-}));
-
-const StyledTableRow = styled(TableRow)(({ theme, alertRow }) => ({
-  "&:nth-of-type(odd)": {
-    backgroundColor: !alertRow && theme.palette.action.hover,
-  },
-  // color row in red if amount < 100
-  backgroundColor: alertRow && theme.palette.error.light,
-
-  // hide last border
-  "&:last-child td, &:last-child th": {
-    border: 0,
-  },
-}));
+import { StyledTableCell, StyledTableRow } from "./parts";
+import { SkeletonTableBody } from "./SkeletonTableBody";
 
 const REAGENT_MIN_ALERT_AMOUNT = 100;
 
@@ -69,7 +45,9 @@ const ReagentsTable = ({
         </TableHead>
 
         <TableBody>
-          {data.map((reagent) => {
+          {!data && <SkeletonTableBody />}
+
+          {data?.map((reagent) => {
             const handleDelete = () => {
               handleReagentDelete(reagent);
             };

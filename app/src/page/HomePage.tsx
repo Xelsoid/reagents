@@ -172,17 +172,15 @@ const HomePage = () => {
           setTableConfiguration={setTableConfiguration}
         />
 
-        {data?.length > 0 && (
-          <ReagentsTable
-            data={data}
-            columnsSequence={TABLE_KEYS_SEQUENCE}
-            tableConfiguration={tableConfiguration}
-            handleReagentDelete={handleReagentDelete}
-            handleChangeAmount={handleChangeAmount}
-            showWriteOffBtn={isEditor || isAdmin}
-            showDeleteBtn={isAdmin}
-          />
-        )}
+        <ReagentsTable
+          data={data}
+          columnsSequence={TABLE_KEYS_SEQUENCE}
+          tableConfiguration={tableConfiguration}
+          handleReagentDelete={handleReagentDelete}
+          handleChangeAmount={handleChangeAmount}
+          showWriteOffBtn={isEditor || isAdmin}
+          showDeleteBtn={isAdmin}
+        />
       </main>
       <div>
         <LogInModal
