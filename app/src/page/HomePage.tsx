@@ -7,6 +7,7 @@ import FaceIcon from "@mui/icons-material/Face";
 import ScienceOutlinedIcon from "@mui/icons-material/ScienceOutlined";
 import { Button, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
+import Box from "@mui/joy/Box";
 import { LogInModal } from "../components/LogInModal";
 import image from "../assets/logo.png";
 import { reagentSorter } from "../helpers/reagentSorter";
@@ -164,13 +165,17 @@ const HomePage = () => {
       </header>
 
       <main>
-        <ReagentsTableSorter data={data} setData={setData} />
+        <Box sx={{ my: 2, width: 200 }}>
+          <ReagentsTableSorter data={data} setData={setData} />
+        </Box>
 
-        <ReagentsTableFilter
-          filterSequence={TABLE_KEYS_SEQUENCE}
-          tableConfiguration={tableConfiguration}
-          setTableConfiguration={setTableConfiguration}
-        />
+        <Box sx={{ my: 1 }}>
+          <ReagentsTableFilter
+            filterSequence={TABLE_KEYS_SEQUENCE}
+            tableConfiguration={tableConfiguration}
+            setTableConfiguration={setTableConfiguration}
+          />
+        </Box>
 
         <ReagentsTable
           data={data}

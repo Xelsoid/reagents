@@ -1,6 +1,5 @@
 // @ts-nocheck
 import * as React from "react";
-import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -37,26 +36,24 @@ const ReagentsTableSorter = ({ data, setData }: any) => {
   };
 
   return (
-    <Box sx={{ width: 200 }}>
-      <FormControl fullWidth size="small">
-        <InputLabel id="reagents-sort-label">Сортировка</InputLabel>
-        <Select
-          labelId="reagents-sort-label"
-          id="reagents-sort"
-          value={sortOption}
-          label="Сортировка"
-          onChange={handleChange}
-        >
-          {OPTIONS.map(({ label, value }) => {
-            return (
-              <MenuItem value={value} key={value}>
-                {label}
-              </MenuItem>
-            );
-          })}
-        </Select>
-      </FormControl>
-    </Box>
+    <FormControl fullWidth size="small">
+      <InputLabel id="reagents-sort-label">Сортировка</InputLabel>
+      <Select
+        labelId="reagents-sort-label"
+        id="reagents-sort"
+        value={sortOption}
+        label="Сортировка"
+        onChange={handleChange}
+      >
+        {OPTIONS.map(({ label, value }) => {
+          return (
+            <MenuItem value={value} key={value}>
+              {label}
+            </MenuItem>
+          );
+        })}
+      </Select>
+    </FormControl>
   );
 };
 
