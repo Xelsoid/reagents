@@ -1,29 +1,46 @@
-// import { useNavigate } from "react-router-dom";
 import { useCallback } from "react";
+import { setCustomerDataToStorage } from "../helpers/manageCustomerDataStorage";
 
-export const useUserLogin = () => {
-  // const navigate = useNavigate();
+export const useUserLogin = (setMessage: any) => {
+  return useCallback(
+    async (name: string, password: string) => {
+      try {
+        const response = await fetch("/api/login", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ name, password }),
+        });
 
-  return useCallback((name: string, passwordUser: string) => {
-    fetch("/api/login", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name,
-        password: passwordUser,
-      }),
-    }).then((response) =>
-      response
-        .json()
-        .then((resp) => {
-          localStorage.setItem("name", resp.name);
-          localStorage.setItem("role", resp.role);
-          // navigate("main");
-        })
-        .catch(() => alert("Invalid login or password")),
-    );
-  }, []);
+        if (!response.ok) {
+          setMessage("Неверный логин или пароль", {
+            variant: "error",
+            size: "lg",
+            persist: true,
+          });
+          return;
+        }
+
+        const data = await response.json();
+        setCustomerDataToStorage(data.name, data.role);
+
+        setMessage(`Добро пожаловать ${data.name}`, {
+          variant: "success",
+          size: "lg",
+          persist: true,
+        });
+      } catch (error) {
+        console.error("Ошибка:", error);
+
+        setMessage("Произошла ошибка при входе", {
+          variant: "error",
+          size: "lg",
+          persist: true,
+        });
+      }
+    },
+    [setMessage],
+  );
 };

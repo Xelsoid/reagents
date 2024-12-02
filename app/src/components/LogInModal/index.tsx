@@ -1,7 +1,6 @@
 // @ts-nocheck
 import React, { useState } from "react";
 import {
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
@@ -10,14 +9,19 @@ import {
 } from "@mui/material";
 import Alert from "@mui/material/Alert";
 import { useUserLogin } from "../../hooks/useLoginUser";
+import Button from "@mui/joy/Button";
+import { useSnackbar } from "notistack";
 
 const LogInModal = ({ isModalShown, closeModal }: any) => {
+  const [loading, setLoading] = useState(false);
   const [logInFieldsState, setLogInFieldsState] = useState({
     name: null,
     password: null,
   });
   const [warning, setWarning] = useState(false);
-  const login = useUserLogin();
+
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const login = useUserLogin(enqueueSnackbar);
 
   const handleOnChange = (event) => {
     setLogInFieldsState({
@@ -26,9 +30,12 @@ const LogInModal = ({ isModalShown, closeModal }: any) => {
     });
   };
 
-  const handleLogIn = () => {
-    if (logInFieldsState.name && logInFieldsState.password) {
-      login(logInFieldsState.name, logInFieldsState.password);
+  const handleLogIn = async () => {
+    const { name, password } = logInFieldsState;
+    if (name && password) {
+      setLoading(true);
+      await login(name, password);
+      setLoading(false);
       closeModal();
     } else {
       setWarning(true);
@@ -66,7 +73,9 @@ const LogInModal = ({ isModalShown, closeModal }: any) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={closeModal}>Отмена</Button>
-        <Button onClick={handleLogIn}>Войти</Button>
+        <Button loading={loading} onClick={handleLogIn}>
+          Войти
+        </Button>
       </DialogActions>
     </Dialog>
   );
