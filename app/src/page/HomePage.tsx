@@ -5,10 +5,8 @@ import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
 import FaceIcon from "@mui/icons-material/Face";
 import ScienceOutlinedIcon from "@mui/icons-material/ScienceOutlined";
-import Stack from "@mui/material/Stack";
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import { Typography } from "@mui/material";
 import { LogInModal } from "../components/LogInModal";
 import image from "../assets/logo.png";
 import { reagentSorter } from "../helpers/reagentSorter";
@@ -51,6 +49,8 @@ const HomePage = () => {
   const userName = localStorage.getItem("name");
   const isEditor = userRole === "editor";
   const isAdmin = userRole === "admin";
+  const [tableConfiguration, setTableConfiguration] =
+    useState(TABLE_CONFIGURATION);
 
   const [isLoginModalShown, openLoginModal, closeLoginModal] = useModal();
   const [isLogoutModalShown, openLogoutModal, closeLogoutModal] = useModal();
@@ -94,14 +94,11 @@ const HomePage = () => {
         }
         return;
       }
-      console.log(`Ошибка HTTP: ${response.status}`);
+      console.error(`Ошибка HTTP: ${response.status}`);
     };
 
     fetchData("/api/getReagents");
   }, []);
-
-  const [tableConfiguration, setTableConfiguration] =
-    useState(TABLE_CONFIGURATION);
 
   return (
     <div>
