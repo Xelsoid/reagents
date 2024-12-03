@@ -45,6 +45,7 @@ const TABLE_CONFIGURATION = {
 
 const HomePage = () => {
   const [data, setData] = useState(null);
+  const [sorting, setSorting] = useState("id_asc");
   const [curReagent, setCurReagent] = useState([]);
   const userRole = localStorage.getItem("role");
   const userName = localStorage.getItem("name");
@@ -91,15 +92,24 @@ const HomePage = () => {
       if (response.ok) {
         const json = await response.json();
         if (json?.data) {
-          setData(reagentSorter(json.data.reagents, "id_asc"));
+          setData(json.data.reagents);
         }
         return;
       }
       console.error(`Ошибка HTTP: ${response.status}`);
     };
 
-    fetchData("/api/getReagents");
+    await fetchData("/api/getReagents");
   }, []);
+
+  useEffect(() => {
+    if (!data) {
+      return;
+    }
+
+    const sortedData = reagentSorter(data, sorting);
+    setData(sortedData);
+  }, [data, sorting]);
 
   return (
     <div>
@@ -166,7 +176,7 @@ const HomePage = () => {
 
       <main>
         <Box sx={{ my: 2, width: 200 }}>
-          <ReagentsTableSorter data={data} setData={setData} />
+          <ReagentsTableSorter sorting={sorting} setSorting={setSorting} />
         </Box>
 
         <Box sx={{ my: 1 }}>
@@ -207,6 +217,8 @@ const HomePage = () => {
         <ReagentAddModal
           isModalShown={isAddReagentModalShown}
           closeModal={closeAddReagentModal}
+          data={data}
+          setData={setData}
         />
 
         <ReagentDeleteModal

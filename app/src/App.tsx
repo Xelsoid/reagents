@@ -1,9 +1,8 @@
 import React from "react";
-import { HomePage } from "./page/HomePage";
-import { SnackbarProvider } from "notistack";
-import { closeSnackbar } from "notistack";
+import { SnackbarProvider, closeSnackbar } from "notistack";
 import IconButton from "@mui/material/IconButton";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
+import { HomePage } from "./page/HomePage";
 
 function App() {
   return (

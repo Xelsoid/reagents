@@ -1,14 +1,14 @@
 // @ts-nocheck
 import React, { useState } from "react";
 import {
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
   TextField,
 } from "@mui/material";
-import { addReagent } from "../../helpers/addReagent";
+import Button from "@mui/joy/Button";
+import { useAddReagent } from "../../hooks/useAddReagent";
 
 const REAGENT_FIELDS: { label: string; fieldsName: string }[] = [
   {
@@ -49,13 +49,17 @@ const REAGENT_FIELDS: { label: string; fieldsName: string }[] = [
   },
 ];
 
-const ReagentAddModal = ({ isModalShown, closeModal }: any) => {
+const ReagentAddModal = ({ isModalShown, closeModal, data, setData }: any) => {
   const [reagentFieldsState, setReagentFieldsState] = useState(
     REAGENT_FIELDS.reduce((acc, reagent) => {
       acc[reagent.fieldName] = "";
       return acc;
     }, {}),
   );
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const addReagent = useAddReagent();
 
   const handleOnChange = (event) => {
     setReagentFieldsState({
@@ -64,17 +68,25 @@ const ReagentAddModal = ({ isModalShown, closeModal }: any) => {
     });
   };
 
+  const handleOnReagentAdd = async () => {
+    setIsLoading(true);
+    const newReagent = await addReagent(reagentFieldsState);
+    setData([...data, newReagent]);
+    setIsLoading(false);
+    closeModal();
+  };
+
   return (
     <Dialog open={isModalShown} onClose={closeModal}>
       <DialogTitle>Добавить реактив</DialogTitle>
 
       <DialogContent>
-        {REAGENT_FIELDS.map((reagent: string) => {
+        {REAGENT_FIELDS.map(({ fieldName, label }) => {
           return (
             <TextField
-              key={reagent.fieldName}
-              name={reagent.fieldName}
-              label={reagent.label}
+              key={fieldName}
+              name={fieldName}
+              label={label}
               fullWidth
               onChange={handleOnChange}
               margin="dense"
@@ -83,14 +95,10 @@ const ReagentAddModal = ({ isModalShown, closeModal }: any) => {
         })}
       </DialogContent>
       <DialogActions>
-        <Button onClick={closeModal}>Отмена</Button>
-        <Button
-          onClick={() => {
-            closeModal();
-            addReagent(reagentFieldsState);
-            window.location.reload();
-          }}
-        >
+        <Button disabled={isLoading} onClick={closeModal}>
+          Отмена
+        </Button>
+        <Button loading={isLoading} onClick={handleOnReagentAdd}>
           Добавить
         </Button>
       </DialogActions>

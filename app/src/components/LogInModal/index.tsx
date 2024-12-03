@@ -13,8 +13,11 @@ import Button from "@mui/joy/Button";
 import { useSnackbar } from "notistack";
 
 const LogInModal = ({ isModalShown, closeModal }: any) => {
-  const [loading, setLoading] = useState(false);
-  const [logInFieldsState, setLogInFieldsState] = useState({
+  const [loading, setLoading] = useState<boolean>(false);
+  const [logInFieldsState, setLogInFieldsState] = useState<{
+    name: string | null;
+    password: string | null;
+  }>({
     name: null,
     password: null,
   });

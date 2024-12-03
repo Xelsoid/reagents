@@ -48,6 +48,7 @@
     "axios": "^1.7.7",
     "http-proxy-middleware": "^3.0.2",
     "nodemon": "^3.1.0",
+    "notistack": "^3.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.26.2",

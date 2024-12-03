@@ -4,7 +4,6 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { reagentSorter } from "../../helpers/reagentSorter";
 
 const OPTIONS = [
   {
@@ -25,14 +24,9 @@ const OPTIONS = [
   },
 ];
 
-const ReagentsTableSorter = ({ data, setData }: any) => {
-  const [sortOption, setSortOption] = React.useState(OPTIONS[0].value);
-
+const ReagentsTableSorter = ({ sorting, setSorting }: any) => {
   const handleChange = (event: SelectChangeEvent) => {
-    const selectedOption = event.target.value;
-    setSortOption(selectedOption);
-    const sortedData = reagentSorter([...data], selectedOption);
-    setData(sortedData);
+    setSorting(event.target.value);
   };
 
   return (
@@ -41,7 +35,7 @@ const ReagentsTableSorter = ({ data, setData }: any) => {
       <Select
         labelId="reagents-sort-label"
         id="reagents-sort"
-        value={sortOption}
+        value={sorting}
         label="Сортировка"
         onChange={handleChange}
       >

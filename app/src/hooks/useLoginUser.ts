@@ -1,7 +1,10 @@
 import { useCallback } from "react";
 import { setCustomerDataToStorage } from "../helpers/manageCustomerDataStorage";
+import { useToast } from "./useToast";
 
-export const useUserLogin = (setMessage: any) => {
+export const useUserLogin = () => {
+  const sendMessage = useToast();
+
   return useCallback(
     async (name: string, password: string) => {
       try {
@@ -15,32 +18,20 @@ export const useUserLogin = (setMessage: any) => {
         });
 
         if (!response.ok) {
-          setMessage("Неверный логин или пароль", {
-            variant: "error",
-            size: "lg",
-            persist: true,
-          });
+          sendMessage("Неверный логин или пароль", "error");
           return;
         }
 
         const data = await response.json();
         setCustomerDataToStorage(data.name, data.role);
 
-        setMessage(`Добро пожаловать ${data.name}`, {
-          variant: "success",
-          size: "lg",
-          persist: true,
-        });
+        sendMessage(`Добро пожаловать ${data.name}`, "success", false);
       } catch (error) {
         console.error("Ошибка:", error);
 
-        setMessage("Произошла ошибка при входе", {
-          variant: "error",
-          size: "lg",
-          persist: true,
-        });
+        sendMessage("Произошла ошибка при входе", "error");
       }
     },
-    [setMessage],
+    [sendMessage],
   );
 };
