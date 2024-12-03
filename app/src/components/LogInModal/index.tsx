@@ -11,9 +11,10 @@ import Alert from "@mui/material/Alert";
 import { useUserLogin } from "../../hooks/useLoginUser";
 import Button from "@mui/joy/Button";
 import { useSnackbar } from "notistack";
+import { useForceUpdate } from "../../hooks/useForceUpdate";
 
 const LogInModal = ({ isModalShown, closeModal }: any) => {
-  const [loading, setLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [logInFieldsState, setLogInFieldsState] = useState<{
     name: string | null;
     password: string | null;
@@ -23,6 +24,7 @@ const LogInModal = ({ isModalShown, closeModal }: any) => {
   });
   const [warning, setWarning] = useState(false);
 
+  const forceUpdate = useForceUpdate();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const login = useUserLogin(enqueueSnackbar);
 
@@ -36,10 +38,11 @@ const LogInModal = ({ isModalShown, closeModal }: any) => {
   const handleLogIn = async () => {
     const { name, password } = logInFieldsState;
     if (name && password) {
-      setLoading(true);
+      setIsLoading(true);
       await login(name, password);
-      setLoading(false);
+      setIsLoading(false);
       closeModal();
+      forceUpdate();
     } else {
       setWarning(true);
     }
@@ -76,7 +79,7 @@ const LogInModal = ({ isModalShown, closeModal }: any) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={closeModal}>Отмена</Button>
-        <Button loading={loading} onClick={handleLogIn}>
+        <Button loading={isLoading} onClick={handleLogIn}>
           Войти
         </Button>
       </DialogActions>

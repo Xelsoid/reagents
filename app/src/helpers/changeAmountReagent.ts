@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { logout } from "./logout";
+import { deleteCustomerDataFromStorage } from "./manageCustomerDataStorage";
 
 export async function updateReagentAmount(
   uuidReagent: string,
@@ -22,7 +22,8 @@ export async function updateReagentAmount(
       console.log(data);
     } else {
       if (response.status === 401) {
-        logout();
+        deleteCustomerDataFromStorage();
+        // TODO: переделать, это какя-то хуйня
       }
       throw new Error(`HTTP-Error: ${response.status}`);
     }

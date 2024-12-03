@@ -99,7 +99,7 @@ const HomePage = () => {
       console.error(`Ошибка HTTP: ${response.status}`);
     };
 
-    await fetchData("/api/getReagents");
+    fetchData("/api/getReagents");
   }, []);
 
   useEffect(() => {
