@@ -1,7 +1,9 @@
 import dotenv from "dotenv";
+
 const {
   GoogleSpreadsheet,
   GoogleSpreadsheetRow,
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
 } = require("google-spreadsheet");
 
 const SHEET_INDEX = 1;
@@ -61,6 +63,7 @@ export class Authentication {
     const row = Authentication.findRow(rows, name);
     if (row) {
       await row.delete();
+
       return row._deleted;
     }
     return null;
