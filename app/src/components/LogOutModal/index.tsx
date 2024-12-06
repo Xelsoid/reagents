@@ -15,6 +15,7 @@ const LogOutModal = ({ isModalShown, closeModal }: any) => {
     // BE call
     forceUpdate();
     setIsLoading(false);
+    closeModal();
   };
 
   return (
