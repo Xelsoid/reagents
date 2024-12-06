@@ -23,7 +23,7 @@ const ReagentWriteOffModal = ({ isModalShown, closeModal, reagent }: any) => {
 
   const handleUpdateReagentAmount = async () => {
     setIsLoading(true);
-    await updateReagentAmount(uuid, amount - amountValue);
+    await updateReagentAmount(uuid, normalizeFloatNumber(amount) - amountValue);
     setIsLoading(false);
     closeModal();
     window.location.reload(); // need reload the page to update the table

@@ -16,12 +16,9 @@ export const useUserLogout = () => {
         return;
       }
 
-      const data = await response.json();
       sendMessage(`Вы вышли из системы`, "success", false);
-      return data;
     } catch (error) {
       console.error("Ошибка:", error);
-
       sendMessage("Не удалось осуществить выход из системы", "error");
     }
   }, [sendMessage]);

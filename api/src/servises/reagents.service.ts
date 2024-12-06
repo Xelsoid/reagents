@@ -7,8 +7,19 @@ import {
   updateReagentAmount,
 } from "../repositories/reagents.repository";
 import { IReagent } from "../interface/reagents";
+import { normalizeFloatNumber } from "../utils";
 
-export const getReagentsData = () => getAllReagents();
+export const getReagentsData = async () => {
+  const reagents = await getAllReagents();
+
+  return reagents.map((reagent: IReagent) => {
+    return {
+      ...reagent,
+      amount: normalizeFloatNumber(reagent.amount),
+      minAmount: normalizeFloatNumber(reagent.minAmount),
+    };
+  });
+};
 
 export const addReagentData = (requestBody: IReagent) => {
   const {
