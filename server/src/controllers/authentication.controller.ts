@@ -27,9 +27,7 @@ export const loginUser = async (
       const token = jwt.sign(
         { user_id: name, email, role },
         process.env.TOKEN_KEY!,
-        {
-          expiresIn: SESSION_EXPIRATION_TIME,
-        },
+        { expiresIn: SESSION_EXPIRATION_TIME },
       );
 
       res.cookie("token", token, {
@@ -65,7 +63,7 @@ export const logoutUser = async (
       secure: process.env.NODE_ENV === "production", // Использовать только по HTTPS в продакшене
       maxAge: 0, // Устанавливаем время жизни куки в 0, чтобы удалить ее
     });
-
+    console.log(111);
     return res.status(200).json({
       message: "Successfully logged out",
     });

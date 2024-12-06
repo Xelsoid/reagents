@@ -4,13 +4,13 @@
   "description": "Reagents",
   "esModuleInterop": true,
   "workspaces": [
-    "api",
-    "app"
+    "server",
+    "client"
   ],
   "scripts": {
-    "start:nodejs": "npm run dev -w api",
-    "start:react": "npm run start -w app",
-    "build": "npm run build -w app",
+    "start:nodejs": "npm run dev -w server",
+    "start:react": "npm run start -w client",
+    "build": "npm run build -w client",
     "netlify:build": "netlify build",
     "netlify:dev": "netlify dev",
     "deploy:preview": "netlify deploy",

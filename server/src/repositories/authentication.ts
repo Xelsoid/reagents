@@ -63,7 +63,6 @@ export class Authentication {
     const row = Authentication.findRow(rows, name);
     if (row) {
       await row.delete();
-      // eslint-disable-next-line no-underscore-dangle
       return row._deleted;
     }
     return null;

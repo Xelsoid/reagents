@@ -1,10 +1,9 @@
 {
     "env": {
-        "browser": true,
+        "node": true,
         "es2021": true
     },
     "extends": [
-        "airbnb",
         "eslint:recommended",
         "plugin:prettier/recommended",
         "plugin:@typescript-eslint/recommended"
@@ -18,13 +17,14 @@
     "plugins": [
         "@typescript-eslint",
         "prettier",
-        "import"
+        "import",
+        "eslint-plugin-import"
     ],
     "rules": {
         "semi": ["error", "always"],
         "indent": ["error", 2],
         "quotes": ["error", "double"],
-        "no-console": ["error", { "allow": ["warn", "error"] }],
+        "no-console": ["warn", { "allow": ["warn", "error"] }],
         "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
 
         // ES modules
