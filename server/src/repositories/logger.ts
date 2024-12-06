@@ -1,12 +1,6 @@
 import { config } from "dotenv";
+import { GoogleSpreadsheet } from "google-spreadsheet";
 import { IReagent } from "../interface/reagents";
-import { Reagents } from "./reagents";
-
-const {
-  GoogleSpreadsheet,
-  GoogleSpreadsheetRow,
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-} = require("google-spreadsheet");
 
 config();
 
@@ -18,9 +12,9 @@ const COLORS = {
 };
 
 export class Logger {
-  private doc: typeof GoogleSpreadsheet;
+  private doc: GoogleSpreadsheet;
 
-  constructor(sheetDocument: typeof GoogleSpreadsheet) {
+  constructor(sheetDocument: GoogleSpreadsheet) {
     this.doc = sheetDocument;
     this.addEntryToLogs = this.addEntryToLogs.bind(this);
   }

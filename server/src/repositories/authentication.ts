@@ -1,9 +1,7 @@
 import dotenv from "dotenv";
-
 const {
   GoogleSpreadsheet,
   GoogleSpreadsheetRow,
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
 } = require("google-spreadsheet");
 
 const SHEET_INDEX = 1;

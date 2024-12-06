@@ -65,7 +65,7 @@ export class Reagents {
     const row = Reagents.findRow(rows, uuid);
     if (row) {
       await row.delete();
-      // eslint-disable-next-line no-underscore-dangle
+
       return row._deleted;
     }
     return null;

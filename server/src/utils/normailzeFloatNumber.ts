@@ -1,6 +1,5 @@
-// @ts-nocheck
-export function normalizeFloatNumber(number) {
-  if (typeof number === "string") {
-    return parseFloat(number.replace(",", "."));
+export function normalizeFloatNumber(value: string | number) {
+  if (typeof value === "string") {
+    return parseFloat(value.replace(",", "."));
   }
 }

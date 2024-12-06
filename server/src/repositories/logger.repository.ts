@@ -1,11 +1,7 @@
 import { JWT } from "google-auth-library";
+import { GoogleSpreadsheet } from "google-spreadsheet";
 import json from "../../reagents-ivan.json";
 import { Logger } from "./logger";
-
-const {
-  GoogleSpreadsheet,
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-} = require("google-spreadsheet");
 
 const serviceAccountAuth = new JWT({
   email: json.client_email,
