@@ -17,6 +17,7 @@ import {
   removeUser,
   verifyToken,
   hasRole,
+  logoutUser,
 } from "./controllers/authentication.controller";
 
 config();
@@ -28,7 +29,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(logger);
 
 app.post(AUTHENTICATION.LOGIN, loginUser);
-// TODO: implement logout call
+
+app.post(AUTHENTICATION.LOGOUT, logoutUser);
 
 app.post(
   AUTHENTICATION.CREATE_USER,

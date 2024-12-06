@@ -53,6 +53,27 @@ export const loginUser = async (
   }
 };
 
+export const logoutUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    // Удаляем токен из куки
+    res.cookie("token", "", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production", // Использовать только по HTTPS в продакшене
+      maxAge: 0, // Устанавливаем время жизни куки в 0, чтобы удалить ее
+    });
+
+    return res.status(200).json({
+      message: "Successfully logged out",
+    });
+  } catch (e) {
+    return next(e);
+  }
+};
+
 export const createUser = async (
   req: Request,
   res: Response,
@@ -105,14 +126,14 @@ export const verifyToken = async (
   next: NextFunction,
 ) => {
   const authCookie = req.cookies.token;
-  console.log(req.user);
+
   if (!authCookie) {
-    console.log(1111);
     return res
       .status(401)
       .header("Content-Type", "text/plain")
       .send("Token is required");
   }
+
   try {
     req.user = jwt.verify(authCookie, process.env.TOKEN_KEY!);
   } catch (err) {
@@ -127,7 +148,7 @@ export const verifyToken = async (
 export const hasRole = (roles: ROLES[]) => {
   return (req: RequestWithUser, res: Response, next: NextFunction) => {
     const currentUser = req.user;
-    console.log(currentUser);
+
     if (currentUser && roles.includes(currentUser.role)) {
       return next();
     }
