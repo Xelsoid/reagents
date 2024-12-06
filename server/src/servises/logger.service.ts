@@ -3,7 +3,7 @@ import { IReagent } from "../interface/reagents";
 import { User } from "../interface/auth";
 
 export const addNewEntryToLogs = (
-  requestBody: Required<IReagent>,
+  requestBody: IReagent,
   user: User,
   operationType?: string,
 ) => {
@@ -20,8 +20,8 @@ export const addNewEntryToLogs = (
     storagePlace,
   } = requestBody;
 
-  const amountDif = amount - prevAmount;
-  if (amountDif === 0) return;
+  const amountDif = amount - (prevAmount ?? 0);
+  if (amountDif === 0 || !prevAmount) return;
 
   const operation = !operationType && amountDif > 0 ? "Receipt" : "Write-off";
 

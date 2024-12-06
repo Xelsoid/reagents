@@ -10,13 +10,13 @@ import { IReagent } from "../interface/reagents";
 import { normalizeFloatNumber } from "../utils";
 
 export const getReagentsData = async () => {
-  const reagents = await getAllReagents();
+  const reagents = (await getAllReagents()) as IReagent[];
 
   return reagents.map((reagent: IReagent) => {
     return {
       ...reagent,
-      amount: normalizeFloatNumber(reagent.amount),
-      minAmount: normalizeFloatNumber(reagent.minAmount),
+      amount: normalizeFloatNumber(reagent?.amount),
+      minAmount: normalizeFloatNumber(reagent?.minAmount),
     };
   });
 };

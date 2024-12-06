@@ -47,7 +47,8 @@ export class Logger {
         ...reagent,
         user: user_id,
         operationType,
-      });
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as Record<string, any>);
       const rowIndex = newRow.rowNumber - 1;
       const [, cellsRange] = newRow.a1Range.split("!");
       await sheet.loadCells(cellsRange);
