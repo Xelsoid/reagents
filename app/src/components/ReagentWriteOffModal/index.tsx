@@ -1,7 +1,6 @@
 // @ts-nocheck
 import React, { useState } from "react";
 import {
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
@@ -9,11 +8,29 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { updateReagentAmount } from "../../helpers/changeAmountReagent";
+import Button from "@mui/joy/Button";
+import { useChangeReagentAmount } from "../../hooks/useChangeReagentAmount";
 
 const ReagentWriteOffModal = ({ isModalShown, closeModal, reagent }: any) => {
   const { name, id, unit, amount, uuid } = reagent;
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const handleOnReagentAmountChange = (e) => {
+    setAmountValue(Number(e.target.value));
+  };
+
+  const updateReagentAmount = useChangeReagentAmount();
+
+  const handleUpdateReagentAmount = async () => {
+    setIsLoading(true);
+    await updateReagentAmount(uuid, amount - amountValue);
+    setIsLoading(false);
+    closeModal();
+    window.location.reload(); // need reload the page to update the table
+  };
+
   const [amountValue, setAmountValue] = useState(0);
+
   return (
     <Dialog open={isModalShown} onClose={closeModal}>
       <DialogTitle>Списание реактива</DialogTitle>
@@ -27,19 +44,12 @@ const ReagentWriteOffModal = ({ isModalShown, closeModal, reagent }: any) => {
           fullWidth
           className="input_volume"
           value={amountValue}
-          onChange={(e) => {
-            setAmountValue(Number(e.target.value));
-          }}
+          onChange={handleOnReagentAmountChange}
         />
       </DialogContent>
       <DialogActions>
         <Button onClick={closeModal}>Отмена</Button>
-        <Button
-          onClick={() => {
-            updateReagentAmount(uuid, amount - amountValue);
-            closeModal();
-          }}
-        >
+        <Button loading={isLoading} onClick={handleUpdateReagentAmount}>
           Списать
         </Button>
       </DialogActions>
