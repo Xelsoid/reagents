@@ -12,6 +12,7 @@ import { useUserLogin } from "../../hooks/useLoginUser";
 import Button from "@mui/joy/Button";
 import { useSnackbar } from "notistack";
 import { useForceUpdate } from "../../hooks/useForceUpdate";
+import { setCustomerDataToStorage } from "../../helpers/manageCustomerDataStorage";
 
 const LogInModal = ({ isModalShown, closeModal }: any) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -39,7 +40,8 @@ const LogInModal = ({ isModalShown, closeModal }: any) => {
     const { name, password } = logInFieldsState;
     if (name && password) {
       setIsLoading(true);
-      await login(name, password);
+      const data = await login(name, password);
+      setCustomerDataToStorage(data.name, data.role);
       setIsLoading(false);
       closeModal();
       forceUpdate();

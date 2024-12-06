@@ -1,7 +1,6 @@
 // @ts-nocheck
 import React, { useState } from "react";
 import {
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
@@ -12,7 +11,8 @@ import {
   InputLabel,
   MenuItem,
 } from "@mui/material";
-import { addUser } from "../../helpers/addUser";
+import Button from "@mui/joy/Button";
+import { useAddEmployee } from "../../hooks/useAddEmployee";
 
 const ColleagueAddModal = ({ isModalShown, closeModal }: any) => {
   const [colleagueFields, setColleagueFields] = useState({
@@ -21,11 +21,22 @@ const ColleagueAddModal = ({ isModalShown, closeModal }: any) => {
     role: "user",
   });
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const handleOnChange = (e) => {
     setColleagueFields({
       ...colleagueFields,
       [e.target.name]: e.target.value,
     });
+  };
+
+  const addEmployee = useAddEmployee();
+
+  const handleAddEmployee = async () => {
+    setIsLoading(true);
+    await addEmployee(colleagueFields);
+    setIsLoading(false);
+    closeModal();
   };
 
   return (
@@ -67,12 +78,7 @@ const ColleagueAddModal = ({ isModalShown, closeModal }: any) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={closeModal}>Отмена</Button>
-        <Button
-          onClick={() => {
-            addUser(colleagueFields);
-            closeModal();
-          }}
-        >
+        <Button loading={isLoading} onClick={handleAddEmployee}>
           Добавить
         </Button>
       </DialogActions>

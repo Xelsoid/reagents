@@ -1,5 +1,4 @@
 import { useCallback } from "react";
-import { setCustomerDataToStorage } from "../helpers/manageCustomerDataStorage";
 import { useToast } from "./useToast";
 
 export const useUserLogin = () => {
@@ -23,9 +22,9 @@ export const useUserLogin = () => {
         }
 
         const data = await response.json();
-        setCustomerDataToStorage(data.name, data.role);
 
         sendMessage(`Добро пожаловать ${data.name}`, "success", false);
+        return data;
       } catch (error) {
         console.error("Ошибка:", error);
 
