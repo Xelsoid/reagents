@@ -1,18 +1,13 @@
 import dotenv from "dotenv";
-
-const {
-  GoogleSpreadsheet,
-  GoogleSpreadsheetRow,
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-} = require("google-spreadsheet");
+import { GoogleSpreadsheet, GoogleSpreadsheetRow } from "google-spreadsheet";
 
 const SHEET_INDEX = 1;
 dotenv.config();
 
 export class Authentication {
-  private doc: typeof GoogleSpreadsheet;
+  private doc: GoogleSpreadsheet;
 
-  constructor(sheetDocument: typeof GoogleSpreadsheet) {
+  constructor(sheetDocument: GoogleSpreadsheet) {
     this.doc = sheetDocument;
     this.getAllUsers = this.getAllUsers.bind(this);
     this.getCurrentUser = this.getCurrentUser.bind(this);
@@ -25,19 +20,21 @@ export class Authentication {
     return this.doc.sheetsByIndex[index];
   }
 
-  private static findRow(rows: [typeof GoogleSpreadsheetRow], name: string) {
+  private static findRow(rows: GoogleSpreadsheetRow[], name: string) {
     return rows.find((row) => row.get("name") === name);
   }
 
   async getAllUsers() {
     const sheet = await this.getSheet();
     const rows = await sheet.getRows();
-    return rows.map((row: typeof GoogleSpreadsheetRow) => row.toObject());
+    return rows.map((row: GoogleSpreadsheetRow) => row.toObject());
   }
 
   async getCurrentUser(userName: string) {
     const users = await this.getAllUsers();
-    return users?.find((user: { name: string }) => user.name === userName);
+    return users?.find(
+      (user: Partial<{ name: string }>) => user?.name === userName,
+    );
   }
 
   async createUser(
@@ -64,7 +61,7 @@ export class Authentication {
     if (row) {
       await row.delete();
 
-      return row._deleted;
+      return row.deleted;
     }
     return null;
   }

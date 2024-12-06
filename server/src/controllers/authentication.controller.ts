@@ -20,7 +20,8 @@ export const loginUser = async (
   next: NextFunction,
 ) => {
   try {
-    const { name, email, role, password } = await getUser(req.body.name);
+    const { name, email, role, password } =
+      (await getUser(req.body.name)) ?? {};
 
     if (await bcrypt.compare(req.body.password, password)) {
       // Create token
