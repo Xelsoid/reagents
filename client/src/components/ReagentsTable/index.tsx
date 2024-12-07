@@ -45,7 +45,7 @@ const ReagentsTable = ({
         </TableHead>
 
         <TableBody>
-          {!data && <SkeletonTableBody />}
+          {data.length < 1 && <SkeletonTableBody />}
 
           {data?.map((reagent) => {
             const handleDelete = () => {
