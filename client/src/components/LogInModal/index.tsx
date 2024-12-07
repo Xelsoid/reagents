@@ -66,6 +66,7 @@ const LogInModal = ({ isModalShown, closeModal }: any) => {
           value={logInFieldsState.name}
           onChange={handleOnChange}
           margin="dense"
+          disabled={isLoading}
         />
         <TextField
           name="password"
@@ -74,10 +75,13 @@ const LogInModal = ({ isModalShown, closeModal }: any) => {
           value={logInFieldsState.password}
           onChange={handleOnChange}
           margin="dense"
+          disabled={isLoading}
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={closeModal}>Отмена</Button>
+        <Button disabled={isLoading} onClick={closeModal}>
+          Отмена
+        </Button>
         <Button loading={isLoading} onClick={handleLogIn}>
           Войти
         </Button>

@@ -228,6 +228,8 @@ const HomePage = () => {
           isModalShown={isDeleteReagentModalShown}
           closeModal={closeDeleteReagentModal}
           reagent={deleteReagent}
+          data={data}
+          setData={setData}
         />
 
         <ColleagueAddModal

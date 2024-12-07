@@ -47,7 +47,7 @@ const ReagentWriteOffModal = ({
   const [amountValue, setAmountValue] = useState(0);
 
   return (
-    <Dialog open={isModalShown} onClose={!isLoading && closeModal}>
+    <Dialog open={isModalShown} onClose={closeModal}>
       <DialogTitle>Списание реактива</DialogTitle>
       <DialogContent>
         <Typography variant="h6" marginBottom={2}>

@@ -50,6 +50,7 @@ const ColleagueAddModal = ({ isModalShown, closeModal }: any) => {
           onChange={handleOnChange}
           fullWidth
           margin="dense"
+          disabled={isLoading}
         />
         <TextField
           value={colleagueFields.password}
@@ -59,6 +60,7 @@ const ColleagueAddModal = ({ isModalShown, closeModal }: any) => {
           onChange={handleOnChange}
           fullWidth
           margin="dense"
+          disabled={isLoading}
         />
         <FormControl fullWidth margin="dense">
           <InputLabel id="colleague-role-label">Роль</InputLabel>
@@ -69,6 +71,7 @@ const ColleagueAddModal = ({ isModalShown, closeModal }: any) => {
             value={colleagueFields.role}
             label="Роль"
             onChange={handleOnChange}
+            disabled={isLoading}
           >
             <MenuItem value="user">User</MenuItem>
             <MenuItem value="editor">Editor</MenuItem>
@@ -77,7 +80,9 @@ const ColleagueAddModal = ({ isModalShown, closeModal }: any) => {
         </FormControl>
       </DialogContent>
       <DialogActions>
-        <Button onClick={closeModal}>Отмена</Button>
+        <Button disabled={isLoading} onClick={closeModal}>
+          Отмена
+        </Button>
         <Button loading={isLoading} onClick={handleAddEmployee}>
           Добавить
         </Button>

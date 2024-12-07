@@ -21,7 +21,9 @@ const LogOutModal = ({ isModalShown, closeModal }: any) => {
     <Dialog open={isModalShown} onClose={closeModal}>
       <DialogTitle>Вы действительно хотите выйти из системы?</DialogTitle>
       <DialogActions>
-        <Button onClick={closeModal}>Отмена</Button>
+        <Button disabled={isLoading} onClick={closeModal}>
+          Отмена
+        </Button>
         <Button loading={isLoading} onClick={handleLogout}>
           Выйти
         </Button>

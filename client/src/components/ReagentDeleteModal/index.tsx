@@ -9,18 +9,32 @@ import {
 import Button from "@mui/joy/Button";
 import { useDeleteReagent } from "../../hooks/useDeleteReagent";
 
-const ReagentDeleteModal = ({ isModalShown, closeModal, reagent }: any) => {
+const ReagentDeleteModal = ({
+  isModalShown,
+  closeModal,
+  reagent,
+  data,
+  setData,
+}: any) => {
   const { name, uuid, amount, unit, id } = reagent;
   const deleteReagent = useDeleteReagent();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleDeleteReagent = async () => {
     setIsLoading(true);
-    await deleteReagent(uuid);
+    const result = await deleteReagent(uuid);
+
+    if (result) {
+      const copiedReagents = [...data];
+      const indexForDelete = copiedReagents.findIndex(
+        (reagent) => reagent.uuid === uuid,
+      );
+      copiedReagents.splice(indexForDelete, 1);
+      setData(copiedReagents);
+    }
+
     setIsLoading(false);
     closeModal();
-    window.location.reload(); // need reload the page to update the table
-    // it is better reimplement delete call to be able to return deleted reagent
   };
 
   return (
@@ -32,7 +46,9 @@ const ReagentDeleteModal = ({ isModalShown, closeModal, reagent }: any) => {
         {unit})
       </DialogContent>
       <DialogActions>
-        <Button onClick={closeModal}>Отмена</Button>
+        <Button disabled={isLoading} onClick={closeModal}>
+          Отмена
+        </Button>
         <Button loading={isLoading} onClick={handleDeleteReagent}>
           Удалить
         </Button>

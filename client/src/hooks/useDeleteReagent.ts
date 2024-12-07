@@ -33,8 +33,8 @@ export const useDeleteReagent = () => {
         return data;
       } catch (error) {
         console.error("Ошибка:", error);
-
         sendMessage("Произошла ошибка при попытке удалить реагент", "error");
+        return;
       }
     },
     [sendMessage],

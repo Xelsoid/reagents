@@ -92,6 +92,7 @@ const ReagentAddModal = ({ isModalShown, closeModal, data, setData }: any) => {
               fullWidth
               onChange={handleOnChange}
               margin="dense"
+              disabled={isLoading}
             />
           );
         })}

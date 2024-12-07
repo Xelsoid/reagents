@@ -27,7 +27,7 @@ export const useChangeReagentAmount = () => {
 
         const data: any = await response.json();
         const { reagent } = data.data;
-        console.log(reagent);
+
         sendMessage(
           `Количество реагента ${reagent.name} id(${reagent.id}) было изменено с ${reagent.prevAmount} на ${reagent.amount}`,
           "success",
@@ -39,6 +39,7 @@ export const useChangeReagentAmount = () => {
         console.error("Ошибка:", error);
 
         sendMessage("Произошла ошибка при попытке изменить реагент", "error");
+        return;
       }
     },
     [sendMessage],
