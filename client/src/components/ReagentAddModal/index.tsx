@@ -71,7 +71,9 @@ const ReagentAddModal = ({ isModalShown, closeModal, data, setData }: any) => {
   const handleOnReagentAdd = async () => {
     setIsLoading(true);
     const newReagent = await addReagent(reagentFieldsState);
-    setData([...data, newReagent]);
+    if (newReagent) {
+      setData([...data, newReagent]);
+    }
     setIsLoading(false);
     closeModal();
   };

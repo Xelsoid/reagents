@@ -2,20 +2,17 @@
 import React, { useState } from "react";
 import { Dialog, DialogActions, DialogTitle } from "@mui/material";
 import Button from "@mui/joy/Button";
-import { useForceUpdate } from "../../hooks/useForceUpdate";
 import { deleteCustomerDataFromStorage } from "../../helpers/manageCustomerDataStorage";
 import { useUserLogout } from "../../hooks/useLogoutUser";
 
 const LogOutModal = ({ isModalShown, closeModal }: any) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const forceUpdate = useForceUpdate();
   const logout = useUserLogout();
 
   const handleLogout = async () => {
     setIsLoading(true);
     deleteCustomerDataFromStorage();
     await logout();
-    forceUpdate();
     setIsLoading(false);
     closeModal();
   };

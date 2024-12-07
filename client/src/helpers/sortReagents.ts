@@ -1,5 +1,5 @@
 // @ts-nocheck
-export function reagentSorter(data, method) {
+export function sortReagents(data, method) {
   if (method === "id_asc" || method === "id_desc") {
     return [
       ...data.sort((a, b) => {

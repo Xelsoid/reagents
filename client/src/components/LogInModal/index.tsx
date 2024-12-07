@@ -11,7 +11,6 @@ import Alert from "@mui/material/Alert";
 import { useUserLogin } from "../../hooks/useLoginUser";
 import Button from "@mui/joy/Button";
 import { useSnackbar } from "notistack";
-import { useForceUpdate } from "../../hooks/useForceUpdate";
 import { setCustomerDataToStorage } from "../../helpers/manageCustomerDataStorage";
 
 const LogInModal = ({ isModalShown, closeModal }: any) => {
@@ -25,7 +24,6 @@ const LogInModal = ({ isModalShown, closeModal }: any) => {
   });
   const [warning, setWarning] = useState(false);
 
-  const forceUpdate = useForceUpdate();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const login = useUserLogin(enqueueSnackbar);
 
@@ -44,7 +42,6 @@ const LogInModal = ({ isModalShown, closeModal }: any) => {
       setCustomerDataToStorage(data.name, data.role);
       setIsLoading(false);
       closeModal();
-      forceUpdate();
     } else {
       setWarning(true);
     }

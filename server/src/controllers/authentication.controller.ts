@@ -35,6 +35,19 @@ export const loginUser = async (
         httpOnly: true, // Запретить доступ к куки через JavaScript
         secure: process.env.NODE_ENV === "production", // Использовать только по HTTPS в продакшене
         maxAge: SESSION_EXPIRATION_TIME, // Время жизни куки в миллисекундах (2 час)
+        sameSite: "strict",
+      });
+
+      res.cookie("name", name, {
+        secure: process.env.NODE_ENV === "production",
+        maxAge: SESSION_EXPIRATION_TIME, // Время жизни куки в миллисекундах (2 час)
+        sameSite: "strict",
+      });
+
+      res.cookie("role", role, {
+        secure: process.env.NODE_ENV === "production",
+        maxAge: SESSION_EXPIRATION_TIME, // Время жизни куки в миллисекундах (2 час)
+        sameSite: "strict",
       });
 
       return res.status(200).json({
@@ -63,6 +76,19 @@ export const logoutUser = async (
       httpOnly: true,
       secure: process.env.NODE_ENV === "production", // Использовать только по HTTPS в продакшене
       maxAge: 0, // Устанавливаем время жизни куки в 0, чтобы удалить ее
+      sameSite: "strict",
+    });
+
+    res.cookie("name", "", {
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 0, // Время жизни куки в миллисекундах (2 час)
+      sameSite: "strict",
+    });
+
+    res.cookie("role", "", {
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 0, // Время жизни куки в миллисекундах (2 час)
+      sameSite: "strict",
     });
 
     return res.status(200).json({

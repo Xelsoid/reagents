@@ -10,7 +10,8 @@ import Grid from "@mui/material/Grid2";
 import Box from "@mui/joy/Box";
 import { LogInModal } from "../components/LogInModal";
 import image from "../assets/logo.png";
-import { reagentSorter } from "../helpers/reagentSorter";
+import { sortReagents } from "../helpers/sortReagents";
+import { getCookieValue, isCookieExist } from "../helpers/parseCookie";
 import { ReagentWriteOffModal } from "../components/ReagentWriteOffModal";
 import { ReagentAddModal } from "../components/ReagentAddModal";
 import { ColleagueAddModal } from "../components/ColleagueAddModal";
@@ -44,11 +45,11 @@ const TABLE_CONFIGURATION = {
 };
 
 const HomePage = () => {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState([]);
   const [sorting, setSorting] = useState("id_asc");
   const [curReagent, setCurReagent] = useState([]);
-  const userRole = localStorage.getItem("role");
-  const userName = localStorage.getItem("name");
+  const userRole = getCookieValue("role");
+  const userName = getCookieValue("name");
   const isEditor = userRole === "editor";
   const isAdmin = userRole === "admin";
   const [tableConfiguration, setTableConfiguration] =
@@ -92,7 +93,7 @@ const HomePage = () => {
       if (response.ok) {
         const json = await response.json();
         if (json?.data) {
-          setData(json.data.reagents);
+          setData(sortReagents(json.data.reagents, sorting));
         }
         return;
       }
@@ -103,13 +104,13 @@ const HomePage = () => {
   }, []);
 
   useEffect(() => {
-    if (!data) {
+    if (data.length === 0) {
       return;
     }
 
-    const sortedData = reagentSorter(data, sorting);
+    const sortedData = sortReagents(data, sorting);
     setData(sortedData);
-  }, [data, sorting]);
+  }, [sorting]);
 
   return (
     <div>
