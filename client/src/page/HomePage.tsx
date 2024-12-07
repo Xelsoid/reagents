@@ -213,6 +213,8 @@ const HomePage = () => {
           isModalShown={isReagentWriteOffModalShown}
           closeModal={closeReagentWriteOffModal}
           reagent={curReagent}
+          data={data}
+          setData={setData}
         />
 
         <ReagentAddModal

@@ -11,7 +11,13 @@ import {
 import Button from "@mui/joy/Button";
 import { useChangeReagentAmount } from "../../hooks/useChangeReagentAmount";
 
-const ReagentWriteOffModal = ({ isModalShown, closeModal, reagent }: any) => {
+const ReagentWriteOffModal = ({
+  isModalShown,
+  closeModal,
+  reagent,
+  data,
+  setData,
+}: any) => {
   const { name, id, unit, amount, uuid } = reagent;
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -23,16 +29,25 @@ const ReagentWriteOffModal = ({ isModalShown, closeModal, reagent }: any) => {
 
   const handleUpdateReagentAmount = async () => {
     setIsLoading(true);
-    await updateReagentAmount(uuid, amount - amountValue);
+    const reagent = await updateReagentAmount(uuid, amount - amountValue);
+
+    if (reagent) {
+      const reagentsCopy = [...data];
+      const currentReagent = reagentsCopy.find(
+        ({ uuid }) => reagent.uuid === uuid,
+      );
+      currentReagent.amount = reagent.amount;
+      setData(reagentsCopy);
+    }
+
     setIsLoading(false);
     closeModal();
-    window.location.reload(); // need reload the page to update the table
   };
 
   const [amountValue, setAmountValue] = useState(0);
 
   return (
-    <Dialog open={isModalShown} onClose={closeModal}>
+    <Dialog open={isModalShown} onClose={!isLoading && closeModal}>
       <DialogTitle>Списание реактива</DialogTitle>
       <DialogContent>
         <Typography variant="h6" marginBottom={2}>
@@ -45,10 +60,13 @@ const ReagentWriteOffModal = ({ isModalShown, closeModal, reagent }: any) => {
           className="input_volume"
           value={amountValue}
           onChange={handleOnReagentAmountChange}
+          disabled={isLoading}
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={closeModal}>Отмена</Button>
+        <Button disabled={isLoading} onClick={closeModal}>
+          Отмена
+        </Button>
         <Button loading={isLoading} onClick={handleUpdateReagentAmount}>
           Списать
         </Button>
