@@ -16,6 +16,8 @@ export const StyledTableCell = styled(TableCell)(({ theme }) => ({
 }));
 
 export const StyledTableRow = styled(TableRow)(({ theme, alertRow }) => ({
+  height: '65px',
+
   '&:nth-of-type(odd)': {
     backgroundColor: !alertRow && theme.palette.action.hover,
   },
