@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import { Dialog, DialogActions, DialogTitle } from '@mui/material';
 import Button from '@mui/joy/Button';
-import { deleteCustomerDataFromStorage } from '../../helpers/manageCustomerDataStorage';
 import { useUserLogout } from '../../hooks/useLogoutUser';
 
 const LogOutModal = ({ isModalShown, closeModal }: any) => {
@@ -11,7 +10,6 @@ const LogOutModal = ({ isModalShown, closeModal }: any) => {
 
   const handleLogout = async () => {
     setIsLoading(true);
-    deleteCustomerDataFromStorage();
     await logout();
     setIsLoading(false);
     closeModal();

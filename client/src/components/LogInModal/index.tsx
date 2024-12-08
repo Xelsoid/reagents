@@ -4,12 +4,11 @@ import { Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@m
 import Alert from '@mui/material/Alert';
 import Button from '@mui/joy/Button';
 import { useUserLogin } from '../../hooks/useLoginUser';
-import { setCustomerDataToStorage } from '../../helpers/manageCustomerDataStorage';
 
 const LogInModal = ({ isModalShown, closeModal }: any) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [logInFieldsState, setLogInFieldsState] = useState({
-    userName: null,
+    name: null,
     password: null,
   });
   const [warning, setWarning] = useState(false);
@@ -24,11 +23,10 @@ const LogInModal = ({ isModalShown, closeModal }: any) => {
   };
 
   const handleLogIn = async () => {
-    const { userName, password } = logInFieldsState;
-    if (userName && password) {
+    const { name, password } = logInFieldsState;
+    if (name && password) {
       setIsLoading(true);
-      const data = await login(userName, password);
-      setCustomerDataToStorage(data.name, data.role);
+      await login(name, password);
       setIsLoading(false);
       closeModal();
     } else {
