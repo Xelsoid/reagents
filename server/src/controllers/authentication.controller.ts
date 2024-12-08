@@ -171,11 +171,16 @@ export const verifyToken = async (
 };
 
 export const hasRole = (roles: ROLES[]) => {
-  return (req: RequestWithUser, res: Response, next: NextFunction) => {
+  return async (req: RequestWithUser, res: Response, next: NextFunction) => {
     const currentUser = req.user;
 
-    if (currentUser && roles.includes(currentUser.role)) {
-      return next();
+    if (currentUser?.user_id) {
+      // getting user from stored data, to prevent the case when the user role was changed in base or user deleted< but session still exists
+      const { role } = (await getUser(currentUser.user_id)) ?? {};
+      console.log(role);
+      if (roles.includes(role)) {
+        return next();
+      }
     }
 
     // console.warn(
