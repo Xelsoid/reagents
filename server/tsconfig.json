@@ -1,5 +1,4 @@
 {
-  "extends": "@tsconfig/node16/tsconfig.json",
   "compilerOptions": {
     "removeComments": true,
     "outDir": "./dist",
@@ -7,7 +6,15 @@
     "allowJs": true,
     "maxNodeModuleJsDepth": 10,
     "resolveJsonModule": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "lib": ["es2021"],
+    "module": "Node16",
+    "target": "es2021",
+    "strict": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+
   },
   "include": [
     "src/**/*"
