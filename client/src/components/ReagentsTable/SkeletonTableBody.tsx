@@ -1,7 +1,7 @@
 // @ts-nocheck
-import * as React from "react";
-import Skeleton from "@mui/joy/Skeleton";
-import { StyledTableCell, StyledTableRow } from "./parts";
+import * as React from 'react';
+import Skeleton from '@mui/joy/Skeleton';
+import { StyledTableCell, StyledTableRow } from './parts';
 const TABLE_SIZE = {
   X: 6,
   Y: 20,

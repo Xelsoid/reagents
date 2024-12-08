@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   Dialog,
   DialogActions,
@@ -10,15 +10,15 @@ import {
   FormControl,
   InputLabel,
   MenuItem,
-} from "@mui/material";
-import Button from "@mui/joy/Button";
-import { useAddEmployee } from "../../hooks/useAddEmployee";
+} from '@mui/material';
+import Button from '@mui/joy/Button';
+import { useAddEmployee } from '../../hooks/useAddEmployee';
 
 const ColleagueAddModal = ({ isModalShown, closeModal }: any) => {
   const [colleagueFields, setColleagueFields] = useState({
-    name: "",
-    password: "",
-    role: "user",
+    name: '',
+    password: '',
+    role: 'user',
   });
 
   const [isLoading, setIsLoading] = useState<boolean>(false);

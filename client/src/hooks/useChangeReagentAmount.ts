@@ -1,5 +1,5 @@
-import { useCallback } from "react";
-import { useToast } from "./useToast";
+import { useCallback } from 'react';
+import { useToast } from './useToast';
 
 export const useChangeReagentAmount = () => {
   const sendMessage = useToast();
@@ -7,21 +7,21 @@ export const useChangeReagentAmount = () => {
   return useCallback(
     async (uuid: string, amount: number) => {
       try {
-        const response = await fetch("/api/updateReagentAmount", {
-          method: "PATCH",
+        const response = await fetch('/api/updateReagentAmount', {
+          method: 'PATCH',
           headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify({ uuid, amount }),
         });
 
         if (!response.ok) {
           if (response.status === 401) {
-            sendMessage("У Вас нет прав на изменение реактива", "error");
+            sendMessage('У Вас нет прав на изменение реактива', 'error');
             return;
           }
-          sendMessage("Произошла ошибка. Реагент не был изменен", "error");
+          sendMessage('Произошла ошибка. Реагент не был изменен', 'error');
           return;
         }
 
@@ -30,18 +30,18 @@ export const useChangeReagentAmount = () => {
 
         sendMessage(
           `Количество реагента ${reagent.name} id(${reagent.id}) было изменено с ${reagent.prevAmount} на ${reagent.amount}`,
-          "success",
-          false,
+          'success',
+          false
         );
 
         // TODO: fix return
         // eslint-disable-next-line consistent-return
         return reagent;
       } catch (error) {
-        console.error("Ошибка:", error);
-        sendMessage("Произошла ошибка при попытке изменить реагент", "error");
+        console.error('Ошибка:', error);
+        sendMessage('Произошла ошибка при попытке изменить реагент', 'error');
       }
     },
-    [sendMessage],
+    [sendMessage]
   );
 };

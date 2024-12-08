@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   Dialog,
   DialogActions,
@@ -7,17 +7,11 @@ import {
   DialogTitle,
   TextField,
   Typography,
-} from "@mui/material";
-import Button from "@mui/joy/Button";
-import { useChangeReagentAmount } from "../../hooks/useChangeReagentAmount";
+} from '@mui/material';
+import Button from '@mui/joy/Button';
+import { useChangeReagentAmount } from '../../hooks/useChangeReagentAmount';
 
-const ReagentWriteOffModal = ({
-  isModalShown,
-  closeModal,
-  reagent,
-  data,
-  setData,
-}: any) => {
+const ReagentWriteOffModal = ({ isModalShown, closeModal, reagent, data, setData }: any) => {
   const { name, id, unit, amount, uuid } = reagent;
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [amountValue, setAmountValue] = useState(0);
@@ -30,15 +24,12 @@ const ReagentWriteOffModal = ({
 
   const handleUpdateReagentAmount = async () => {
     setIsLoading(true);
-    const updatedReagent = await updateReagentAmount(
-      uuid,
-      amount - amountValue,
-    );
+    const updatedReagent = await updateReagentAmount(uuid, amount - amountValue);
 
     if (updatedReagent) {
       const reagentsCopy = [...data];
       const currentReagent = reagentsCopy.find(
-        (currReagent) => updatedReagent.uuid === currReagent.uuid,
+        (currReagent) => updatedReagent.uuid === currReagent.uuid
       );
       currentReagent.amount = updatedReagent.amount;
       setData(reagentsCopy);

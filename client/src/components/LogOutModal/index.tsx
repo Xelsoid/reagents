@@ -1,9 +1,9 @@
 // @ts-nocheck
-import React, { useState } from "react";
-import { Dialog, DialogActions, DialogTitle } from "@mui/material";
-import Button from "@mui/joy/Button";
-import { deleteCustomerDataFromStorage } from "../../helpers/manageCustomerDataStorage";
-import { useUserLogout } from "../../hooks/useLogoutUser";
+import React, { useState } from 'react';
+import { Dialog, DialogActions, DialogTitle } from '@mui/material';
+import Button from '@mui/joy/Button';
+import { deleteCustomerDataFromStorage } from '../../helpers/manageCustomerDataStorage';
+import { useUserLogout } from '../../hooks/useLogoutUser';
 
 const LogOutModal = ({ isModalShown, closeModal }: any) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);

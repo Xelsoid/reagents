@@ -1,16 +1,10 @@
 // @ts-nocheck
-import React, { useState } from "react";
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  TextField,
-} from "@mui/material";
-import Alert from "@mui/material/Alert";
-import Button from "@mui/joy/Button";
-import { useUserLogin } from "../../hooks/useLoginUser";
-import { setCustomerDataToStorage } from "../../helpers/manageCustomerDataStorage";
+import React, { useState } from 'react';
+import { Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
+import Alert from '@mui/material/Alert';
+import Button from '@mui/joy/Button';
+import { useUserLogin } from '../../hooks/useLoginUser';
+import { setCustomerDataToStorage } from '../../helpers/manageCustomerDataStorage';
 
 const LogInModal = ({ isModalShown, closeModal }: any) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -50,9 +44,7 @@ const LogInModal = ({ isModalShown, closeModal }: any) => {
 
       <DialogContent>
         {warning && (
-          <Alert severity="warning">
-            Чтобы продолжить введите имя пользователя и пароль
-          </Alert>
+          <Alert severity="warning">Чтобы продолжить введите имя пользователя и пароль</Alert>
         )}
         <TextField
           name="name"

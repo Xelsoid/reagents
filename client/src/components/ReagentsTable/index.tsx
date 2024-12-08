@@ -1,16 +1,16 @@
 // @ts-nocheck
-import * as React from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import IconButton from "@mui/material/IconButton";
-import DeleteIcon from "@mui/icons-material/Delete";
-import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
-import { StyledTableCell, StyledTableRow } from "./parts";
-import { SkeletonTableBody } from "./SkeletonTableBody";
+import * as React from 'react';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
+import { StyledTableCell, StyledTableRow } from './parts';
+import { SkeletonTableBody } from './SkeletonTableBody';
 
 const REAGENT_MIN_ALERT_AMOUNT = 100;
 
@@ -37,9 +37,7 @@ const ReagentsTable = ({
                 )
               );
             })}
-            {showWriteOffBtn && (
-              <StyledTableCell component="th" align="center" />
-            )}
+            {showWriteOffBtn && <StyledTableCell component="th" align="center" />}
             {showDeleteBtn && <StyledTableCell component="th" align="center" />}
           </TableRow>
         </TableHead>

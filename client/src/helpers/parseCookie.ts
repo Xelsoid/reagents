@@ -1,11 +1,11 @@
 // @ts-nocheck
 
 const parseCookie = () => {
-  const cookieRawArr = document.cookie.split("; ");
+  const cookieRawArr = document.cookie.split('; ');
   return Object.fromEntries(
     cookieRawArr.map((cookie) => {
-      return cookie.split("=");
-    }),
+      return cookie.split('=');
+    })
   );
 };
 

@@ -1,21 +1,10 @@
 // @ts-nocheck
-import React, { useState } from "react";
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-} from "@mui/material";
-import Button from "@mui/joy/Button";
-import { useDeleteReagent } from "../../hooks/useDeleteReagent";
+import React, { useState } from 'react';
+import { Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import Button from '@mui/joy/Button';
+import { useDeleteReagent } from '../../hooks/useDeleteReagent';
 
-const ReagentDeleteModal = ({
-  isModalShown,
-  closeModal,
-  reagent,
-  data,
-  setData,
-}: any) => {
+const ReagentDeleteModal = ({ isModalShown, closeModal, reagent, data, setData }: any) => {
   const { name, uuid, amount, unit, id } = reagent;
   const deleteReagent = useDeleteReagent();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -27,7 +16,7 @@ const ReagentDeleteModal = ({
     if (result) {
       const copiedReagents = [...data];
       const indexForDelete = copiedReagents.findIndex(
-        (currentReagent) => currentReagent.uuid === uuid,
+        (currentReagent) => currentReagent.uuid === uuid
       );
       copiedReagents.splice(indexForDelete, 1);
       setData(copiedReagents);

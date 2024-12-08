@@ -1,5 +1,5 @@
-import { useSnackbar, VariantType } from "notistack";
-import { useCallback } from "react";
+import { useSnackbar, VariantType } from 'notistack';
+import { useCallback } from 'react';
 
 export const useToast = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -11,6 +11,6 @@ export const useToast = () => {
         persist: persist,
       });
     },
-    [enqueueSnackbar],
+    [enqueueSnackbar]
   );
 };

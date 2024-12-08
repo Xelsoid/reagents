@@ -1,60 +1,54 @@
 // @ts-nocheck
-import React, { useState } from "react";
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  TextField,
-} from "@mui/material";
-import Button from "@mui/joy/Button";
-import { useAddReagent } from "../../hooks/useAddReagent";
+import React, { useState } from 'react';
+import { Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
+import Button from '@mui/joy/Button';
+import { useAddReagent } from '../../hooks/useAddReagent';
 
 const REAGENT_FIELDS: { label: string; fieldsName: string }[] = [
   {
-    label: "ID реактива",
-    fieldName: "id",
+    label: 'ID реактива',
+    fieldName: 'id',
   },
   {
-    label: "Наименование реактива",
-    fieldName: "name",
+    label: 'Наименование реактива',
+    fieldName: 'name',
   },
   {
-    label: "Объем/масса реактива",
-    fieldName: "amount",
+    label: 'Объем/масса реактива',
+    fieldName: 'amount',
   },
   {
-    label: "Минимальное количество",
-    fieldName: "minAmount",
+    label: 'Минимальное количество',
+    fieldName: 'minAmount',
   },
   {
-    label: "Единицы измерения",
-    fieldName: "unit",
+    label: 'Единицы измерения',
+    fieldName: 'unit',
   },
   {
-    label: "Поставщик",
-    fieldName: "supplier",
+    label: 'Поставщик',
+    fieldName: 'supplier',
   },
   {
-    label: "Производитель",
-    fieldName: "producer",
+    label: 'Производитель',
+    fieldName: 'producer',
   },
   {
-    label: "Условия хранения",
-    fieldName: "storageConditions",
+    label: 'Условия хранения',
+    fieldName: 'storageConditions',
   },
   {
-    label: "Место хранения",
-    fieldName: "storagePlace",
+    label: 'Место хранения',
+    fieldName: 'storagePlace',
   },
 ];
 
 const ReagentAddModal = ({ isModalShown, closeModal, data, setData }: any) => {
   const [reagentFieldsState, setReagentFieldsState] = useState(
     REAGENT_FIELDS.reduce((acc, reagent) => {
-      acc[reagent.fieldName] = "";
+      acc[reagent.fieldName] = '';
       return acc;
-    }, {}),
+    }, {})
   );
 
   const [isLoading, setIsLoading] = useState(false);

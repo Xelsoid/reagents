@@ -1,14 +1,14 @@
-import React from "react";
-import { SnackbarProvider, closeSnackbar } from "notistack";
-import IconButton from "@mui/material/IconButton";
-import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
-import { HomePage } from "./page/HomePage";
+import React from 'react';
+import { SnackbarProvider, closeSnackbar } from 'notistack';
+import IconButton from '@mui/material/IconButton';
+import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
+import { HomePage } from './page/HomePage';
 
 function App() {
   return (
     <SnackbarProvider
       maxSnack={3}
-      anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       hideIconVariant
       action={(snackbarId) => (
         <IconButton
