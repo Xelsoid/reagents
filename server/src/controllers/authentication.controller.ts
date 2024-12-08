@@ -132,14 +132,10 @@ export const removeUser = async (
     const wasUserDeleted = await deleteUser(req.body);
 
     if (wasUserDeleted) {
-      return res.status(200).header("Content-Type", "text/plain").send({
-        message: "The user was deleted",
-      });
+      return res.status(200).json({ message: "Пользователь был удален" });
     }
 
-    return res.status(404).header("Content-Type", "text/plain").send({
-      message: "The user was not found",
-    });
+    return res.status(404).json({ message: "Пользователь не был найден" });
   } catch (e) {
     return next(e);
   }
@@ -150,22 +146,46 @@ export const verifyToken = async (
   res: Response,
   next: NextFunction,
 ) => {
-  const authCookie = req.cookies.token;
+  const { token, name, role } = req.cookies;
 
-  if (!authCookie) {
-    return res
-      .status(401)
-      .header("Content-Type", "text/plain")
-      .send("Token is required");
+  if (!token) {
+    return res.status(401).json({
+      message: "Невозможно выполнить операцию, отсутствуют ключ доступа",
+    });
   }
 
   try {
-    req.user = jwt.verify(authCookie, process.env.TOKEN_KEY!);
+    const user = jwt.verify(token, process.env.TOKEN_KEY!);
+    if (user.user_id === name && user.role === role) {
+      req.user = user;
+    } else {
+      res.cookie("token", "", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production", // Использовать только по HTTPS в продакшене
+        maxAge: 0, // Устанавливаем время жизни куки в 0, чтобы удалить ее
+        sameSite: "strict",
+      });
+
+      res.cookie("name", "", {
+        secure: process.env.NODE_ENV === "production",
+        maxAge: 0, // Время жизни куки в миллисекундах (2 час)
+        sameSite: "strict",
+      });
+
+      res.cookie("role", "", {
+        secure: process.env.NODE_ENV === "production",
+        maxAge: 0, // Время жизни куки в миллисекундах (2 час)
+        sameSite: "strict",
+      });
+
+      return res.status(403).json({
+        message: "Данные учетной записи клиента и сервера не совпадают",
+      });
+    }
   } catch (err) {
-    return res
-      .status(401)
-      .header("Content-Type", "text/plain")
-      .send("Invalid Token");
+    return res.status(401).json({
+      message: "Невозможно выполнить операцию, неверный ключ доступа",
+    });
   }
   return next();
 };
@@ -177,7 +197,7 @@ export const hasRole = (roles: ROLES[]) => {
     if (currentUser?.user_id) {
       // getting user from stored data, to prevent the case when the user role was changed in base or user deleted< but session still exists
       const { role } = (await getUser(currentUser.user_id)) ?? {};
-      console.log(role);
+
       if (roles.includes(role)) {
         return next();
       }
@@ -186,11 +206,8 @@ export const hasRole = (roles: ROLES[]) => {
     // console.warn(
     //   `Unauthorized access attempt by user: ${currentUser?.id || "unknown"}`,
     // );
-    return res
-      .status(403)
-      .header("Content-Type", "text/plain")
-      .send(
-        `You are not authorized to perform this action. Required roles: ${roles.join(", ")}`,
-      );
+    return res.status(403).json({
+      message: `У Вас нет прав доступа для операции. Необходимые роли: ${roles.join(", ")}`,
+    });
   };
 };
