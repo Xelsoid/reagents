@@ -8,24 +8,19 @@ import {
   TextField,
 } from "@mui/material";
 import Alert from "@mui/material/Alert";
-import { useUserLogin } from "../../hooks/useLoginUser";
 import Button from "@mui/joy/Button";
-import { useSnackbar } from "notistack";
+import { useUserLogin } from "../../hooks/useLoginUser";
 import { setCustomerDataToStorage } from "../../helpers/manageCustomerDataStorage";
 
 const LogInModal = ({ isModalShown, closeModal }: any) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [logInFieldsState, setLogInFieldsState] = useState<{
-    name: string | null;
-    password: string | null;
-  }>({
-    name: null,
+  const [logInFieldsState, setLogInFieldsState] = useState({
+    userName: null,
     password: null,
   });
   const [warning, setWarning] = useState(false);
 
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  const login = useUserLogin(enqueueSnackbar);
+  const login = useUserLogin();
 
   const handleOnChange = (event) => {
     setLogInFieldsState({
@@ -35,10 +30,10 @@ const LogInModal = ({ isModalShown, closeModal }: any) => {
   };
 
   const handleLogIn = async () => {
-    const { name, password } = logInFieldsState;
-    if (name && password) {
+    const { userName, password } = logInFieldsState;
+    if (userName && password) {
       setIsLoading(true);
-      const data = await login(name, password);
+      const data = await login(userName, password);
       setCustomerDataToStorage(data.name, data.role);
       setIsLoading(false);
       closeModal();

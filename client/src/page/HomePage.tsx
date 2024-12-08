@@ -11,7 +11,7 @@ import Box from "@mui/joy/Box";
 import { LogInModal } from "../components/LogInModal";
 import image from "../assets/logo.png";
 import { sortReagents } from "../helpers/sortReagents";
-import { getCookieValue, isCookieExist } from "../helpers/parseCookie";
+import { getCookieValue } from "../helpers/parseCookie";
 import { ReagentWriteOffModal } from "../components/ReagentWriteOffModal";
 import { ReagentAddModal } from "../components/ReagentAddModal";
 import { ColleagueAddModal } from "../components/ColleagueAddModal";
@@ -101,6 +101,8 @@ const HomePage = () => {
     };
 
     fetchData("/api/getReagents");
+    // TODO: fix dependencies
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -110,6 +112,8 @@ const HomePage = () => {
 
     const sortedData = sortReagents(data, sorting);
     setData(sortedData);
+    // TODO: fix dependencies
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sorting]);
 
   return (

@@ -34,12 +34,12 @@ export const useChangeReagentAmount = () => {
           false,
         );
 
+        // TODO: fix return
+        // eslint-disable-next-line consistent-return
         return reagent;
       } catch (error) {
         console.error("Ошибка:", error);
-
         sendMessage("Произошла ошибка при попытке изменить реагент", "error");
-        return;
       }
     },
     [sendMessage],

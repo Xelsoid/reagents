@@ -27,7 +27,7 @@ const ReagentDeleteModal = ({
     if (result) {
       const copiedReagents = [...data];
       const indexForDelete = copiedReagents.findIndex(
-        (reagent) => reagent.uuid === uuid,
+        (currentReagent) => currentReagent.uuid === uuid,
       );
       copiedReagents.splice(indexForDelete, 1);
       setData(copiedReagents);

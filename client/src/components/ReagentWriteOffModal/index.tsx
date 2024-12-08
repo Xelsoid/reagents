@@ -20,6 +20,7 @@ const ReagentWriteOffModal = ({
 }: any) => {
   const { name, id, unit, amount, uuid } = reagent;
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [amountValue, setAmountValue] = useState(0);
 
   const handleOnReagentAmountChange = (e) => {
     setAmountValue(Number(e.target.value));
@@ -29,22 +30,23 @@ const ReagentWriteOffModal = ({
 
   const handleUpdateReagentAmount = async () => {
     setIsLoading(true);
-    const reagent = await updateReagentAmount(uuid, amount - amountValue);
+    const updatedReagent = await updateReagentAmount(
+      uuid,
+      amount - amountValue,
+    );
 
-    if (reagent) {
+    if (updatedReagent) {
       const reagentsCopy = [...data];
       const currentReagent = reagentsCopy.find(
-        ({ uuid }) => reagent.uuid === uuid,
+        (currReagent) => updatedReagent.uuid === currReagent.uuid,
       );
-      currentReagent.amount = reagent.amount;
+      currentReagent.amount = updatedReagent.amount;
       setData(reagentsCopy);
     }
 
     setIsLoading(false);
     closeModal();
   };
-
-  const [amountValue, setAmountValue] = useState(0);
 
   return (
     <Dialog open={isModalShown} onClose={closeModal}>

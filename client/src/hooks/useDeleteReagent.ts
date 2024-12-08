@@ -30,11 +30,12 @@ export const useDeleteReagent = () => {
         const data = await response.json();
         sendMessage(`Реагент был удален`, "success", false);
 
+        // TODO: fix return
+        // eslint-disable-next-line consistent-return
         return data;
       } catch (error) {
         console.error("Ошибка:", error);
         sendMessage("Произошла ошибка при попытке удалить реагент", "error");
-        return;
       }
     },
     [sendMessage],
