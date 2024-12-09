@@ -1,21 +1,28 @@
-// @ts-nocheck
 import React, { useState } from 'react';
 import { Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/joy/Button';
 import { useUserLogin } from '../../hooks/useLoginUser';
 
-const LogInModal = ({ isModalShown, closeModal }: any) => {
+interface ILogInModal {
+  isModalShown: boolean;
+  closeModal: () => void;
+}
+
+const LogInModal: React.FC<ILogInModal> = ({ isModalShown, closeModal }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [logInFieldsState, setLogInFieldsState] = useState({
+  const [logInFieldsState, setLogInFieldsState] = useState<{
+    name: string | null;
+    password: string | null;
+  }>({
     name: null,
     password: null,
   });
-  const [warning, setWarning] = useState(false);
+  const [warning, setWarning] = useState<boolean>(false);
 
   const login = useUserLogin();
 
-  const handleOnChange = (event) => {
+  const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setLogInFieldsState({
       ...logInFieldsState,
       [event.target.name]: event.target.value,

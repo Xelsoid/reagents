@@ -54,12 +54,12 @@ export const loginUser = async (
         token,
         name,
         role,
+        message: `Добро пожаловать ${name}, Вы успешно вошли в систему`,
       });
     }
     return res
       .status(401)
-      .header("Content-Type", "text/plain")
-      .send("Invalid Credentials");
+      .json({ message: "Неверное имя пользователя или пароль" });
   } catch (e) {
     return next(e);
   }
@@ -91,9 +91,7 @@ export const logoutUser = async (
       sameSite: "strict",
     });
 
-    return res.status(200).json({
-      message: "Successfully logged out",
-    });
+    return res.status(200).json({ message: "Вы вышли из системы" });
   } catch (e) {
     return next(e);
   }
@@ -108,10 +106,10 @@ export const createUser = async (
     const existingUser = await getUser(req.body.name);
 
     if (existingUser) {
-      return res
-        .status(409)
-        .header("Content-Type", "text/plain")
-        .send("User Already Exist. Please Login");
+      return res.status(409).json({
+        message:
+          "Пользователь с таким именем уже существует. Пожалуйста осуществите вход",
+      });
     }
 
     const user = await addUser(req.body);

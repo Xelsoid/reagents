@@ -5,7 +5,7 @@ export const useUserLogin = () => {
   const sendMessage = useToast();
 
   return useCallback(
-    async (name: string, password: string) => {
+    async (userName: string, userPassword: string) => {
       try {
         const response = await fetch('/api/login', {
           method: 'POST',
@@ -13,22 +13,22 @@ export const useUserLogin = () => {
             Accept: 'application/json',
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ name, password }),
+          body: JSON.stringify({ name: userName, password: userPassword }),
         });
 
+        const data = await response.json();
+        const { message } = data;
+
         if (!response.ok) {
-          sendMessage('Неверный логин или пароль', 'error');
+          sendMessage(data.message, 'error');
           return;
         }
 
-        const data = await response.json();
-
-        sendMessage(`Добро пожаловать ${data.name}`, 'success', false);
-        return data;
+        sendMessage(message, 'success', false);
       } catch (error) {
         console.error('Ошибка:', error);
 
-        sendMessage('Произошла ошибка при входе', 'error');
+        sendMessage('Произошла ошибка при попытке входа в систему', 'error');
       }
     },
     [sendMessage]
