@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest",
     "test:coverage": "jest --coverage",
-    "prettier": "prettier . --check",
+    "prettier": "prettier . --check --write",
     "lint": "eslint --fix --report-unused-disable-directives . --ext .js,.ts,.tsx,.mjs",
     "dev": "nodemon server.ts --trace-warnings",
     "build": "tsc --project ./tsconfig.build.json"
