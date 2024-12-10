@@ -20,7 +20,6 @@ const ReagentsTable = ({
   tableConfiguration,
   handleReagentDelete,
   handleChangeAmount,
-  showWriteOffBtn = false,
   showDeleteBtn = false,
 }: any) => {
   return (
@@ -37,7 +36,7 @@ const ReagentsTable = ({
                 )
               );
             })}
-            {showWriteOffBtn && <StyledTableCell component="th" align="center" />}
+            <StyledTableCell component="th" align="center" />
             {showDeleteBtn && <StyledTableCell component="th" align="center" />}
           </TableRow>
         </TableHead>
@@ -68,18 +67,16 @@ const ReagentsTable = ({
                     )
                   );
                 })}
-                {showWriteOffBtn && (
-                  <StyledTableCell align="center">
-                    <IconButton
-                      aria-label="write-off"
-                      size="large"
-                      title="Списать"
-                      onClick={handleAmount}
-                    >
-                      <RemoveCircleOutlineIcon />
-                    </IconButton>
-                  </StyledTableCell>
-                )}
+                <StyledTableCell align="center">
+                  <IconButton
+                    aria-label="write-off"
+                    size="large"
+                    title="Списать"
+                    onClick={handleAmount}
+                  >
+                    <RemoveCircleOutlineIcon />
+                  </IconButton>
+                </StyledTableCell>
                 {showDeleteBtn && (
                   <StyledTableCell align="center">
                     <IconButton

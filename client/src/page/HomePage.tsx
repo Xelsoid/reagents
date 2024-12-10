@@ -21,6 +21,7 @@ import { ReagentsTableSorter } from '../components/ReagentsTableSorter';
 import { ReagentDeleteModal } from '../components/ReagentDeleteModal';
 import { useModal } from '../hooks/useModal';
 import { LogOutModal } from '../components/LogOutModal';
+import { useGetReagents } from '../hooks/useGetReagents';
 
 const TABLE_KEYS_SEQUENCE = [
   'id',
@@ -52,6 +53,8 @@ const HomePage = () => {
   const userName = getCookieValue('name');
   const isEditor = userRole === 'editor';
   const isAdmin = userRole === 'admin';
+  const isUser = userRole === 'user';
+  const isAuthenticated = isEditor || isAdmin || isUser;
   const [tableConfiguration, setTableConfiguration] = useState(TABLE_CONFIGURATION);
 
   const [isLoginModalShown, openLoginModal, closeLoginModal] = useModal();
@@ -61,6 +64,8 @@ const HomePage = () => {
   const [isAddReagentModalShown, openAddReagentModal, closeAddReagentModal] = useModal();
   const [isDeleteReagentModalShown, openDeleteReagentModal, closeDeleteReagentModal] = useModal();
   const [isAddColleagueModalShown, openAddColleagueModal, closeAddColleagueModal] = useModal();
+
+  const getReagents = useGetReagents();
 
   const [deleteReagent, setDeleteReagent] = useState('');
 
@@ -75,22 +80,17 @@ const HomePage = () => {
   };
 
   useEffect(() => {
-    const fetchData = async (url: string) => {
-      const response = await fetch(url);
-      if (response.ok) {
-        const json = await response.json();
-        if (json?.data) {
-          setData(sortReagents(json.data.reagents, sorting));
-        }
-        return;
-      }
-      console.error(`Ошибка HTTP: ${response.status}`);
+    const fetchData = async () => {
+      const reagents = await getReagents();
+      setData(sortReagents(reagents, sorting));
     };
 
-    fetchData('/api/getReagents');
+    if (isAuthenticated) {
+      fetchData();
+    }
     // TODO: fix dependencies
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isAuthenticated]);
 
   useEffect(() => {
     if (data.length === 0) {
@@ -104,109 +104,122 @@ const HomePage = () => {
   }, [sorting]);
 
   return (
-    <div>
-      <header>
-        <Grid
-          container
-          justifyContent="space-between" // Центрирование по горизонтали
-          alignItems="center" // Центрирование по вертикали
-        >
-          <Grid item>
-            <img width={140} height={100} src={image} alt="Company logo" />
+    <Box sx={{ display: 'flex', margin: 'auto', maxWidth: '1200px' }}>
+      <Box sx={{ width: '100%', maxWidth: '1200px' }}>
+        <header>
+          <Grid
+            container
+            justifyContent="space-between" // Центрирование по горизонтали
+            alignItems="center" // Центрирование по вертикали
+            width={'100%'}
+          >
+            <Grid item>
+              <img width={140} height={100} src={image} alt="Company logo" />
+            </Grid>
+            <Grid item>
+              {userName && <Typography color="textPrimary">Добро пожаловать {userName}</Typography>}
+            </Grid>
+            <Grid item>
+              {(isAdmin || isEditor) && (
+                <Button
+                  variant="contained"
+                  endIcon={<ScienceOutlinedIcon />}
+                  onClick={openAddReagentModal}
+                >
+                  Добавить реактив
+                </Button>
+              )}
+            </Grid>
+            <Grid item>
+              {isAdmin && (
+                <Button variant="contained" endIcon={<FaceIcon />} onClick={openAddColleagueModal}>
+                  Добавить сотрудника
+                </Button>
+              )}
+            </Grid>
+            <Grid item>
+              {userName && (
+                <Button variant="contained" endIcon={<LogoutIcon />} onClick={openLogoutModal}>
+                  Выйти
+                </Button>
+              )}
+              {!userName && (
+                <Button variant="contained" endIcon={<LoginIcon />} onClick={openLoginModal}>
+                  Войти
+                </Button>
+              )}
+            </Grid>
           </Grid>
-          <Grid item>
-            {userName && <Typography color="textPrimary">Добро пожаловать {userName}</Typography>}
-          </Grid>
-          <Grid item>
-            {(isAdmin || isEditor) && (
-              <Button
-                variant="contained"
-                endIcon={<ScienceOutlinedIcon />}
-                onClick={openAddReagentModal}
-              >
-                Добавить реактив
-              </Button>
-            )}
-          </Grid>
-          <Grid item>
-            {isAdmin && (
-              <Button variant="contained" endIcon={<FaceIcon />} onClick={openAddColleagueModal}>
-                Добавить сотрудника
-              </Button>
-            )}
-          </Grid>
-          <Grid item>
-            {userName && (
-              <Button variant="contained" endIcon={<LogoutIcon />} onClick={openLogoutModal}>
-                Выйти
-              </Button>
-            )}
-            {!userName && (
-              <Button variant="contained" endIcon={<LoginIcon />} onClick={openLoginModal}>
-                Войти
-              </Button>
-            )}
-          </Grid>
-        </Grid>
-      </header>
+        </header>
 
-      <main>
-        <Box sx={{ my: 2, width: 200 }}>
-          <ReagentsTableSorter sorting={sorting} setSorting={setSorting} />
-        </Box>
+        <main>
+          {!isAuthenticated && (
+            <Box sx={{ display: 'flex', height: '80vh' }}>
+              <Typography sx={{ margin: 'auto', fontSize: '40px' }}>
+                Чтобы продолжить работу, пожалуйста войдите в систему
+              </Typography>
+            </Box>
+          )}
+          {isAuthenticated && (
+            <>
+              <Box sx={{ my: 2, width: 200 }}>
+                <ReagentsTableSorter sorting={sorting} setSorting={setSorting} />
+              </Box>
 
-        <Box sx={{ my: 1 }}>
-          <ReagentsTableFilter
-            filterSequence={TABLE_KEYS_SEQUENCE}
-            tableConfiguration={tableConfiguration}
-            setTableConfiguration={setTableConfiguration}
+              <Box sx={{ my: 1 }}>
+                <ReagentsTableFilter
+                  filterSequence={TABLE_KEYS_SEQUENCE}
+                  tableConfiguration={tableConfiguration}
+                  setTableConfiguration={setTableConfiguration}
+                />
+              </Box>
+
+              <ReagentsTable
+                data={data}
+                columnsSequence={TABLE_KEYS_SEQUENCE}
+                tableConfiguration={tableConfiguration}
+                handleReagentDelete={handleReagentDelete}
+                handleChangeAmount={handleChangeAmount}
+                showDeleteBtn={isAdmin}
+              />
+            </>
+          )}
+        </main>
+        <div>
+          <LogInModal isModalShown={isLoginModalShown} closeModal={closeLoginModal} />
+
+          <LogOutModal isModalShown={isLogoutModalShown} closeModal={closeLogoutModal} />
+
+          <ReagentWriteOffModal
+            isModalShown={isReagentWriteOffModalShown}
+            closeModal={closeReagentWriteOffModal}
+            reagent={curReagent}
+            data={data}
+            setData={setData}
           />
-        </Box>
 
-        <ReagentsTable
-          data={data}
-          columnsSequence={TABLE_KEYS_SEQUENCE}
-          tableConfiguration={tableConfiguration}
-          handleReagentDelete={handleReagentDelete}
-          handleChangeAmount={handleChangeAmount}
-          showWriteOffBtn={isEditor || isAdmin}
-          showDeleteBtn={isAdmin}
-        />
-      </main>
-      <div>
-        <LogInModal isModalShown={isLoginModalShown} closeModal={closeLoginModal} />
+          <ReagentAddModal
+            isModalShown={isAddReagentModalShown}
+            closeModal={closeAddReagentModal}
+            data={data}
+            setData={setData}
+          />
 
-        <LogOutModal isModalShown={isLogoutModalShown} closeModal={closeLogoutModal} />
+          <ReagentDeleteModal
+            isModalShown={isDeleteReagentModalShown}
+            closeModal={closeDeleteReagentModal}
+            reagent={deleteReagent}
+            data={data}
+            setData={setData}
+          />
 
-        <ReagentWriteOffModal
-          isModalShown={isReagentWriteOffModalShown}
-          closeModal={closeReagentWriteOffModal}
-          reagent={curReagent}
-          data={data}
-          setData={setData}
-        />
-
-        <ReagentAddModal
-          isModalShown={isAddReagentModalShown}
-          closeModal={closeAddReagentModal}
-          data={data}
-          setData={setData}
-        />
-
-        <ReagentDeleteModal
-          isModalShown={isDeleteReagentModalShown}
-          closeModal={closeDeleteReagentModal}
-          reagent={deleteReagent}
-          data={data}
-          setData={setData}
-        />
-
-        <ColleagueAddModal
-          isModalShown={isAddColleagueModalShown}
-          closeModal={closeAddColleagueModal}
-        />
-      </div>
-    </div>
+          <ColleagueAddModal
+            isModalShown={isAddColleagueModalShown}
+            closeModal={closeAddColleagueModal}
+          />
+        </div>
+      </Box>
+    </Box>
   );
 };
 

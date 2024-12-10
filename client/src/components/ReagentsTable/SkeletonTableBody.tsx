@@ -3,7 +3,7 @@ import * as React from 'react';
 import Skeleton from '@mui/joy/Skeleton';
 import { StyledTableCell, StyledTableRow } from './parts';
 const TABLE_SIZE = {
-  X: 6,
+  X: 7,
   Y: 20,
 };
 

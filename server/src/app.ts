@@ -46,7 +46,12 @@ app.delete(
   removeUser,
 );
 
-app.get(REAGENTS_ENDPOINTS.GET_REAGENTS, getReagents);
+app.get(
+  REAGENTS_ENDPOINTS.GET_REAGENTS,
+  verifyToken,
+  hasRole([ROLES.ADMIN, ROLES.EDITOR, ROLES.USER]),
+  getReagents,
+);
 
 app.post(
   REAGENTS_ENDPOINTS.ADD_REAGENT,
@@ -65,7 +70,7 @@ app.patch(
 app.patch(
   REAGENTS_ENDPOINTS.UPDATE_REAGENT_AMOUNT,
   verifyToken,
-  hasRole([ROLES.ADMIN, ROLES.EDITOR]),
+  hasRole([ROLES.ADMIN, ROLES.EDITOR, ROLES.USER]),
   updateReagentAmount,
 );
 
