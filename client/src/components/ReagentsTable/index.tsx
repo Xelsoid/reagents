@@ -12,8 +12,6 @@ import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import { StyledTableCell, StyledTableRow } from './parts';
 import { SkeletonTableBody } from './SkeletonTableBody';
 
-const REAGENT_MIN_ALERT_AMOUNT = 100;
-
 const ReagentsTable = ({
   data,
   columnsSequence,
@@ -54,10 +52,7 @@ const ReagentsTable = ({
             };
 
             return (
-              <StyledTableRow
-                key={reagent.uuid}
-                alertRow={reagent.amount < REAGENT_MIN_ALERT_AMOUNT}
-              >
+              <StyledTableRow key={reagent.uuid} alertRow={reagent.amount < reagent.minAmount}>
                 {columnsSequence.map((key) => {
                   return (
                     tableConfiguration[key].checked && (

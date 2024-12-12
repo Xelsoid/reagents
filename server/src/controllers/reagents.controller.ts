@@ -34,7 +34,7 @@ export const addReagent = async (
     const { user, body } = req;
     const reagent = await addReagentData(body);
     if (reagent && user) {
-      addNewEntryToLogs(reagent, user, "Receipt");
+      await addNewEntryToLogs(reagent, user, "Receipt");
 
       return res.status(200).send({
         data: { reagent },
@@ -55,7 +55,7 @@ export const updateReagent = async (
     const reagent = await updateReagentData(body);
 
     if (reagent && user) {
-      addNewEntryToLogs(reagent, user);
+      await addNewEntryToLogs(reagent, user);
 
       return res.status(200).send({
         data: { reagent },
@@ -80,7 +80,7 @@ export const updateReagentAmount = async (
     const reagent = await updateReagentQuantity(body);
 
     if (reagent && user) {
-      addNewEntryToLogs(reagent, user);
+      await addNewEntryToLogs(reagent, user);
 
       return res.status(200).send({
         data: { reagent },
