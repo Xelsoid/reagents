@@ -4,7 +4,12 @@ import Button from '@mui/joy/Button';
 import { useAddReagent } from '../../hooks/useAddReagent';
 import { IReagent } from '../../constants';
 
-const REAGENT_FIELDS = [
+interface IReagentField {
+  label: string;
+  fieldName: keyof IReagent;
+}
+
+const REAGENT_FIELDS: IReagentField[] = [
   {
     label: 'ID реактива',
     fieldName: 'id',
@@ -56,14 +61,19 @@ const ReagentAddModal: React.FC<IReagentAddModal> = ({
   data,
   setData,
 }) => {
-  const [reagentFieldsState, setReagentFieldsState] = useState<{ [key: string]: string }>(
-    REAGENT_FIELDS.reduce<{ [key: string]: string }>((acc, reagent) => {
-      acc[reagent.fieldName] = '';
+  const [reagentFieldsState, setReagentFieldsState] = useState<IReagent>(
+    REAGENT_FIELDS.reduce((acc, reagent) => {
+      const { fieldName } = reagent;
+      if (fieldName === 'amount' || fieldName === 'minAmount') {
+        acc[fieldName] = 0;
+      } else {
+        acc[fieldName] = '';
+      }
       return acc;
-    }, {})
+    }, {} as IReagent)
   );
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const addReagent = useAddReagent();
 

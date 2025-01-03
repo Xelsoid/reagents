@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { useToast } from './useToast';
+import { IReagent } from '../constants';
 
 export const useChangeReagentAmount = () => {
   const sendMessage = useToast();
@@ -25,8 +26,10 @@ export const useChangeReagentAmount = () => {
           return;
         }
 
-        const data: any = await response.json();
-        const { reagent } = data.data;
+        const data = await response.json();
+        const { reagent } = data.data as {
+          reagent: IReagent & { prevAmount: number };
+        };
 
         sendMessage(
           `Количество реагента ${reagent.name} id(${reagent.id}) было изменено с ${reagent.prevAmount} на ${reagent.amount}`,

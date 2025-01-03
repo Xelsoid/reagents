@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { useToast } from './useToast';
+import { IReagent } from '../constants';
 
 export const useGetReagents = () => {
   const sendMessage = useToast();
@@ -23,8 +24,8 @@ export const useGetReagents = () => {
         return;
       }
 
-      const data: any = await response.json();
-      const { reagents } = data.data;
+      const data = await response.json();
+      const { reagents } = data.data as { reagents: IReagent[] };
 
       // TODO: fix return
       // eslint-disable-next-line consistent-return

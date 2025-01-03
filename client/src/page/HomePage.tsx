@@ -8,7 +8,7 @@ import { Button, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import Box from '@mui/joy/Box';
 import { LogInModal } from '../components/LogInModal';
-// @ts-ignore next line
+// @ts-expect-error next line
 import image from '../assets/logo.png';
 import { sortReagents } from '../helpers/sortReagents';
 import { getCookieValue } from '../helpers/parseCookie';

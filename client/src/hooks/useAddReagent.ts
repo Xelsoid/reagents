@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { useToast } from './useToast';
+import { IReagent } from '../constants';
 
 export const useAddReagent = () => {
   const sendMessage = useToast();
@@ -15,7 +16,7 @@ export const useAddReagent = () => {
       producer,
       storageConditions,
       storagePlace,
-    }: any) => {
+    }: IReagent) => {
       try {
         const response = await fetch('/api/addReagent', {
           method: 'POST',
@@ -43,7 +44,7 @@ export const useAddReagent = () => {
         }
 
         const data = await response.json();
-        const { reagent } = data.data;
+        const { reagent } = data.data as { reagent: IReagent };
         sendMessage(`Реактив "${reagent.name}" id(${reagent.id}) добавлен`, 'success', false);
 
         return reagent;

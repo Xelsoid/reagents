@@ -16,7 +16,7 @@ import { ITableConfiguration } from '../../page/HomePage';
 interface IReagentTable {
   data: IReagent[] | null;
   columnsSequence: (keyof ITableConfiguration)[];
-  tableConfiguration: any;
+  tableConfiguration: ITableConfiguration;
   handleReagentDelete: (reagent: IReagent) => void;
   handleChangeAmount: (reagent: IReagent) => void;
   showDeleteBtn?: boolean;
