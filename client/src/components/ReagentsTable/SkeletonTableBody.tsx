@@ -1,4 +1,3 @@
-// @ts-nocheck
 import * as React from 'react';
 import Skeleton from '@mui/joy/Skeleton';
 import { StyledTableCell, StyledTableRow } from './parts';
