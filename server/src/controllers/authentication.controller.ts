@@ -23,7 +23,7 @@ export const loginUser = async (
     const { name, email, role, password } =
       (await getUser(req.body.name)) ?? {};
 
-    if (await bcrypt.compare(req.body.password, password)) {
+    if (password && (await bcrypt.compare(req.body.password, password))) {
       // Create token
       const token = jwt.sign(
         { user_id: name, email, role },

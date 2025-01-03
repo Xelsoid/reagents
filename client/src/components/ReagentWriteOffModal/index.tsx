@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React, { useState } from 'react';
 import {
   Dialog,
@@ -10,19 +9,38 @@ import {
 } from '@mui/material';
 import Button from '@mui/joy/Button';
 import { useChangeReagentAmount } from '../../hooks/useChangeReagentAmount';
+import { IReagent } from '../../constants';
 
-const ReagentWriteOffModal = ({ isModalShown, closeModal, reagent, data, setData }: any) => {
+interface IReagentWriteOffModal {
+  isModalShown: boolean;
+  closeModal: () => void;
+  reagent: IReagent;
+  data: IReagent[];
+  setData: (reagents: IReagent[]) => void;
+}
+
+const ReagentWriteOffModal: React.FC<IReagentWriteOffModal> = ({
+  isModalShown,
+  closeModal,
+  reagent,
+  data,
+  setData,
+}) => {
   const { name, id, unit, amount, uuid } = reagent;
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [amountValue, setAmountValue] = useState(0);
+  const [amountValue, setAmountValue] = useState<number>(0);
 
-  const handleOnReagentAmountChange = (e) => {
-    setAmountValue(Number(e.target.value));
+  const handleOnReagentAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setAmountValue(Number(event.target.value));
   };
 
   const updateReagentAmount = useChangeReagentAmount();
 
   const handleUpdateReagentAmount = async () => {
+    if (!uuid || !amount || amount <= 0 || !data) {
+      return;
+    }
+
     setIsLoading(true);
     const updatedReagent = await updateReagentAmount(uuid, amount - amountValue);
 
@@ -31,8 +49,11 @@ const ReagentWriteOffModal = ({ isModalShown, closeModal, reagent, data, setData
       const currentReagent = reagentsCopy.find(
         (currReagent) => updatedReagent.uuid === currReagent.uuid
       );
-      currentReagent.amount = updatedReagent.amount;
-      setData(reagentsCopy);
+
+      if (currentReagent) {
+        currentReagent.amount = updatedReagent.amount;
+        setData(reagentsCopy);
+      }
     }
 
     setIsLoading(false);

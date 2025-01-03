@@ -21,8 +21,6 @@ export const addNewEntryToLogs = (
   } = requestBody;
 
   const amountDif = amount - (prevAmount ?? 0);
-  if (amountDif === 0 || !prevAmount) return;
-
   const operation = !operationType && amountDif > 0 ? "Receipt" : "Write-off";
 
   const date = new Date();

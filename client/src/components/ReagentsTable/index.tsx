@@ -1,4 +1,3 @@
-// @ts-nocheck
 import * as React from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -11,18 +10,26 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import { StyledTableCell, StyledTableRow } from './parts';
 import { SkeletonTableBody } from './SkeletonTableBody';
+import { IReagent } from '../../constants';
+import { ITableConfiguration } from '../../page/HomePage';
 
-const REAGENT_MIN_ALERT_AMOUNT = 100;
+interface IReagentTable {
+  data: IReagent[] | null;
+  columnsSequence: (keyof ITableConfiguration)[];
+  tableConfiguration: ITableConfiguration;
+  handleReagentDelete: (reagent: IReagent) => void;
+  handleChangeAmount: (reagent: IReagent) => void;
+  showDeleteBtn?: boolean;
+}
 
-const ReagentsTable = ({
+const ReagentsTable: React.FC<IReagentTable> = ({
   data,
   columnsSequence,
   tableConfiguration,
   handleReagentDelete,
   handleChangeAmount,
-  showWriteOffBtn = false,
   showDeleteBtn = false,
-}: any) => {
+}) => {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -37,13 +44,13 @@ const ReagentsTable = ({
                 )
               );
             })}
-            {showWriteOffBtn && <StyledTableCell component="th" align="center" />}
+            <StyledTableCell component="th" align="center" />
             {showDeleteBtn && <StyledTableCell component="th" align="center" />}
           </TableRow>
         </TableHead>
 
         <TableBody>
-          {data.length < 1 && <SkeletonTableBody />}
+          {!data && <SkeletonTableBody />}
 
           {data?.map((reagent) => {
             const handleDelete = () => {
@@ -55,10 +62,9 @@ const ReagentsTable = ({
             };
 
             return (
-              <StyledTableRow
-                key={reagent.uuid}
-                alertRow={reagent.amount < REAGENT_MIN_ALERT_AMOUNT}
-              >
+              // @ts-expect-error: Can't fix this issue regarding passing custom props
+              // https://github.com/emotion-js/emotion/issues/2193
+              <StyledTableRow key={reagent.uuid} alertRow={reagent.amount < reagent.minAmount}>
                 {columnsSequence.map((key) => {
                   return (
                     tableConfiguration[key].checked && (
@@ -68,18 +74,16 @@ const ReagentsTable = ({
                     )
                   );
                 })}
-                {showWriteOffBtn && (
-                  <StyledTableCell align="center">
-                    <IconButton
-                      aria-label="write-off"
-                      size="large"
-                      title="Списать"
-                      onClick={handleAmount}
-                    >
-                      <RemoveCircleOutlineIcon />
-                    </IconButton>
-                  </StyledTableCell>
-                )}
+                <StyledTableCell align="center">
+                  <IconButton
+                    aria-label="write-off"
+                    size="large"
+                    title="Списать"
+                    onClick={handleAmount}
+                  >
+                    <RemoveCircleOutlineIcon />
+                  </IconButton>
+                </StyledTableCell>
                 {showDeleteBtn && (
                   <StyledTableCell align="center">
                     <IconButton

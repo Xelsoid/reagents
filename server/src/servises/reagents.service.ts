@@ -78,9 +78,18 @@ export const updateReagentData = (requestBody: IReagent) => {
   return updateReagent(uuid, reagent);
 };
 
-export const updateReagentQuantity = (requestBody: IReagent) => {
+export const updateReagentQuantity = async (requestBody: IReagent) => {
   const { uuid, amount } = requestBody;
-  return updateReagentAmount(uuid, amount);
+  const reagent = await updateReagentAmount(uuid, amount);
+  if (reagent) {
+    return {
+      ...reagent,
+      amount: normalizeFloatNumber(reagent?.amount),
+      minAmount: normalizeFloatNumber(reagent?.minAmount),
+      prevAmount: normalizeFloatNumber(reagent?.prevAmount!),
+    } as IReagent;
+  }
+  return reagent;
 };
 
 export const deleteReagentData = (requestBody: IReagent) => {

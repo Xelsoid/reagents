@@ -2,12 +2,6 @@ iframe {
   display: none;
 }
 
-body {
-  max-width: 1200px;
-  display: flex;
-  margin: auto;
-}
-
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }

@@ -1,11 +1,18 @@
 import { useCallback } from 'react';
 import { useToast } from './useToast';
+import { ROLES } from '../constants';
 
 export const useAddEmployee = () => {
   const sendMessage = useToast();
 
+  interface IAddEmployee {
+    name: string;
+    password: string;
+    role: ROLES;
+  }
+
   return useCallback(
-    async ({ name, password, role }: any) => {
+    async ({ name, password, role }: IAddEmployee) => {
       try {
         const response = await fetch('/api/create-account', {
           method: 'POST',
@@ -32,14 +39,14 @@ export const useAddEmployee = () => {
 
         const data = await response.json();
 
-        const { user } = data.data;
+        const { user } = data.data as {
+          user: { role: ROLES; name: string; email: string; password: string };
+        };
         sendMessage(
           `Пользователь с именем: "${user.name}" и ролью: "${user.role}" добавлен`,
           'success',
           false
         );
-
-        return data;
       } catch (error) {
         console.error('Ошибка:', error);
 
