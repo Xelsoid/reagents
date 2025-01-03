@@ -1,32 +1,39 @@
-// @ts-nocheck
 import * as React from 'react';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { SORTING_METHODS } from '../../constants';
 
 const OPTIONS = [
   {
     label: 'По возрастанию ID',
-    value: 'id_asc',
+    value: SORTING_METHODS.ID_ASC,
   },
   {
     label: 'По убыванию ID',
-    value: 'id_desc',
+    value: SORTING_METHODS.ID_DESC,
   },
   {
     label: 'По алфавиту А-Я',
-    value: 'alphabet_asc',
+    value: SORTING_METHODS.ALPHABET_ASC,
   },
   {
     label: 'По алфавиту Я-А',
-    value: 'alphabet_desc',
+    value: SORTING_METHODS.ALPHABET_DESC,
   },
 ];
 
-const ReagentsTableSorter = ({ sorting, setSorting }: any) => {
+const ReagentsTableSorter = ({
+  sorting,
+  setSorting,
+}: {
+  sorting: SORTING_METHODS;
+  setSorting: (a: SORTING_METHODS) => void;
+}) => {
   const handleChange = (event: SelectChangeEvent) => {
-    setSorting(event.target.value);
+    const value = event.target.value as SORTING_METHODS;
+    setSorting(value);
   };
 
   return (

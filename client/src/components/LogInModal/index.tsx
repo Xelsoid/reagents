@@ -16,13 +16,14 @@ interface ILogInModal {
   closeModal: () => void;
 }
 
+type LogInFieldsState = {
+  [key: string]: string | null;
+};
+
 const LogInModal: React.FC<ILogInModal> = ({ isModalShown, closeModal }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [logInFieldsState, setLogInFieldsState] = useState<{
-    name: string | null;
-    password: string | null;
-  }>({
+  const [logInFieldsState, setLogInFieldsState] = useState<LogInFieldsState>({
     name: null,
     password: null,
   });

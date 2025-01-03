@@ -1,13 +1,19 @@
-// @ts-nocheck
 import React from 'react';
 import { FormGroup, FormControlLabel, Checkbox } from '@mui/material';
 import '../../style/home_page.css';
+import { ITableConfiguration } from '../../page/HomePage';
 
-const ReagentsTableFilter = ({
+interface IReagentsTableFilterProps {
+  filterSequence: (keyof ITableConfiguration)[];
+  tableConfiguration: ITableConfiguration;
+  setTableConfiguration: (tc: ITableConfiguration) => void;
+}
+
+const ReagentsTableFilter: React.FC<IReagentsTableFilterProps> = ({
   filterSequence,
   tableConfiguration,
   setTableConfiguration,
-}: any) => {
+}) => {
   return (
     <FormGroup row>
       {filterSequence.map((key) => {

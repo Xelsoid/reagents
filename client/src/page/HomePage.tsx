@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React, { useEffect, useState } from 'react';
 import '../style/home_page.css';
 import LoginIcon from '@mui/icons-material/Login';
@@ -9,6 +8,7 @@ import { Button, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import Box from '@mui/joy/Box';
 import { LogInModal } from '../components/LogInModal';
+// @ts-ignore next line
 import image from '../assets/logo.png';
 import { sortReagents } from '../helpers/sortReagents';
 import { getCookieValue } from '../helpers/parseCookie';
@@ -22,17 +22,23 @@ import { ReagentDeleteModal } from '../components/ReagentDeleteModal';
 import { useModal } from '../hooks/useModal';
 import { LogOutModal } from '../components/LogOutModal';
 import { useGetReagents } from '../hooks/useGetReagents';
+import { SORTING_METHODS, ROLES, IReagent, COOKIE } from '../constants';
 
-const TABLE_KEYS_SEQUENCE = [
-  'id',
-  'name',
-  'amount',
-  'unit',
-  'producer',
-  'supplier',
-  'storageConditions',
-  'storagePlace',
-];
+interface IColumnProps {
+  label: string;
+  checked: boolean;
+}
+
+export interface ITableConfiguration {
+  id: IColumnProps;
+  name: IColumnProps;
+  amount: IColumnProps;
+  unit: IColumnProps;
+  producer: IColumnProps;
+  supplier: IColumnProps;
+  storageConditions: IColumnProps;
+  storagePlace: IColumnProps;
+}
 
 const TABLE_CONFIGURATION = {
   id: { label: 'Id', checked: true },
@@ -45,17 +51,31 @@ const TABLE_CONFIGURATION = {
   storagePlace: { label: 'Полка хранения', checked: true },
 };
 
+const TABLE_KEYS_SEQUENCE: (keyof ITableConfiguration)[] = [
+  'id',
+  'name',
+  'amount',
+  'unit',
+  'producer',
+  'supplier',
+  'storageConditions',
+  'storagePlace',
+];
+
 const HomePage = () => {
-  const [data, setData] = useState([]);
-  const [sorting, setSorting] = useState('id_asc');
-  const [curReagent, setCurReagent] = useState([]);
-  const userRole = getCookieValue('role');
-  const userName = getCookieValue('name');
-  const isEditor = userRole === 'editor';
-  const isAdmin = userRole === 'admin';
-  const isUser = userRole === 'user';
+  const [data, setData] = useState<IReagent[] | null>(null);
+  const [sorting, setSorting] = useState<SORTING_METHODS>(SORTING_METHODS.ID_ASC);
+  const [curReagent, setCurReagent] = useState<IReagent | null>(null);
+  const [deleteReagent, setDeleteReagent] = useState<IReagent | null>(null);
+
+  const userRole = getCookieValue(COOKIE.ROLE);
+  const userName = getCookieValue(COOKIE.NAME);
+  const isEditor = userRole === ROLES.EDITOR;
+  const isAdmin = userRole === ROLES.ADMIN;
+  const isUser = userRole === ROLES.USER;
   const isAuthenticated = isEditor || isAdmin || isUser;
-  const [tableConfiguration, setTableConfiguration] = useState(TABLE_CONFIGURATION);
+  const [tableConfiguration, setTableConfiguration] =
+    useState<ITableConfiguration>(TABLE_CONFIGURATION);
 
   const [isLoginModalShown, openLoginModal, closeLoginModal] = useModal();
   const [isLogoutModalShown, openLogoutModal, closeLogoutModal] = useModal();
@@ -67,14 +87,12 @@ const HomePage = () => {
 
   const getReagents = useGetReagents();
 
-  const [deleteReagent, setDeleteReagent] = useState('');
-
-  const handleReagentDelete = (reagent) => {
+  const handleReagentDelete = (reagent: IReagent) => {
     openDeleteReagentModal();
     setDeleteReagent(reagent);
   };
 
-  const handleChangeAmount = (reagent) => {
+  const handleChangeAmount = (reagent: IReagent) => {
     openReagentWriteOffModal();
     setCurReagent(reagent);
   };
@@ -82,7 +100,9 @@ const HomePage = () => {
   useEffect(() => {
     const fetchData = async () => {
       const reagents = await getReagents();
-      setData(sortReagents(reagents, sorting));
+      if (reagents?.length) {
+        setData(sortReagents(reagents, sorting));
+      }
     };
 
     if (isAuthenticated) {
@@ -93,7 +113,7 @@ const HomePage = () => {
   }, [isAuthenticated]);
 
   useEffect(() => {
-    if (data.length === 0) {
+    if (!data?.length) {
       return;
     }
 
@@ -113,13 +133,13 @@ const HomePage = () => {
             alignItems="center" // Центрирование по вертикали
             width={'100%'}
           >
-            <Grid item>
+            <Grid component="div">
               <img width={140} height={100} src={image} alt="Company logo" />
             </Grid>
-            <Grid item>
+            <Grid component="div">
               {userName && <Typography color="textPrimary">Добро пожаловать {userName}</Typography>}
             </Grid>
-            <Grid item>
+            <Grid component="div">
               {(isAdmin || isEditor) && (
                 <Button
                   variant="contained"
@@ -130,14 +150,14 @@ const HomePage = () => {
                 </Button>
               )}
             </Grid>
-            <Grid item>
+            <Grid component="div">
               {isAdmin && (
                 <Button variant="contained" endIcon={<FaceIcon />} onClick={openAddColleagueModal}>
                   Добавить сотрудника
                 </Button>
               )}
             </Grid>
-            <Grid item>
+            <Grid component="div">
               {userName && (
                 <Button variant="contained" endIcon={<LogoutIcon />} onClick={openLogoutModal}>
                   Выйти
@@ -190,28 +210,36 @@ const HomePage = () => {
 
           <LogOutModal isModalShown={isLogoutModalShown} closeModal={closeLogoutModal} />
 
-          <ReagentWriteOffModal
-            isModalShown={isReagentWriteOffModalShown}
-            closeModal={closeReagentWriteOffModal}
-            reagent={curReagent}
-            data={data}
-            setData={setData}
-          />
+          {data && (
+            <>
+              {curReagent && (
+                <ReagentWriteOffModal
+                  isModalShown={isReagentWriteOffModalShown}
+                  closeModal={closeReagentWriteOffModal}
+                  reagent={curReagent}
+                  data={data}
+                  setData={setData}
+                />
+              )}
 
-          <ReagentAddModal
-            isModalShown={isAddReagentModalShown}
-            closeModal={closeAddReagentModal}
-            data={data}
-            setData={setData}
-          />
+              <ReagentAddModal
+                isModalShown={isAddReagentModalShown}
+                closeModal={closeAddReagentModal}
+                data={data}
+                setData={setData}
+              />
 
-          <ReagentDeleteModal
-            isModalShown={isDeleteReagentModalShown}
-            closeModal={closeDeleteReagentModal}
-            reagent={deleteReagent}
-            data={data}
-            setData={setData}
-          />
+              {deleteReagent && (
+                <ReagentDeleteModal
+                  isModalShown={isDeleteReagentModalShown}
+                  closeModal={closeDeleteReagentModal}
+                  reagent={deleteReagent}
+                  data={data}
+                  setData={setData}
+                />
+              )}
+            </>
+          )}
 
           <ColleagueAddModal
             isModalShown={isAddColleagueModalShown}

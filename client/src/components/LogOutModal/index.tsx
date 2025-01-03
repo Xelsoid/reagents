@@ -1,10 +1,12 @@
-// @ts-nocheck
 import React, { useState } from 'react';
 import { Dialog, DialogActions, DialogTitle } from '@mui/material';
 import Button from '@mui/joy/Button';
 import { useUserLogout } from '../../hooks/useLogoutUser';
 
-const LogOutModal = ({ isModalShown, closeModal }: any) => {
+const LogOutModal: React.FC<{ isModalShown: boolean; closeModal: () => void }> = ({
+  isModalShown,
+  closeModal,
+}) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const logout = useUserLogout();
 

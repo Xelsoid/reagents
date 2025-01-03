@@ -1,10 +1,24 @@
-// @ts-nocheck
 import React, { useState } from 'react';
 import { Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import Button from '@mui/joy/Button';
 import { useDeleteReagent } from '../../hooks/useDeleteReagent';
+import { IReagent } from '../../constants';
 
-const ReagentDeleteModal = ({ isModalShown, closeModal, reagent, data, setData }: any) => {
+interface IReagentDeleteModal {
+  isModalShown: boolean;
+  closeModal: () => void;
+  reagent: IReagent;
+  data: IReagent[];
+  setData: (reagents: IReagent[]) => void;
+}
+
+const ReagentDeleteModal: React.FC<IReagentDeleteModal> = ({
+  isModalShown,
+  closeModal,
+  reagent,
+  data,
+  setData,
+}) => {
   const { name, uuid, amount, unit, id } = reagent;
   const deleteReagent = useDeleteReagent();
   const [isLoading, setIsLoading] = useState<boolean>(false);

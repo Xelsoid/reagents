@@ -1,4 +1,3 @@
-// @ts-nocheck
 import * as React from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -11,15 +10,26 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import { StyledTableCell, StyledTableRow } from './parts';
 import { SkeletonTableBody } from './SkeletonTableBody';
+import { IReagent } from '../../constants';
+import { ITableConfiguration } from '../../page/HomePage';
 
-const ReagentsTable = ({
+interface IReagentTable {
+  data: IReagent[] | null;
+  columnsSequence: (keyof ITableConfiguration)[];
+  tableConfiguration: any;
+  handleReagentDelete: (reagent: IReagent) => void;
+  handleChangeAmount: (reagent: IReagent) => void;
+  showDeleteBtn?: boolean;
+}
+
+const ReagentsTable: React.FC<IReagentTable> = ({
   data,
   columnsSequence,
   tableConfiguration,
   handleReagentDelete,
   handleChangeAmount,
   showDeleteBtn = false,
-}: any) => {
+}) => {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -40,7 +50,7 @@ const ReagentsTable = ({
         </TableHead>
 
         <TableBody>
-          {data.length < 1 && <SkeletonTableBody />}
+          {!data && <SkeletonTableBody />}
 
           {data?.map((reagent) => {
             const handleDelete = () => {
@@ -52,6 +62,8 @@ const ReagentsTable = ({
             };
 
             return (
+              // @ts-expect-error: Can't fix this issue regarding passing custom props
+              // https://github.com/emotion-js/emotion/issues/2193
               <StyledTableRow key={reagent.uuid} alertRow={reagent.amount < reagent.minAmount}>
                 {columnsSequence.map((key) => {
                   return (

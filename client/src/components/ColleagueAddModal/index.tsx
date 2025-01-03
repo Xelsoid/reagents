@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React, { useState } from 'react';
 import {
   Dialog,
@@ -13,17 +12,35 @@ import {
 } from '@mui/material';
 import Button from '@mui/joy/Button';
 import { useAddEmployee } from '../../hooks/useAddEmployee';
+import { SelectChangeEvent } from '@mui/material/Select';
+import { ROLES } from '../../constants';
 
-const ColleagueAddModal = ({ isModalShown, closeModal }: any) => {
-  const [colleagueFields, setColleagueFields] = useState({
+interface ICloseAddModal {
+  isModalShown: boolean;
+  closeModal: () => void;
+}
+
+const ColleagueAddModal: React.FC<ICloseAddModal> = ({ isModalShown, closeModal }) => {
+  const [colleagueFields, setColleagueFields] = useState<{
+    name: string;
+    password: string;
+    role: ROLES;
+  }>({
     name: '',
     password: '',
-    role: 'user',
+    role: ROLES.USER,
   });
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const handleOnChange = (e) => {
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setColleagueFields({
+      ...colleagueFields,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleOnSelectChange = (e: SelectChangeEvent) => {
     setColleagueFields({
       ...colleagueFields,
       [e.target.name]: e.target.value,
@@ -70,12 +87,12 @@ const ColleagueAddModal = ({ isModalShown, closeModal }: any) => {
             name="role"
             value={colleagueFields.role}
             label="Роль"
-            onChange={handleOnChange}
+            onChange={handleOnSelectChange}
             disabled={isLoading}
           >
-            <MenuItem value="user">User</MenuItem>
-            <MenuItem value="editor">Editor</MenuItem>
-            <MenuItem value="admin">Admin</MenuItem>
+            <MenuItem value={ROLES.USER}>User</MenuItem>
+            <MenuItem value={ROLES.EDITOR}>Editor</MenuItem>
+            <MenuItem value={ROLES.ADMIN}>Admin</MenuItem>
           </Select>
         </FormControl>
       </DialogContent>
