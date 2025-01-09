@@ -2,15 +2,8 @@ import { JWT } from "google-auth-library";
 import { GoogleSpreadsheet } from "google-spreadsheet";
 import json from "../../reagents-ivan.json";
 import { Logger } from "./logger";
+import { spreadsheetDocument } from "./googleSpreadsheetAuth";
 
-const serviceAccountAuth = new JWT({
-  email: json.client_email,
-  key: json.private_key,
-  scopes: ["https://www.googleapis.com/auth/spreadsheets"],
-});
-
-const document = new GoogleSpreadsheet(json.spreadsheet_id, serviceAccountAuth);
-
-const spreadSheets = new Logger(document);
+const spreadSheets = new Logger(spreadsheetDocument);
 
 export const { addEntryToLogs } = spreadSheets;
