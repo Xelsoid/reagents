@@ -4,13 +4,13 @@
   "description": "Reagents",
   "esModuleInterop": true,
   "workspaces": [
-    "api",
-    "app"
+    "server",
+    "client"
   ],
   "scripts": {
-    "start:nodejs": "npm run dev -w api",
-    "start:react": "npm run start -w app",
-    "build": "npm run build -w app",
+    "start:nodejs": "npm run dev -w server",
+    "start:react": "npm run start -w client",
+    "build": "npm run build -w client",
     "netlify:build": "netlify build",
     "netlify:dev": "netlify dev",
     "deploy:preview": "netlify deploy",
@@ -27,12 +27,13 @@
     "url": "https://github.com/Xelsoid/reagents/issues"
   },
   "homepage": "https://github.com/Xelsoid/reagents#readme",
+  "devDependencies": {
+    "@netlify/functions": "2.6.0",
+    "netlify-cli": "15.0.2",
+    "netlify-lambda": "2.0.16",
+    "serverless-http": "3.2.0"
+  },
   "dependencies": {
-    "@netlify/functions": "^2.6.0",
-    "@types/cookie-parser": "^1.4.7",
-    "axios": "^1.7.7",
-    "netlify-cli": "^15.0.2",
-    "netlify-lambda": "^2.0.16",
-    "serverless-http": "^3.2.0"
+    "@tanstack/react-query-devtools": "^5.66.0"
   }
 }
