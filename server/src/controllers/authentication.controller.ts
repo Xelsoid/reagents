@@ -112,10 +112,8 @@ export const createUser = async (
       });
     }
 
-    const user = await addUser(req.body);
-    return res.status(200).send({
-      data: { user },
-    });
+    const { name, email, role } = await addUser(req.body);
+    return res.status(200).send({ name, email, role });
   } catch (e) {
     return next(e);
   }

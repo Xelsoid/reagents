@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import Button from '@mui/joy/Button';
 import { useDeleteReagent } from '../../hooks/useDeleteReagent';
@@ -8,36 +8,18 @@ interface IReagentDeleteModal {
   isModalShown: boolean;
   closeModal: () => void;
   reagent: IReagent;
-  data: IReagent[];
-  setData: (reagents: IReagent[]) => void;
 }
 
 const ReagentDeleteModal: React.FC<IReagentDeleteModal> = ({
   isModalShown,
   closeModal,
   reagent,
-  data,
-  setData,
 }) => {
   const { name, uuid, amount, unit, id } = reagent;
-  const deleteReagent = useDeleteReagent();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { mutate: deleteReagent, isPending } = useDeleteReagent(closeModal);
 
   const handleDeleteReagent = async () => {
-    setIsLoading(true);
-    const result = await deleteReagent(uuid);
-
-    if (result) {
-      const copiedReagents = [...data];
-      const indexForDelete = copiedReagents.findIndex(
-        (currentReagent) => currentReagent.uuid === uuid
-      );
-      copiedReagents.splice(indexForDelete, 1);
-      setData(copiedReagents);
-    }
-
-    setIsLoading(false);
-    closeModal();
+    deleteReagent(uuid);
   };
 
   return (
@@ -49,10 +31,10 @@ const ReagentDeleteModal: React.FC<IReagentDeleteModal> = ({
         {unit})
       </DialogContent>
       <DialogActions>
-        <Button disabled={isLoading} onClick={closeModal}>
+        <Button disabled={isPending} onClick={closeModal}>
           Отмена
         </Button>
-        <Button loading={isLoading} onClick={handleDeleteReagent}>
+        <Button loading={isPending} onClick={handleDeleteReagent}>
           Удалить
         </Button>
       </DialogActions>

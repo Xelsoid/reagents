@@ -32,5 +32,8 @@
     "netlify-cli": "15.0.2",
     "netlify-lambda": "2.0.16",
     "serverless-http": "3.2.0"
+  },
+  "dependencies": {
+    "@tanstack/react-query-devtools": "^5.66.0"
   }
 }

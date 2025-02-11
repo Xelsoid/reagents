@@ -1,59 +1,24 @@
-import { useCallback } from 'react';
 import { useToast } from './useToast';
 import { IReagent } from '../constants';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { addReagent } from '../api';
 
-export const useAddReagent = () => {
-  const sendMessage = useToast();
+export const useAddReagent = (closeModal: () => void) => {
+  const toast = useToast();
+  const queryClient = useQueryClient();
 
-  return useCallback(
-    async ({
-      id,
-      name,
-      amount,
-      minAmount,
-      unit,
-      supplier,
-      producer,
-      storageConditions,
-      storagePlace,
-    }: IReagent) => {
-      try {
-        const response = await fetch('/api/addReagent', {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            id,
-            name,
-            amount,
-            minAmount,
-            unit,
-            supplier,
-            producer,
-            storageConditions,
-            storagePlace,
-            isDeleted: false,
-          }),
-        });
-
-        if (!response.ok) {
-          sendMessage('Произошла ошибка. Реактив не добавлен!', 'error');
-          return;
-        }
-
-        const data = await response.json();
-        const { reagent } = data.data as { reagent: IReagent };
-        sendMessage(`Реактив "${reagent.name}" id(${reagent.id}) добавлен`, 'success', false);
-
-        return reagent;
-      } catch (error) {
-        console.error('Ошибка:', error);
-
-        sendMessage('Произошла ошибка при попытке добавить новый реактив', 'error');
-      }
+  return useMutation({
+    mutationFn: (reagent: IReagent): Promise<IReagent> => addReagent(reagent),
+    onError: (error) => {
+      toast(error.message, 'error');
+      closeModal();
     },
-    [sendMessage]
-  );
+    onSuccess: (reagent) => {
+      queryClient.setQueryData(['reagents'], (oldData: IReagent[]) => {
+        return oldData ? [...oldData, reagent] : [reagent];
+      });
+      toast(`Реактив "${reagent.name}" id(${reagent.id}) добавлен`, 'success', false);
+      closeModal();
+    },
+  });
 };

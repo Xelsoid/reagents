@@ -1,43 +1,25 @@
-import { useCallback } from 'react';
 import { useToast } from './useToast';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { IReagent } from '../constants';
+import { deleteReagent } from '../api';
 
-export const useDeleteReagent = () => {
-  const sendMessage = useToast();
+export const useDeleteReagent = (closeModal: () => void) => {
+  const toast = useToast();
 
-  return useCallback(
-    async (uuid: string) => {
-      try {
-        const response = await fetch('/api/deleteReagent', {
-          method: 'DELETE',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            uuid,
-          }),
-        });
+  const queryClient = useQueryClient();
 
-        if (!response.ok) {
-          if (response.status === 401) {
-            sendMessage('У Вас нет прав на удаление реактива', 'error');
-            return;
-          }
-          sendMessage('Произошла ошибка. Реагент не был удален', 'error');
-          return;
-        }
-
-        const data = await response.json();
-        sendMessage(`Реагент был удален`, 'success', false);
-
-        // TODO: fix return
-        // eslint-disable-next-line consistent-return
-        return data;
-      } catch (error) {
-        console.error('Ошибка:', error);
-        sendMessage('Произошла ошибка при попытке удалить реагент', 'error');
-      }
+  return useMutation({
+    mutationFn: (uuid: string) => deleteReagent(uuid),
+    onError: (error) => {
+      toast(error.message, 'error');
+      closeModal();
     },
-    [sendMessage]
-  );
+    onSuccess: ({ uuid: deletedUuid }) => {
+      queryClient.setQueryData(['reagents'], (oldData: IReagent[]) => {
+        return oldData ? oldData.filter(({ uuid }) => uuid !== deletedUuid) : oldData;
+      });
+      toast(`Реагент был удален`, 'success', false);
+      closeModal();
+    },
+  });
 };

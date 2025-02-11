@@ -15,49 +15,27 @@ interface IReagentWriteOffModal {
   isModalShown: boolean;
   closeModal: () => void;
   reagent: IReagent;
-  data: IReagent[];
-  setData: (reagents: IReagent[]) => void;
 }
 
 const ReagentWriteOffModal: React.FC<IReagentWriteOffModal> = ({
   isModalShown,
   closeModal,
   reagent,
-  data,
-  setData,
 }) => {
   const { name, id, unit, amount, uuid } = reagent;
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [amountValue, setAmountValue] = useState<number>(0);
 
   const handleOnReagentAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAmountValue(Number(event.target.value));
   };
 
-  const updateReagentAmount = useChangeReagentAmount();
+  const { mutate: updateReagentAmount, isPending } = useChangeReagentAmount(closeModal);
 
   const handleUpdateReagentAmount = async () => {
-    if (!uuid || !amount || amount <= 0 || !data) {
+    if (!uuid || !amount || amount <= 0) {
       return;
     }
-
-    setIsLoading(true);
-    const updatedReagent = await updateReagentAmount(uuid, amount - amountValue);
-
-    if (updatedReagent) {
-      const reagentsCopy = [...data];
-      const currentReagent = reagentsCopy.find(
-        (currReagent) => updatedReagent.uuid === currReagent.uuid
-      );
-
-      if (currentReagent) {
-        currentReagent.amount = updatedReagent.amount;
-        setData(reagentsCopy);
-      }
-    }
-
-    setIsLoading(false);
-    closeModal();
+    updateReagentAmount({ uuid: uuid, amount: amount - amountValue });
   };
 
   return (
@@ -74,14 +52,14 @@ const ReagentWriteOffModal: React.FC<IReagentWriteOffModal> = ({
           className="input_volume"
           value={amountValue}
           onChange={handleOnReagentAmountChange}
-          disabled={isLoading}
+          disabled={isPending}
         />
       </DialogContent>
       <DialogActions>
-        <Button disabled={isLoading} onClick={closeModal}>
+        <Button disabled={isPending} onClick={closeModal}>
           Отмена
         </Button>
-        <Button loading={isLoading} onClick={handleUpdateReagentAmount}>
+        <Button loading={isPending} onClick={handleUpdateReagentAmount}>
           Списать
         </Button>
       </DialogActions>

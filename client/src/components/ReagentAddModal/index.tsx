@@ -51,16 +51,9 @@ const REAGENT_FIELDS: IReagentField[] = [
 interface IReagentAddModal {
   isModalShown: boolean;
   closeModal: () => void;
-  data: IReagent[];
-  setData: (reagents: IReagent[]) => void;
 }
 
-const ReagentAddModal: React.FC<IReagentAddModal> = ({
-  isModalShown,
-  closeModal,
-  data,
-  setData,
-}) => {
+const ReagentAddModal: React.FC<IReagentAddModal> = ({ isModalShown, closeModal }) => {
   const [reagentFieldsState, setReagentFieldsState] = useState<IReagent>(
     REAGENT_FIELDS.reduce((acc, reagent) => {
       const { fieldName } = reagent;
@@ -73,9 +66,7 @@ const ReagentAddModal: React.FC<IReagentAddModal> = ({
     }, {} as IReagent)
   );
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  const addReagent = useAddReagent();
+  const { mutate: addReagent, isPending } = useAddReagent(closeModal);
 
   const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setReagentFieldsState({
@@ -85,13 +76,7 @@ const ReagentAddModal: React.FC<IReagentAddModal> = ({
   };
 
   const handleOnReagentAdd = async () => {
-    setIsLoading(true);
-    const newReagent = await addReagent(reagentFieldsState);
-    if (newReagent && data) {
-      setData([...data, newReagent]);
-    }
-    setIsLoading(false);
-    closeModal();
+    addReagent(reagentFieldsState);
   };
 
   return (
@@ -108,16 +93,16 @@ const ReagentAddModal: React.FC<IReagentAddModal> = ({
               fullWidth
               onChange={handleOnChange}
               margin="dense"
-              disabled={isLoading}
+              disabled={isPending}
             />
           );
         })}
       </DialogContent>
       <DialogActions>
-        <Button disabled={isLoading} onClick={closeModal}>
+        <Button disabled={isPending} onClick={closeModal}>
           Отмена
         </Button>
-        <Button loading={isLoading} onClick={handleOnReagentAdd}>
+        <Button loading={isPending} onClick={handleOnReagentAdd}>
           Добавить
         </Button>
       </DialogActions>

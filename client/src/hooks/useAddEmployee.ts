@@ -1,9 +1,10 @@
-import { useCallback } from 'react';
 import { useToast } from './useToast';
 import { ROLES } from '../constants';
+import { addEmployee } from '../api';
+import { useMutation } from '@tanstack/react-query';
 
-export const useAddEmployee = () => {
-  const sendMessage = useToast();
+export const useAddEmployee = (closeModal: () => void) => {
+  const toast = useToast();
 
   interface IAddEmployee {
     name: string;
@@ -11,48 +12,19 @@ export const useAddEmployee = () => {
     role: ROLES;
   }
 
-  return useCallback(
-    async ({ name, password, role }: IAddEmployee) => {
-      try {
-        const response = await fetch('/api/create-account', {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            name,
-            password,
-            email: 'N/A',
-            role,
-          }),
-        });
-
-        if (!response.ok) {
-          if (response.status === 401) {
-            sendMessage('У Вас нет прав на добавление нового пользователя', 'error');
-            return;
-          }
-          sendMessage('Произошла ошибка. Пользователь не добавлен!', 'error');
-          return;
-        }
-
-        const data = await response.json();
-
-        const { user } = data.data as {
-          user: { role: ROLES; name: string; email: string; password: string };
-        };
-        sendMessage(
-          `Пользователь с именем: "${user.name}" и ролью: "${user.role}" добавлен`,
-          'success',
-          false
-        );
-      } catch (error) {
-        console.error('Ошибка:', error);
-
-        sendMessage('Произошла ошибка при попытке добавить нового пользователя', 'error');
-      }
+  return useMutation({
+    mutationFn: (employee: IAddEmployee) => addEmployee(employee),
+    onSuccess: (employee) => {
+      toast(
+        `Пользователь с именем: "${employee.name}" и ролью: "${employee.role}" добавлен`,
+        'success',
+        false
+      );
+      closeModal();
     },
-    [sendMessage]
-  );
+    onError: (error) => {
+      toast(error.message, 'error');
+      closeModal();
+    },
+  });
 };

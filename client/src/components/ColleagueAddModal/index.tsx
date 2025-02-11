@@ -31,8 +31,6 @@ const ColleagueAddModal: React.FC<ICloseAddModal> = ({ isModalShown, closeModal 
     role: ROLES.USER,
   });
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setColleagueFields({
       ...colleagueFields,
@@ -47,13 +45,10 @@ const ColleagueAddModal: React.FC<ICloseAddModal> = ({ isModalShown, closeModal 
     });
   };
 
-  const addEmployee = useAddEmployee();
+  const { mutate: addEmployee, isPending } = useAddEmployee(closeModal);
 
   const handleAddEmployee = async () => {
-    setIsLoading(true);
-    await addEmployee(colleagueFields);
-    setIsLoading(false);
-    closeModal();
+    addEmployee(colleagueFields);
   };
 
   return (
@@ -67,7 +62,7 @@ const ColleagueAddModal: React.FC<ICloseAddModal> = ({ isModalShown, closeModal 
           onChange={handleOnChange}
           fullWidth
           margin="dense"
-          disabled={isLoading}
+          disabled={isPending}
         />
         <TextField
           value={colleagueFields.password}
@@ -77,7 +72,7 @@ const ColleagueAddModal: React.FC<ICloseAddModal> = ({ isModalShown, closeModal 
           onChange={handleOnChange}
           fullWidth
           margin="dense"
-          disabled={isLoading}
+          disabled={isPending}
         />
         <FormControl fullWidth margin="dense">
           <InputLabel id="colleague-role-label">Роль</InputLabel>
@@ -88,7 +83,7 @@ const ColleagueAddModal: React.FC<ICloseAddModal> = ({ isModalShown, closeModal 
             value={colleagueFields.role}
             label="Роль"
             onChange={handleOnSelectChange}
-            disabled={isLoading}
+            disabled={isPending}
           >
             <MenuItem value={ROLES.USER}>User</MenuItem>
             <MenuItem value={ROLES.EDITOR}>Editor</MenuItem>
@@ -97,10 +92,10 @@ const ColleagueAddModal: React.FC<ICloseAddModal> = ({ isModalShown, closeModal 
         </FormControl>
       </DialogContent>
       <DialogActions>
-        <Button disabled={isLoading} onClick={closeModal}>
+        <Button disabled={isPending} onClick={closeModal}>
           Отмена
         </Button>
-        <Button loading={isLoading} onClick={handleAddEmployee}>
+        <Button loading={isPending} onClick={handleAddEmployee}>
           Добавить
         </Button>
       </DialogActions>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import '../style/home_page.css';
 import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -63,7 +63,6 @@ const TABLE_KEYS_SEQUENCE: (keyof ITableConfiguration)[] = [
 ];
 
 const HomePage = () => {
-  const [data, setData] = useState<IReagent[] | null>(null);
   const [sorting, setSorting] = useState<SORTING_METHODS>(SORTING_METHODS.ID_ASC);
   const [curReagent, setCurReagent] = useState<IReagent | null>(null);
   const [deleteReagent, setDeleteReagent] = useState<IReagent | null>(null);
@@ -85,7 +84,8 @@ const HomePage = () => {
   const [isDeleteReagentModalShown, openDeleteReagentModal, closeDeleteReagentModal] = useModal();
   const [isAddColleagueModalShown, openAddColleagueModal, closeAddColleagueModal] = useModal();
 
-  const getReagents = useGetReagents();
+  const { reagents, isLoading } = useGetReagents(isAuthenticated);
+  const sortedReagents = reagents?.length ? sortReagents(reagents, sorting) : reagents;
 
   const handleReagentDelete = (reagent: IReagent) => {
     openDeleteReagentModal();
@@ -96,32 +96,6 @@ const HomePage = () => {
     openReagentWriteOffModal();
     setCurReagent(reagent);
   };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const reagents = await getReagents();
-      if (reagents?.length) {
-        setData(sortReagents(reagents, sorting));
-      }
-    };
-
-    if (isAuthenticated) {
-      fetchData();
-    }
-    // TODO: fix dependencies
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAuthenticated]);
-
-  useEffect(() => {
-    if (!data?.length) {
-      return;
-    }
-
-    const sortedData = sortReagents(data, sorting);
-    setData(sortedData);
-    // TODO: fix dependencies
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sorting]);
 
   return (
     <Box sx={{ display: 'flex', margin: 'auto', maxWidth: '1200px' }}>
@@ -195,7 +169,8 @@ const HomePage = () => {
               </Box>
 
               <ReagentsTable
-                data={data}
+                data={sortedReagents}
+                isLoading={isLoading}
                 columnsSequence={TABLE_KEYS_SEQUENCE}
                 tableConfiguration={tableConfiguration}
                 handleReagentDelete={handleReagentDelete}
@@ -210,23 +185,19 @@ const HomePage = () => {
 
           <LogOutModal isModalShown={isLogoutModalShown} closeModal={closeLogoutModal} />
 
-          {data && (
+          {reagents && (
             <>
               {curReagent && (
                 <ReagentWriteOffModal
                   isModalShown={isReagentWriteOffModalShown}
                   closeModal={closeReagentWriteOffModal}
                   reagent={curReagent}
-                  data={data}
-                  setData={setData}
                 />
               )}
 
               <ReagentAddModal
                 isModalShown={isAddReagentModalShown}
                 closeModal={closeAddReagentModal}
-                data={data}
-                setData={setData}
               />
 
               {deleteReagent && (
@@ -234,8 +205,6 @@ const HomePage = () => {
                   isModalShown={isDeleteReagentModalShown}
                   closeModal={closeDeleteReagentModal}
                   reagent={deleteReagent}
-                  data={data}
-                  setData={setData}
                 />
               )}
             </>

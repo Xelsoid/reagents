@@ -92,7 +92,6 @@ export const updateReagentQuantity = async (requestBody: IReagent) => {
   return reagent;
 };
 
-export const deleteReagentData = (requestBody: IReagent) => {
-  const { uuid } = requestBody;
+export const deleteReagentData = (uuid: string) => {
   return deleteReagent(uuid);
 };

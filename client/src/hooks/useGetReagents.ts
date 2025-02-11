@@ -1,38 +1,28 @@
-import { useCallback } from 'react';
+import { useEffect } from 'react';
 import { useToast } from './useToast';
 import { IReagent } from '../constants';
+import { useQuery } from '@tanstack/react-query';
+import { getReagents } from '../api';
 
-export const useGetReagents = () => {
-  const sendMessage = useToast();
+export const useGetReagents = (isAuthenticated: boolean) => {
+  const toast = useToast();
 
-  return useCallback(async () => {
-    try {
-      const response = await fetch('/api/getReagents', {
-        method: 'GET',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-      });
+  const {
+    data: reagents,
+    isLoading,
+    error,
+    isError,
+  } = useQuery<IReagent[]>({
+    queryFn: () => getReagents(),
+    queryKey: ['reagents'],
+    enabled: isAuthenticated,
+  });
 
-      if (!response.ok) {
-        if (response.status === 401) {
-          sendMessage('У Вас нет доступа к списку реактивов. Осуществите вход в систему', 'error');
-          return;
-        }
-        sendMessage('Произошла ошибка при попытке получить список реактивов', 'error');
-        return;
-      }
-
-      const data = await response.json();
-      const { reagents } = data.data as { reagents: IReagent[] };
-
-      // TODO: fix return
-      // eslint-disable-next-line consistent-return
-      return reagents;
-    } catch (error) {
-      console.error('Ошибка:', error);
-      sendMessage('Произошла ошибка при попытке получить список реактивов', 'error');
+  useEffect(() => {
+    if (error) {
+      toast(error.message, 'error');
     }
-  }, [sendMessage]);
+  }, [error, toast]);
+
+  return { reagents, isLoading, error, isError };
 };

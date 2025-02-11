@@ -14,11 +14,12 @@ import { IReagent } from '../../constants';
 import { ITableConfiguration } from '../../page/HomePage';
 
 interface IReagentTable {
-  data: IReagent[] | null;
+  data: IReagent[] | undefined;
   columnsSequence: (keyof ITableConfiguration)[];
   tableConfiguration: ITableConfiguration;
   handleReagentDelete: (reagent: IReagent) => void;
   handleChangeAmount: (reagent: IReagent) => void;
+  isLoading: boolean;
   showDeleteBtn?: boolean;
 }
 
@@ -28,6 +29,7 @@ const ReagentsTable: React.FC<IReagentTable> = ({
   tableConfiguration,
   handleReagentDelete,
   handleChangeAmount,
+  isLoading,
   showDeleteBtn = false,
 }) => {
   return (
@@ -50,7 +52,7 @@ const ReagentsTable: React.FC<IReagentTable> = ({
         </TableHead>
 
         <TableBody>
-          {!data && <SkeletonTableBody />}
+          {isLoading && <SkeletonTableBody />}
 
           {data?.map((reagent) => {
             const handleDelete = () => {
