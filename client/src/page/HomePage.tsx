@@ -111,7 +111,9 @@ const HomePage = () => {
               <img width={140} height={100} src={image} alt="Company logo" />
             </Grid>
             <Grid component="div">
-              {userName && <Typography color="textPrimary">Добро пожаловать {userName}</Typography>}
+              {userName && (
+                <Typography color="textPrimary">Добро пожаловать, {userName}</Typography>
+              )}
             </Grid>
             <Grid component="div">
               {(isAdmin || isEditor) && (

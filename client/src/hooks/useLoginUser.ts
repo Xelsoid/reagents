@@ -1,36 +1,18 @@
-import { useCallback } from 'react';
 import { useToast } from './useToast';
+import { useMutation } from '@tanstack/react-query';
+import { login } from '../api';
 
-export const useUserLogin = () => {
-  const sendMessage = useToast();
+export const useUserLogin = (closeModal: () => void) => {
+  const toast = useToast();
 
-  return useCallback(
-    async (userName: string, userPassword: string) => {
-      try {
-        const response = await fetch('/api/login', {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ name: userName, password: userPassword }),
-        });
-
-        const data = await response.json();
-        const { message } = data;
-
-        if (!response.ok) {
-          sendMessage(data.message, 'error');
-          return;
-        }
-
-        sendMessage(message, 'success', false);
-      } catch (error) {
-        console.error('Ошибка:', error);
-
-        sendMessage('Произошла ошибка при попытке входа в систему', 'error');
-      }
+  return useMutation({
+    mutationFn: ({ name, password }: { name: string; password: string }) => login(name, password),
+    onSuccess: ({ name }) => {
+      toast(`Добро пожаловать ${name}, Вы успешно вошли в систему`, 'success', false);
+      closeModal();
     },
-    [sendMessage]
-  );
+    onError: (error) => {
+      toast(error.message, 'error');
+    },
+  });
 };

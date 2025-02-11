@@ -80,7 +80,7 @@ const ReagentsTable: React.FC<IReagentTable> = ({
                   <IconButton
                     aria-label="write-off"
                     size="large"
-                    title="Списать"
+                    title="Списать реактив"
                     onClick={handleAmount}
                   >
                     <RemoveCircleOutlineIcon />
@@ -91,7 +91,7 @@ const ReagentsTable: React.FC<IReagentTable> = ({
                     <IconButton
                       aria-label="delete"
                       size="large"
-                      title="Удалить"
+                      title="Удалить реактив"
                       onClick={handleDelete}
                     >
                       <DeleteIcon />

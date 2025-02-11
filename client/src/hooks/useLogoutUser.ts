@@ -1,25 +1,18 @@
-import { useCallback } from 'react';
 import { useToast } from './useToast';
+import { useMutation } from '@tanstack/react-query';
+import { logout } from '../api';
 
-export const useUserLogout = () => {
-  const sendMessage = useToast();
+export const useUserLogout = (closeModal: () => void) => {
+  const toast = useToast();
 
-  return useCallback(async () => {
-    try {
-      const response = await fetch('/api/logout', {
-        method: 'POST',
-        credentials: 'include',
-      });
-
-      if (!response.ok) {
-        sendMessage('Не удалось осуществить выход из системы', 'error');
-        return;
-      }
-
-      sendMessage(`Вы вышли из системы`, 'success', false);
-    } catch (error) {
-      console.error('Ошибка:', error);
-      sendMessage('Не удалось осуществить выход из системы', 'error');
-    }
-  }, [sendMessage]);
+  return useMutation({
+    mutationFn: (): Promise<{ message: string }> => logout(),
+    onSuccess: (response: { message: string }) => {
+      toast(response.message, 'success', false);
+      closeModal();
+    },
+    onError: (error) => {
+      toast(error.message, 'error');
+    },
+  });
 };

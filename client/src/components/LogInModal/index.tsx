@@ -22,14 +22,13 @@ type LogInFieldsState = {
 
 const LogInModal: React.FC<ILogInModal> = ({ isModalShown, closeModal }) => {
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [logInFieldsState, setLogInFieldsState] = useState<LogInFieldsState>({
     name: null,
     password: null,
   });
   const [warning, setWarning] = useState<boolean>(false);
 
-  const login = useUserLogin();
+  const { mutate: login, isPending } = useUserLogin(closeModal);
 
   const handleClickShowPassword = () => {
     setShowPassword((prevValue) => !prevValue);
@@ -45,10 +44,7 @@ const LogInModal: React.FC<ILogInModal> = ({ isModalShown, closeModal }) => {
   const handleLogIn = async () => {
     const { name, password } = logInFieldsState;
     if (name && password) {
-      setIsLoading(true);
-      await login(name, password);
-      setIsLoading(false);
-      closeModal();
+      login({ name, password });
     } else {
       setWarning(true);
     }
@@ -71,7 +67,7 @@ const LogInModal: React.FC<ILogInModal> = ({ isModalShown, closeModal }) => {
           value={logInFieldsState.name}
           onChange={handleOnChange}
           margin="dense"
-          disabled={isLoading}
+          disabled={isPending}
         />
         <FormControl sx={{ width: '100%' }} variant="outlined" margin="dense">
           <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
@@ -91,17 +87,17 @@ const LogInModal: React.FC<ILogInModal> = ({ isModalShown, closeModal }) => {
             }
             name="password"
             label="Пароль"
-            disabled={isLoading}
+            disabled={isPending}
             value={logInFieldsState.password}
             onChange={handleOnChange}
           />
         </FormControl>
       </DialogContent>
       <DialogActions>
-        <Button disabled={isLoading} onClick={closeModal}>
+        <Button disabled={isPending} onClick={closeModal}>
           Отмена
         </Button>
-        <Button loading={isLoading} onClick={handleLogIn}>
+        <Button loading={isPending} onClick={handleLogIn}>
           Войти
         </Button>
       </DialogActions>

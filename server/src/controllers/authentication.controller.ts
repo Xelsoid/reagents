@@ -50,12 +50,7 @@ export const loginUser = async (
         sameSite: "strict",
       });
 
-      return res.status(200).json({
-        token,
-        name,
-        role,
-        message: `Добро пожаловать ${name}, Вы успешно вошли в систему`,
-      });
+      return res.status(200).json({ name, role });
     }
     return res
       .status(401)

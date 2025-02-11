@@ -1,16 +1,16 @@
 export const REAGENTS_ENDPOINTS = {
-  GET_REAGENTS: "/api/getReagents",
-  ADD_REAGENT: "/api/addReagent",
-  UPDATE_REAGENT_AMOUNT: "/api/updateReagentAmount",
-  UPDATE_REAGENT: "/api/updateReagent",
-  DELETE_REAGENT: "/api/deleteReagent",
+  GET_REAGENTS: "/api/reagents",
+  ADD_REAGENT: "/api/reagent",
+  UPDATE_REAGENT_AMOUNT: "/api/reagent/amount",
+  UPDATE_REAGENT: "/api/reagent",
+  DELETE_REAGENT: "/api/reagent",
 };
 
 export const AUTHENTICATION = {
   LOGIN: "/api/login",
   LOGOUT: "/api/logout",
-  CREATE_USER: "/api/create-account",
-  DELETE_USER: "/api/deleteUser",
+  REGISTER: "/api/register",
+  DELETE_ACCOUNT: "/api/deleteAccount",
 };
 
 export const METHOD = {

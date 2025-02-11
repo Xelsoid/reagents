@@ -33,14 +33,14 @@ app.post(AUTHENTICATION.LOGIN, loginUser);
 app.post(AUTHENTICATION.LOGOUT, logoutUser);
 
 app.post(
-  AUTHENTICATION.CREATE_USER,
+  AUTHENTICATION.REGISTER,
   verifyToken,
   hasRole([ROLES.ADMIN]),
   createUser,
 );
 
 app.delete(
-  AUTHENTICATION.DELETE_USER,
+  AUTHENTICATION.DELETE_ACCOUNT,
   verifyToken,
   hasRole([ROLES.ADMIN]),
   removeUser,
